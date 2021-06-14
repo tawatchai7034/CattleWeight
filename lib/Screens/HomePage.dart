@@ -5,7 +5,9 @@ import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'CattleBox.dart';
 
+// class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
   ConvertHex hex = new ConvertHex();
+// widget ที่แสดงส่วนของ card widget ที่ภายในจะประกอบด้วยข้อมูลโปรไฟล์ของโคแต่ละตัว
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -16,8 +18,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
-
+  List<String> cities =[];
+ 
+//  สร้าง DateBase จำลองขึ้นมา
   List<ProfileDB> profile = [
     ProfileDB(01, "cattle01", "male", "Brahman", "assets/images/cattle01.jpg"),
     ProfileDB(
@@ -34,12 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
         // search icon
         actions: [
           IconButton(onPressed: (){
-            // รอ ฟังชันก์
-            // showSearch(context: context,delegate: Search());
+            showSearch(context: context, delegate: DataSearch());
           }, icon: Icon(Icons.search))
         ],
       ),
+      // drawer: Drawer(),
       body: ListView.separated(
+        // สร้าง card widget ตามจำนวนโคที่อยู่ใน dataBase
           itemBuilder: (BuildContext context, int index) {
             ProfileDB listProfile = profile[index];
             return CattleBox(
@@ -64,6 +68,7 @@ class TapbarView extends StatefulWidget {
   _TapbarViewState createState() => _TapbarViewState();
 }
 
+// widget ที่แสดงส่วนของ TapฺBarView โดยดึงข้อมูลมาจาก MyHomePage
 class _TapbarViewState extends State<TapbarView> {
   @override
   Widget build(BuildContext context) {
@@ -83,6 +88,7 @@ class _TapbarViewState extends State<TapbarView> {
           ),
           bottomNavigationBar: TabBar(
             tabs: [
+              // ตั้งค่าเมนูภายใน  TapBar View
               Tab(
                 icon: Icon(Icons.add),
                 text:"เพิ่มโค",

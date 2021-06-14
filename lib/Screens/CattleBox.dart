@@ -15,10 +15,13 @@ class CattleBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card( 
       child: ListTile(
+        // แสดงภาพโค
         leading: Image.asset(img,height: 80,width: 110,fit: BoxFit.fill),
+        // แสดงชื่อโค
         title: Text(cattleName),
+        // แสดงรายละเอียดต่างๆ
         subtitle: Text('cattle number : $cattleNumber \nGender : $gender \nSpecise : $specise'),
-        trailing: Icon(Icons.more_vert),
+        trailing:IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
       ));
   }
 }
