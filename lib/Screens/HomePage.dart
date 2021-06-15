@@ -4,6 +4,8 @@ import 'ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'CattleBox.dart';
+import 'AddProfile.dart';
+import 'ConDevice.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
   ConvertHex hex = new ConvertHex();
@@ -74,7 +76,7 @@ class _TapbarViewState extends State<TapbarView> {
   Widget build(BuildContext context) {
     return DefaultTabController(
         ///จำนวนเมนู
-        length: 2,
+        length: 3,
         child: Scaffold(
           backgroundColor: Color(hex.hexColor('#FFC909')),
 
@@ -83,19 +85,23 @@ class _TapbarViewState extends State<TapbarView> {
             children: [
               // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
               MyHomePage(title: "Cattle Weight"),
-              MyHomePage(title: "Cattle Weight")
+              ConNextDevice(),
+              AddProfile()
             ],
           ),
           bottomNavigationBar: TabBar(
             tabs: [
               // ตั้งค่าเมนูภายใน  TapBar View
               Tab(
+                 icon: Icon(Icons.list),
+               text: "ประวัติ"),
+              Tab(
+                 icon: Icon(Icons.device_unknown),
+               text: "ทดสอบอุปกรณ์"),
+               Tab(
                 icon: Icon(Icons.add),
                 text:"เพิ่มโค",
               ),
-              Tab(
-                 icon: Icon(Icons.bar_chart_rounded),
-               text: "อัตราการเจริญเติบโต")
             ],
           ),
         ),
