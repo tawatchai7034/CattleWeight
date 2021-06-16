@@ -4,6 +4,7 @@ class ProfileDB{
   late String gender;
   late String specise;
   late String img;
+  
 
   ProfileDB(this.cattleNumber,this.cattleName,this.gender,this.specise,this.img);
 
@@ -38,6 +39,9 @@ class ProfileDB{
   }
   String getSpecise(){
     return this.specise;
+  }
+   String getImg(){
+    return this.img;
   }
 
   void showdata(){

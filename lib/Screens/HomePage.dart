@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'CattleBox.dart';
 import 'AddProfile.dart';
 import 'ConDevice.dart';
 
@@ -48,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // สร้าง card widget ตามจำนวนโคที่อยู่ใน dataBase
           itemBuilder: (BuildContext context, int index) {
             ProfileDB listProfile = profile[index];
-            return CattleBox(
+            return ProfileBox(
               cattleNumber: listProfile.cattleNumber,
               cattleName: listProfile.cattleName,
               gender: listProfile.gender,

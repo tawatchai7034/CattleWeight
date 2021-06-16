@@ -1,74 +1,109 @@
-import 'ProfileDB.dart';
-class CattleDB extends ProfileDB{
-  late int _cattleNumber;
-  late String _cattleName;
-  late String _gender;
-  late String _specise;
-  late double _heartGirth;
-  late double _bodyLenght;
-  late double _weight;
-  late String _img;
+class CattleDB {
+  late String cattleNumber;
+  late String cattleName;
+  late String gender;
+  late String specise;
+  late double heartGirth;
+  late double bodyLenght;
+  late double weight;
+  late String img;
 
-  CattleDB(int cattleNumber, String cattleName,String gender,String specise,String img,double heartGirth,
-  double bodyLenght,double weight):super(cattleNumber,cattleName,gender,specise,img);
+  CattleDB(this.cattleNumber,this.cattleName,this.gender,this.specise,this.img,this.heartGirth,this.bodyLenght,this.weight);
 
-  void cattleSetter(double heartGirth,double bodyLenght,double weight,String img){
-    this._cattleNumber = super.getCattleNumber();
-    this._cattleName = super.getCattleName();
-    this._gender = super.getGender();
-    this._specise = super.getSpecise();
-    this._heartGirth = heartGirth;
-    this._bodyLenght = bodyLenght;
-    this._weight = weight;
-    this._img = img;
+  void cattleSetter(
+      String cattleNumber,
+      String cattleName,
+      String gender,
+      String specise,
+      String img,
+      double heartGirth,
+      double bodyLenght,
+      double weight) {
+    this.cattleNumber = cattleNumber;
+    this.cattleName = cattleName;
+    this.gender = gender;
+    this.specise = specise;
+    this.heartGirth = heartGirth;
+    this.bodyLenght = bodyLenght;
+    this.weight = weight;
+    this.img = img;
   }
-  
+
   // Getter
-  String getImg(){
-    return this._img;
+  String getCattleNumber() {
+    return this.cattleNumber;
   }
 
-  double getHeartGirth(){
-    return this._heartGirth;
+  String getCattleName() {
+    return this.cattleName;
   }
 
-  double getBodyLenght(){
-    return this._bodyLenght;
+  String getGender() {
+    return this.gender;
   }
 
-  double getWeight(){
-    return this._weight;
+  String getSpecise() {
+    return this.specise;
+  }
+
+  String getImg() {
+    return this.img;
+  }
+
+  double getHeartGirth() {
+    return this.heartGirth;
+  }
+
+  double getBodyLenght() {
+    return this.bodyLenght;
+  }
+
+  double getWeight() {
+    return this.weight;
   }
 
   // Setter
-  void setHeartGirth(double heartgirth){
-    this._heartGirth = heartgirth;
+  void setCattlenumber(String cattleNumber) {
+    this.cattleNumber = cattleNumber;
   }
 
-  void setBodyLenght(double bodyLenght){
-    this._bodyLenght = bodyLenght;
+  void setCattleName(String cattleName) {
+    this.cattleName = cattleName;
   }
 
-  void setWeight(double weight){
-    this._weight = weight;
+  void setGender(String gender) {
+    this.gender = gender;
   }
 
-  void setImg(String img){
-    this._img = img;
+  void setSpecies(String species) {
+    this.specise = species;
   }
 
-  void showdata(){
+  void setHeartGirth(double heartgirth) {
+    this.heartGirth = heartgirth;
+  }
+
+  void setBodyLenght(double bodyLenght) {
+    this.bodyLenght = bodyLenght;
+  }
+
+  void setWeight(double weight) {
+    this.weight = weight;
+  }
+
+  void setImg(String img) {
+    this.img = img;
+  }
+
+  void showdata() {
     print("CattleDB");
-    print("Cattle number : $_cattleNumber");
-    print("Cattle name : $_cattleName");
-    print("Gender : $_gender");
-    print("Specise : $_specise");
-    print("Heart girth : $_heartGirth");
-    print("Body Lenght : $_bodyLenght");
-    print("Weight : $_weight");
-    print("Image : $_img");
-
+    print("Cattle number : $cattleNumber");
+    print("Cattle name : $cattleName");
+    print("Gender : $gender");
+    print("Specise : $specise");
+    print("Heart girth : $heartGirth");
+    print("Body Lenght : $bodyLenght");
+    print("Weight : $weight");
+    print("Image : $img");
   }
-
-
 }
