@@ -79,7 +79,7 @@ class ProfileBox extends StatelessWidget {
       trailing: MenuOption(),
       onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => TapbarView_Profile()));
+            MaterialPageRoute(builder: (context) => CattleProfilPage(title: cattleName,)));
       },
     ));
   }

@@ -11,7 +11,8 @@ import 'ChartPage.dart';
 ConvertHex hex = new ConvertHex();
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key,required this.title}) : super(key: key);
+  final String title;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -35,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text(widget.title),
         backgroundColor: Color(hex.hexColor("#007BA4")),
       ),
       body: ListView.separated(
@@ -69,15 +70,15 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class TapbarView_Profile extends StatefulWidget {
-  const TapbarView_Profile({Key? key}) : super(key: key);
+class CattleProfilPage extends StatefulWidget {
+  const CattleProfilPage({ Key? key ,required this.title}) : super(key: key);
+  final String title;
 
   @override
-  _TapbarView_ProfileState createState() => _TapbarView_ProfileState();
+  _CattleProfilPageState createState() => _CattleProfilPageState();
 }
 
-// widget ที่แสดงส่วนของ TapฺBarView โดยดึงข้อมูลมาจาก MyHomePage
-class _TapbarView_ProfileState extends State<TapbarView_Profile> {
+class _CattleProfilPageState extends State<CattleProfilPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -90,8 +91,8 @@ class _TapbarView_ProfileState extends State<TapbarView_Profile> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            ProfilePage(),
-            CattleVegetative(),
+            ProfilePage(title: widget.title,),
+            ChartCattle(title: widget.title),
             AddProfile()
           ],
         ),

@@ -26,12 +26,12 @@ class _MenuOptionState extends State<MenuOption> {
                     leading: Icon(Icons.delete),
                     title: Text("Delete"),
                   )),
-              PopupMenuItem<int>(
-                  value: 1,
-                  child: ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text("Edit"),
-                  ))
+              // PopupMenuItem<int>(
+              //     value: 1,
+              //     child: ListTile(
+              //       leading: Icon(Icons.edit),
+              //       title: Text("Edit"),
+              //     ))
             ]);
   }
 }
@@ -42,10 +42,10 @@ void onSelected(BuildContext context, int item) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => DeleteOption()));
       break;
-    case 1:
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => EditOption()));
-      break;
+    // case 1:
+    //   Navigator.of(context)
+    //       .push(MaterialPageRoute(builder: (context) => EditOption()));
+    //   break;
   }
 }
 
@@ -84,7 +84,18 @@ class CattleBox extends StatelessWidget {
       trailing: MenuOption(),
       onTap: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ViewCattle()));
+            .push(MaterialPageRoute(builder: (context) => CattleData(
+              cattleNumber,
+              cattleName,
+              gender,
+              specise,
+              img,
+              img,
+              img,
+              heartGirth,
+              bodyLenght,
+              weight,
+              )));
       },
     ));
   }
