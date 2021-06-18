@@ -5,7 +5,6 @@ import 'package:cattle_weight/DataBase/CattleDB.dart';
 
 ConvertHex hex = new ConvertHex();
 
-
 class MenuOption extends StatefulWidget {
   const MenuOption({Key? key}) : super(key: key);
 
@@ -26,12 +25,12 @@ class _MenuOptionState extends State<MenuOption> {
                     leading: Icon(Icons.delete),
                     title: Text("Delete"),
                   )),
-              // PopupMenuItem<int>(
-              //     value: 1,
-              //     child: ListTile(
-              //       leading: Icon(Icons.edit),
-              //       title: Text("Edit"),
-              //     ))
+              PopupMenuItem<int>(
+                  value: 1,
+                  child: ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text("Edit"),
+                  ))
             ]);
   }
 }
@@ -39,13 +38,18 @@ class _MenuOptionState extends State<MenuOption> {
 void onSelected(BuildContext context, int item) {
   switch (item) {
     case 0:
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => DeleteOption()));
+      showDialog(
+          context: context,
+          builder: (BuildContext comtext) {
+            return DeleteOption();
+          });
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (context) => DeleteOption()));
       break;
-    // case 1:
-    //   Navigator.of(context)
-    //       .push(MaterialPageRoute(builder: (context) => EditOption()));
-    //   break;
+    case 1:
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => EditOption()));
+      break;
   }
 }
 
@@ -83,19 +87,19 @@ class CattleBox extends StatelessWidget {
           'Cattle number: $cattleNumber \nGender : $gender \nSpecise : $specise \nHeart girth : $heartGirth \nBody width : $bodyLenght \nWeight : $weight'),
       trailing: MenuOption(),
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => CattleData(
-              cattleNumber,
-              cattleName,
-              gender,
-              specise,
-              img,
-              img,
-              img,
-              heartGirth,
-              bodyLenght,
-              weight,
-              )));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CattleData(
+                  cattleNumber,
+                  cattleName,
+                  gender,
+                  specise,
+                  img,
+                  img,
+                  img,
+                  heartGirth,
+                  bodyLenght,
+                  weight,
+                )));
       },
     ));
   }
@@ -106,14 +110,19 @@ class DeleteOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Delete"),
-        backgroundColor: Color(hex.hexColor("#007BA4")),
-      ),
-      body: Center(
-        child: Text("Delete page"),
-      ),
+    return AlertDialog(
+      title: const Text('AlertDialog Title'),
+      content: const Text('AlertDialog description'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'OK'),
+          child: const Text('OK'),
+        ),
+      ],
     );
   }
 }
