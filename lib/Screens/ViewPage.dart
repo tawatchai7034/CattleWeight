@@ -36,7 +36,6 @@ class CattleData extends StatelessWidget {
       appBar: AppBar(
         title: Text(cattleName),
         backgroundColor: Color(hex.hexColor("#007BA4")),
-        actions: [MenuBar_View()],
       ),
       body: ListView(children: [
         // นำภาพมาแสดงผล
@@ -69,74 +68,124 @@ class CattleData extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 120,
+          height: 100,
+        ),
+        // ปุ่มแก้ไข
+        Container(
+            height: 60,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                        height: 60,
+                        width: 80,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: new RaisedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditOption()));
+                            },
+                            child: Text(
+                              "แก้ไข",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(hex.hexColor("ffffff"))),
+                            ),
+                            color: Color(hex.hexColor("#FAA41B")),
+                            // สีปุ่มเมื่อกด
+                            splashColor: Color(hex.hexColor("#FFC909")),
+                            // กำหนดรูปร่างของปุ่ม
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              // side: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                        )),
+                  ),
+                  // ปุ่มลบ
+                  Expanded(
+                    child: Container(
+                        height: 60,
+                        width: 80,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: new RaisedButton(
+                            onPressed: () {
+                              showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("ลบข้อมูลของ $cattleName "),
+                                      content: Text(
+                                          'คุณต้องการลบข้อมูลของ $cattleName ในวันที่ *02/01/2564* หรือไม่'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Summit'),
+                                          child: const Text('Summit'),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            child: Text(
+                              "ลบ",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(hex.hexColor("ffffff"))),
+                            ),
+                            color: Color(hex.hexColor("#FAA41B")),
+                            // สีปุ่มเมื่อกด
+                            splashColor: Color(hex.hexColor("#FFC909")),
+                            // กำหนดรูปร่างของปุ่ม
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              // side: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            )),
+        SizedBox(
+          height: 15,
         ),
         // ปุ่มบันทึกหน้าจอ
         Container(
-          height: 60,
+            height: 60,
+            width: 160,
             child: Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: new RaisedButton(
-            onPressed: () {print("บันทึกหน้าจอ");},
-            child: Text(
-              "บันทึกหน้าจอ",
-              style:
-                  TextStyle(fontSize: 20, color: Color(hex.hexColor("ffffff"))),
-            ),
-            color: Color(hex.hexColor("#FAA41B")),
-            // สีปุ่มเมื่อกด
-            splashColor: Color(hex.hexColor("#FFC909")),
-            // กำหนดรูปร่างของปุ่ม
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(20.0),
-              // side: BorderSide(color: Colors.black),
-            ),
-          ),
-        )),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: new RaisedButton(
+                onPressed: () {
+                  print("บันทึกหน้าจอ");
+                },
+                child: Text(
+                  "บันทึกหน้าจอ",
+                  style: TextStyle(
+                      fontSize: 20, color: Color(hex.hexColor("ffffff"))),
+                ),
+                color: Color(hex.hexColor("#FAA41B")),
+                // สีปุ่มเมื่อกด
+                splashColor: Color(hex.hexColor("#FFC909")),
+                // กำหนดรูปร่างของปุ่ม
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(20.0),
+                  // side: BorderSide(color: Colors.black),
+                ),
+              ),
+            )),
       ]),
     );
   }
 }
-
-class MenuBar_View extends StatelessWidget {
-  const MenuBar_View ({ Key? key }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
-      icon: Icon(Icons.menu),
-        // เมื่อเลือกเมนูแล้วจะส่งไปทำงานที่หังก์ชัน onSelected
-        onSelected: (item) => onSelected(context, item),
-        itemBuilder: (context) => [
-              PopupMenuItem<int>(
-                  value: 0,
-                  child: ListTile(
-                    leading: Icon(Icons.delete),
-                    title: Text("Delete"),
-                  )),
-              PopupMenuItem<int>(
-                  value: 1,
-                  child: ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text("Edit"),
-                  ))
-            ]);
-  }
-}
-
-void onSelected(BuildContext context, int item) {
-  switch (item) {
-    case 0:
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => DeleteOption()));
-      break;
-    case 1:
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => EditOption()));
-      break;
-  }
-}
-
-
-
 

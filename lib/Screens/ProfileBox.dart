@@ -6,7 +6,8 @@ import 'package:cattle_weight/DataBase/CattleDB.dart';
 ConvertHex hex = new ConvertHex();
 
 class MenuOption extends StatefulWidget {
-  const MenuOption({Key? key}) : super(key: key);
+  final String title;
+  MenuOption(this.title);
 
   @override
   _MenuOptionState createState() => _MenuOptionState();
@@ -17,7 +18,7 @@ class _MenuOptionState extends State<MenuOption> {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
         // เมื่อเลือกเมนูแล้วจะส่งไปทำงานที่หังก์ชัน onSelected
-        onSelected: (item) => onSelected(context, item),
+        onSelected: (item) => onSelected(context, item,widget.title),
         itemBuilder: (context) => [
               PopupMenuItem<int>(
                   value: 0,
@@ -35,11 +36,28 @@ class _MenuOptionState extends State<MenuOption> {
   }
 }
 
-void onSelected(BuildContext context, int item) {
+void onSelected(BuildContext context, int item,String title) {
   switch (item) {
     case 0:
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => DeleteOption()));
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("ลบโปรไฟล์ของ $title "),
+              content: Text(
+                  'คุณต้องการลบโปรไฟล์ของ $title ในวันที่ *02/01/2564* หรือไม่'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'ไม่ใช่'),
+                  child: const Text('ไม่ใช่'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'ใช่'),
+                  child: const Text('ใช่'),
+                ),
+              ],
+            );
+          });
       break;
     case 1:
       Navigator.of(context)
@@ -76,7 +94,7 @@ class ProfileBox extends StatelessWidget {
       // แสดงรายละเอียดต่างๆ
       subtitle: Text(
           'Cattle number: $cattleNumber \nGender : $gender \nSpecise : $specise'),
-      trailing: MenuOption(),
+      trailing: MenuOption(cattleName),
       onTap: () {
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => CattleProfilPage(title: cattleName,)));

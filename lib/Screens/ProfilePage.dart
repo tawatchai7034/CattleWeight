@@ -11,7 +11,7 @@ import 'ChartPage.dart';
 ConvertHex hex = new ConvertHex();
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key,required this.title}) : super(key: key);
+  const ProfilePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -36,7 +36,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontFamily: "boogaloo",
+          ),
+        ),
         backgroundColor: Color(hex.hexColor("#007BA4")),
       ),
       body: ListView.separated(
@@ -53,15 +58,6 @@ class _ProfilePageState extends State<ProfilePage> {
               bodyLenght: listCattle.bodyLenght,
               weight: listCattle.weight,
             );
-            // CattleBox(
-            //     cattleNumber: listCattle.cattleNumber,
-            //     cattleName: listCattle.cattleName,
-            //     gender: listCattle.gender,
-            //     specise: listCattle.specise,
-            //     img: listCattle.img,
-            //     heartGirth: listCattle.heartGirth,
-            //     bodyLenght: listCattle.bodyLenght,
-            //     weight: listCattle.weight);
           },
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),
@@ -71,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class CattleProfilPage extends StatefulWidget {
-  const CattleProfilPage({ Key? key ,required this.title}) : super(key: key);
+  const CattleProfilPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -91,7 +87,9 @@ class _CattleProfilPageState extends State<CattleProfilPage> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            ProfilePage(title: widget.title,),
+            ProfilePage(
+              title: widget.title,
+            ),
             ChartCattle(title: widget.title),
             AddProfile()
           ],

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'ViewPage.dart';
 import 'package:cattle_weight/DataBase/CattleDB.dart';
+import 'package:flutter/cupertino.dart';
 
 ConvertHex hex = new ConvertHex();
 
+
 class MenuOption extends StatefulWidget {
-  const MenuOption({Key? key}) : super(key: key);
+  final String title;
+  MenuOption(this.title);
 
   @override
   _MenuOptionState createState() => _MenuOptionState();
@@ -17,7 +20,7 @@ class _MenuOptionState extends State<MenuOption> {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
         // เมื่อเลือกเมนูแล้วจะส่งไปทำงานที่หังก์ชัน onSelected
-        onSelected: (item) => onSelected(context, item),
+        onSelected: (item) => onSelected(context, item,widget.title),
         itemBuilder: (context) => [
               PopupMenuItem<int>(
                   value: 0,
@@ -35,13 +38,27 @@ class _MenuOptionState extends State<MenuOption> {
   }
 }
 
-void onSelected(BuildContext context, int item) {
+void onSelected(BuildContext context, int item,String title) {
   switch (item) {
     case 0:
-      showDialog(
+      showDialog<String>(
           context: context,
-          builder: (BuildContext comtext) {
-            return DeleteOption();
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("ลบข้อมูลของ $title "),
+              content: Text(
+                  'คุณต้องการลบข้อมูลของ $title ในวันที่ *02/01/2564* หรือไม่'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'ไม่ใช่'),
+                  child: const Text('ไม่ใช่'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'ใช่'),
+                  child: const Text('ใช่'),
+                ),
+              ],
+            );
           });
       // Navigator.of(context)
       //     .push(MaterialPageRoute(builder: (context) => DeleteOption()));
@@ -85,7 +102,7 @@ class CattleBox extends StatelessWidget {
       // แสดงรายละเอียดต่างๆ
       subtitle: Text(
           'Cattle number: $cattleNumber \nGender : $gender \nSpecise : $specise \nHeart girth : $heartGirth \nBody width : $bodyLenght \nWeight : $weight'),
-      trailing: MenuOption(),
+      trailing: MenuOption(cattleName),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CattleData(
@@ -138,7 +155,26 @@ class EditOption extends StatelessWidget {
         backgroundColor: Color(hex.hexColor("#007BA4")),
       ),
       body: Center(
-        child: Text("Edit page"),
+        child: TextButton(
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('AlertDialog Title'),
+              content: const Text('AlertDialog description'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          ),
+          child: const Text('Show Dialog'),
+        ),
       ),
     );
   }

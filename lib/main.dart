@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Screens/HomePage.dart';
 import 'convetHex.dart';
+import 'package:cattle_weight/Screens/FirstPage.dart';
 
 ConvertHex hex = new ConvertHex();
 void main() {
@@ -14,9 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        // กำหนด font เริ่มต้น
+        fontFamily: 'TH-Niramit-AS',
         primarySwatch: Colors.blue,
       ),
-      home: TapbarView()
+      home: FisrtPage()
+      //  TapbarView()
     );
   }
 }

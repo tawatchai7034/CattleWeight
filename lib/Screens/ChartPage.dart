@@ -35,12 +35,16 @@ class ChartData extends StatefulWidget {
 }
 
 class _ChartDataState extends State<ChartData> {
+  // ประกาศตัวแปรไว้เก็บข้อมูล
   late List<CattleData> _chartData;
+  // widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
   late TooltipBehavior _tooltipBehavior;
 
   @override
+  // เมื่อรัน widget ให้ไปดึงข้อมูลมา
   void initState() {
     _chartData = getChartData();
+    //เปิด widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
   }
@@ -50,29 +54,39 @@ class _ChartDataState extends State<ChartData> {
     return SafeArea(
         child: Scaffold(
             body: SfCartesianChart(
+              // ชื่อกราฟ
       title: ChartTitle(text: 'อัตราการเจริญเติบโตของ ${widget.title}'),
       legend: Legend(isVisible: true),
+      // widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
       tooltipBehavior: _tooltipBehavior,
       series: <ChartSeries>[
         LineSeries<CattleData, double>(
+          // ตั้งชื่เส้นบนกราฟ
             name: 'อัตราการเจริญเติบโต',
+            // ข้อมูลให้ไปเอามาจาก _chartData
             dataSource: _chartData,
+            // กำหนดขอบเขตของแกน x และแกน y
             xValueMapper: (CattleData cattle, _) => cattle.month,
             yValueMapper: (CattleData cattle, _) => cattle.weight,
+            // แสดงค่าประจำจุดบนกราฟ
             dataLabelSettings: DataLabelSettings(isVisible: true),
             enableTooltip: true,
+            // กำหนดสีเส้น
             color: Color(hex.hexColor("#FAA41B")))
       ],
+      // กำหนดรูปแบบของตัวเลขในกราฟ
       primaryXAxis: NumericAxis(
         edgeLabelPlacement: EdgeLabelPlacement.shift,
       ),
       primaryYAxis: NumericAxis(
           labelFormat: '{value}',
           numberFormat: NumberFormat.compact(),
+          // Determines the value axis range, based on the visible data points or based on the overall data points available in chart. 
           anchorRangeToVisiblePoints: false),
     )));
   }
 
+// สร้าง list ข้อมูลที่จะเอาไปสร้างกราฟ
   List<CattleData> getChartData() {
     final List<CattleData> chartData = [
       CattleData(1, 2525),
@@ -90,6 +104,7 @@ class _ChartDataState extends State<ChartData> {
   }
 }
 
+// กำหนดข้อมูลที่ต้องมี
 class CattleData {
   CattleData(this.month, this.weight);
   final double month;
@@ -97,7 +112,7 @@ class CattleData {
 }
 
 class SectionPage extends StatelessWidget {
-  const SectionPage({ Key? key }) : super(key: key);
+  const SectionPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,13 +126,14 @@ class SectionPage extends StatelessWidget {
     );
   }
 }
+
 class MenuBar extends StatelessWidget {
-  const MenuBar({ Key? key }) : super(key: key);
+  const MenuBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      icon: Icon(Icons.menu),
+        icon: Icon(Icons.menu),
         // เมื่อเลือกเมนูแล้วจะส่งไปทำงานที่หังก์ชัน onSelected
         onSelected: (item) => onSelected(context, item),
         itemBuilder: (context) => [
@@ -127,12 +143,12 @@ class MenuBar extends StatelessWidget {
                     leading: Icon(Icons.assignment_outlined),
                     title: Text("Export"),
                   )),
-            //   PopupMenuItem<int>(
-            //       value: 1,
-            //       child: ListTile(
-            //         leading: Icon(Icons.edit),
-            //         title: Text("Edit"),
-            //       ))
+              //   PopupMenuItem<int>(
+              //       value: 1,
+              //       child: ListTile(
+              //         leading: Icon(Icons.edit),
+              //         title: Text("Edit"),
+              //       ))
             ]);
   }
 }
@@ -140,8 +156,28 @@ class MenuBar extends StatelessWidget {
 void onSelected(BuildContext context, int item) {
   switch (item) {
     case 0:
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ExportFile()));
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                "บันทึกไฟล์ ",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              content: Text(
+                'บันทึกไฟล์เสร็จสิน',
+                style: TextStyle(fontSize: 16),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'ตกลง'),
+                  child: const Text('ตกลง'),
+                ),
+              ],
+            );
+          });
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (context) => ExportFile()));
       break;
     // case 1:
     //   Navigator.of(context)
