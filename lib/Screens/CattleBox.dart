@@ -26,13 +26,13 @@ class _MenuOptionState extends State<MenuOption> {
                   value: 0,
                   child: ListTile(
                     leading: Icon(Icons.delete),
-                    title: Text("Delete"),
+                    title: Text("Delete",style: TextStyle(fontSize: 24),),
                   )),
               PopupMenuItem<int>(
                   value: 1,
                   child: ListTile(
                     leading: Icon(Icons.edit),
-                    title: Text("Edit"),
+                    title: Text("Edit",style: TextStyle(fontSize: 24),),
                   ))
             ]);
   }
@@ -45,17 +45,17 @@ void onSelected(BuildContext context, int item,String title) {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("ลบข้อมูลของ $title "),
+              title: Text("ลบข้อมูลของ $title ",style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),),
               content: Text(
-                  'คุณต้องการลบข้อมูลของ $title ในวันที่ *02/01/2564* หรือไม่'),
+                  'คุณต้องการลบข้อมูลของ $title ในวันที่ *02/01/2564* หรือไม่',style: TextStyle(fontSize: 24,color: Colors.black),),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'ไม่ใช่'),
-                  child: const Text('ไม่ใช่'),
+                  child: const Text('ไม่ใช่',style: TextStyle(fontSize: 24),),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'ใช่'),
-                  child: const Text('ใช่'),
+                  child: const Text('ใช่',style: TextStyle(fontSize: 24),),
                 ),
               ],
             );
@@ -98,10 +98,11 @@ class CattleBox extends StatelessWidget {
       // แสดงภาพโค
       leading: Image.asset(img, height: 80, width: 110, fit: BoxFit.fill),
       // แสดงชื่อโค
-      title: Text(cattleName),
+      title: Text(cattleName,style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold)),
       // แสดงรายละเอียดต่างๆ
       subtitle: Text(
-          'Cattle number: $cattleNumber \nGender : $gender \nSpecise : $specise \nHeart girth : $heartGirth \nBody width : $bodyLenght \nWeight : $weight'),
+          'Cattle number: $cattleNumber \nGender : $gender \nSpecise : $specise \nHeart girth : $heartGirth \nBody width : $bodyLenght \nWeight : $weight',
+          style: TextStyle(fontSize: 18,color: Colors.black),),
       trailing: MenuOption(cattleName),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(

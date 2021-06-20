@@ -11,9 +11,6 @@ import 'ChartPage.dart';
 ConvertHex hex = new ConvertHex();
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -37,9 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          "Cattle Weight",
           style: TextStyle(
             fontFamily: "boogaloo",
+            fontSize: 24,
           ),
         ),
         backgroundColor: Color(hex.hexColor("#007BA4")),
@@ -87,9 +85,7 @@ class _CattleProfilPageState extends State<CattleProfilPage> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            ProfilePage(
-              title: widget.title,
-            ),
+            ProfilePage(),
             ChartCattle(title: widget.title),
             AddProfile()
           ],

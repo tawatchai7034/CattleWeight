@@ -34,7 +34,13 @@ class CattleData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(cattleName),
+        title: Text(
+          cattleName,
+          style: TextStyle(
+            fontFamily: "boogaloo",
+            fontSize: 24,
+          ),
+        ),
         backgroundColor: Color(hex.hexColor("#007BA4")),
       ),
       body: ListView(children: [
@@ -55,18 +61,39 @@ class CattleData extends StatelessWidget {
           height: 15,
         ),
         Container(
-          child: ListTile(
-            title: Text(
-              cattleName,
-              style: TextStyle(fontSize: 20),
-            ),
-            // แสดงรายละเอียดต่างๆ
-            subtitle: Text(
-              'Cattle number: ${cattleNumber} \nGender : ${gender} \nSpecise : ${specise} \nHeart girth : ${heartGirth} \nBody width : ${bodyLenght} \nWeight : ${weight}',
-              style: TextStyle(fontSize: 16),
-            ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Text(cattleName,
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           ),
         ),
+        SizedBox(
+          height: 15,
+        ),
+        Container(
+            child: Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Row(
+            children: [
+              Expanded(
+                  child: Text(
+                      "Cattle number: ${cattleNumber} \t\t\t\tBody width : ${bodyLenght} \nSpecise : ${specise} \t\t\tHeart girth : ${heartGirth} \nGender : ${gender} \t\t\t\t\t\t\t\tWeight : ${weight}",
+                      style: TextStyle(fontSize: 24, color: Colors.black))),
+            ],
+          ),
+        )
+            // ListTile(
+            //   title: Text(
+            //     cattleName,
+            //     style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
+            //   ),
+            //   // แสดงรายละเอียดต่างๆ
+            //   subtitle: Text(
+            //     'Cattle number: ${cattleNumber} \t\t\tGender : ${gender} \nSpecise : ${specise} \t\t\tHeart girth : ${heartGirth} \nBody width : ${bodyLenght} \t\t\tWeight : ${weight}',
+            //     style: TextStyle(fontSize: 18,color: Colors.black),
+            //   ),
+            // ),
+            ),
         SizedBox(
           height: 100,
         ),
@@ -91,7 +118,7 @@ class CattleData extends StatelessWidget {
                             child: Text(
                               "แก้ไข",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 24,
                                   color: Color(hex.hexColor("ffffff"))),
                             ),
                             color: Color(hex.hexColor("#FAA41B")),
@@ -118,19 +145,19 @@ class CattleData extends StatelessWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("ลบข้อมูลของ $cattleName "),
+                                      title: Text("ลบข้อมูลของ $cattleName ",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                                       content: Text(
-                                          'คุณต้องการลบข้อมูลของ $cattleName ในวันที่ *02/01/2564* หรือไม่'),
+                                          'คุณต้องการลบข้อมูลของ $cattleName ในวันที่ *02/01/2564* หรือไม่',style: TextStyle(fontSize: 24, color: Colors.black)),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () =>
-                                              Navigator.pop(context, 'Cancel'),
-                                          child: const Text('Cancel'),
+                                              Navigator.pop(context, 'ไม่ใช่'),
+                                          child: const Text('ไม่ใช่',style: TextStyle(fontSize: 24)),
                                         ),
                                         TextButton(
                                           onPressed: () =>
-                                              Navigator.pop(context, 'Summit'),
-                                          child: const Text('Summit'),
+                                              Navigator.pop(context, 'ใช่'),
+                                          child: const Text('ใช่',style: TextStyle(fontSize: 24)),
                                         ),
                                       ],
                                     );
@@ -139,7 +166,7 @@ class CattleData extends StatelessWidget {
                             child: Text(
                               "ลบ",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 24,
                                   color: Color(hex.hexColor("ffffff"))),
                             ),
                             color: Color(hex.hexColor("#FAA41B")),
@@ -172,7 +199,7 @@ class CattleData extends StatelessWidget {
                 child: Text(
                   "บันทึกหน้าจอ",
                   style: TextStyle(
-                      fontSize: 20, color: Color(hex.hexColor("ffffff"))),
+                      fontSize: 24, color: Color(hex.hexColor("ffffff"))),
                 ),
                 color: Color(hex.hexColor("#FAA41B")),
                 // สีปุ่มเมื่อกด
@@ -188,4 +215,3 @@ class CattleData extends StatelessWidget {
     );
   }
 }
-

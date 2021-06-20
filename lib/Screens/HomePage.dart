@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title,style: TextStyle(fontFamily: "boogaloo",fontSize: 24, ),),
         backgroundColor: Color(hex.hexColor("#007BA4")),
         // search icon
         actions: [
@@ -106,3 +106,5 @@ class _TapbarViewState extends State<TapbarView> {
     );
   }
 }
+
+
