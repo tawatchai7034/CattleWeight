@@ -5,7 +5,7 @@ import 'package:cattle_weight/convetHex.dart';
 ConvertHex hex = new ConvertHex();
 final formKey = GlobalKey<FormState>();
 
-class AddProfile extends StatelessWidget {
+class FirstAddProfile extends StatelessWidget {
   ///controller ใช้ดึงข้อมูลที่กรอกเข้ามา (Input)
   final titleController = TextEditingController(); //รับค่าชื่อรายการ
   final amountController = TextEditingController(); //รับตัวเลขจำนวนเงิน
@@ -26,7 +26,7 @@ class AddProfile extends StatelessWidget {
           //   child: Image.asset("assets/images/IconApp.jpg",
           //       height: 240, width: 360, fit: BoxFit.cover),
           // ),
-          MyCustomForm()
+          FirstMyCustomForm()
         ],
       ),
       backgroundColor: Color(hex.hexColor("ffffff")),
@@ -34,18 +34,19 @@ class AddProfile extends StatelessWidget {
   }
 }
 
-class MyCustomForm extends StatefulWidget {
+class FirstMyCustomForm extends StatefulWidget {
   @override
-  MyCustomFormState createState() {
-    return MyCustomFormState();
+  FirstMyCustomFormState createState() {
+    return FirstMyCustomFormState();
   }
 }
 
-class MyCustomFormState extends State<MyCustomForm> {
+class FirstMyCustomFormState extends State<FirstMyCustomForm> {
   String dropdownGender = 'กรุณาเลือกเพศ';
   String dropdownSpecise = 'กรุณาเลือกสายพันธุ์โค';
 
-    final formKey = GlobalKey<FormState>();
+  ///ตรวจสอบความถูกต้องของข้อมูล
+  final formKey = GlobalKey<FormState>();
 
   ///controller ใช้ดึงข้อมูลที่กรอกเข้ามา (Input)
   final cattleNameController = TextEditingController(); //รับชื่อโค
@@ -226,6 +227,42 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
                 SizedBox(
                   height: 20,
+                ),
+                // ปุ่ม บันทึกยังแฟ้มประวัติโค
+
+                Center(
+                  child: Container(
+                      height: 60,
+                      width: 360,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: new RaisedButton(
+                          // กดแลเวให้ไปหน้า FisrtPage/SelectInput
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              // แสดงข้อความเมื่อกดบันทึก
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(content: Text('Processing Data')));
+                              print(
+                                  "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
+                            }
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => SelectInput()));
+                          },
+                          child: Text("บันทึกยังแฟ้มประวัติโค",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Color(hex.hexColor("ffffff")),
+                                  fontWeight: FontWeight.bold)),
+                          color: Color(hex.hexColor("#47B5BE")),
+                          // รูปทรงปุ่ม
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20.0),
+                            // กรอบปุ่ม
+                            side: BorderSide(color: Colors.white),
+                          ),
+                        ),
+                      )),
                 ),
               ],
             ),

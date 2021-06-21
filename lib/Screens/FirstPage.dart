@@ -1,3 +1,4 @@
+import 'package:cattle_weight/Screens/FirstAddProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/HomePage.dart';
@@ -130,8 +131,8 @@ class SelectInput extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: new RaisedButton(
                   onPressed: () {
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(builder: (context) => SelectInput()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => FirstAddProfile()));
                   },
                   child: Text("ถ่ายภาพ",
                       style: TextStyle(
