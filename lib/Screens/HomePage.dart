@@ -1,6 +1,6 @@
-import 'package:cattle_weight/Screens/Search.dart';
+import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
-import 'ProfileBox.dart';
+import 'Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'AddProfile.dart';

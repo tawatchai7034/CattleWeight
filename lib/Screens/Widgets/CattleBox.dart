@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'ViewPage.dart';
+import '../ViewPage.dart';
 import 'package:cattle_weight/DataBase/CattleDB.dart';
 import 'package:flutter/cupertino.dart';
 

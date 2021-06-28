@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'CattleBox.dart';
+import 'Widgets/CattleBox.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
