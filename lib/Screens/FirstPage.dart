@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cattle_weight/Screens/FirstAddProfile.dart';
+import 'package:cattle_weight/Screens/SelectPicture.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/HomePage.dart';
+import 'package:cattle_weight/model/MediaSource.dart';
 
 ConvertHex hex = new ConvertHex();
 
@@ -13,6 +17,9 @@ class FisrtPage extends StatefulWidget {
 }
 
 class _FisrtPageState extends State<FisrtPage> {
+
+  late File fileMedia;
+  late MediaSource source;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,11 +59,8 @@ class _FisrtPageState extends State<FisrtPage> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: new RaisedButton(
-                       // กดแลเวให้ไปหน้า FisrtPage/SelectInput
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SelectInput()));
-                      },
+                      // กดแล้วให้ไปหน้า FisrtPage/SelectInput พร้อบระบุชนิดของสื่เป็น vdo หรือ  image
+                      onPressed: () => capture(MediaSource.image),
                       child: Text("คำนวณน้ำหนักโค",
                           style: TextStyle(
                               fontSize: 24,
@@ -105,78 +109,30 @@ class _FisrtPageState extends State<FisrtPage> {
       backgroundColor: Color(hex.hexColor("#47B5BE")),
     );
   }
-}
 
-// หน้าเลือกภาพที่จะนำไปใช้คำนวณน้ำหนัก
-class SelectInput extends StatelessWidget {
-  const SelectInput({Key? key}) : super(key: key);
+    Future capture(MediaSource source) async {
+    setState(() {
+      this.source = source;
+      var _fileMedia = null;
+            this.fileMedia = _fileMedia;
+    });
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Center(
-              child: Image.asset("assets/images/camera01.png",
-                  height: 240, width: 240, fit: BoxFit.cover)),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-              height: 60,
-              width: 240,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: new RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => FirstAddProfile()));
-                  },
-                  child: Text("ถ่ายภาพ",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Color(hex.hexColor("ffffff")),
-                          fontWeight: FontWeight.bold)),
-                  color: Color(hex.hexColor("#47B5BE")),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0),
-                    side: BorderSide(color: Colors.white),
-                  ),
-                ),
-              )),
-          Center(
-              child: Image.asset("assets/images/photo01.png",
-                  height: 240, width: 240, fit: BoxFit.cover)),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-              height: 60,
-              width: 240,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: new RaisedButton(
-                  onPressed: () {
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(builder: (context) => SelectInput()));
-                  },
-                  child: Text("นำเข้าภาพ",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Color(hex.hexColor("ffffff")),
-                          fontWeight: FontWeight.bold)),
-                  color: Color(hex.hexColor("#47B5BE")),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0),
-                    side: BorderSide(color: Colors.white),
-                  ),
-                ),
-              )),
-        ],
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SelectInput(),
+        settings: RouteSettings(
+          arguments: source,
+        ),
       ),
-      backgroundColor: Color(hex.hexColor("#47B5BE")),
     );
+
+    if (result == null) {
+      return;
+    } else {
+      setState(() {
+        fileMedia = result;
+      });
+    }
   }
 }
+
