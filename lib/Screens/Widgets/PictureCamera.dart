@@ -7,7 +7,14 @@ import 'package:image_picker/image_picker.dart';
 
 ConvertHex hex = new ConvertHex();
 
-// reference https://youtu.be/BAgLOAGga2o
+// reference 
+// camera :
+//  - https://youtu.be/BAgLOAGga2o
+//  - https://flutter.dev/docs/cookbook/plugins/picture-using-camera
+// กรอบภาพช่วยจัดตำแหน่งโค
+//  - https://alex.domenici.net/archive/rotate-and-flip-an-image-in-flutter-with-or-without-animations
+// วิธีใช้ stack widget
+//  - https://api.flutter.dev/flutter/widgets/Stack-class.html
 
 class CameraButton extends StatefulWidget {
   const CameraButton({Key? key}) : super(key: key);
