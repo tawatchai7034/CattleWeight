@@ -1,12 +1,12 @@
 import 'package:cattle_weight/DataBase/CattleDB.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/Screens/AddProfile.dart';
-import 'package:cattle_weight/Screens/HomePage.dart';
+import 'package:cattle_weight/Widgets/HomePage.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:flutter/material.dart';
-import 'Widgets/CattleBox.dart';
+import '../Screens/Widgets/CattleBox.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'ChartPage.dart';
+import '../Screens/ChartPage.dart';
 
 ConvertHex hex = new ConvertHex();
 

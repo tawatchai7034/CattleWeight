@@ -1,7 +1,7 @@
 //@dart=2.9
 
 import 'package:flutter/material.dart';
-import 'Screens/HomePage.dart';
+import 'Widgets/HomePage.dart';
 import 'convetHex.dart';
 import 'package:cattle_weight/Screens/FirstPage.dart';
 

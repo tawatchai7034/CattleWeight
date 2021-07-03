@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:cattle_weight/Screens/FirstAddProfile.dart';
-import 'package:cattle_weight/Screens/SelectPicture.dart';
+import 'package:cattle_weight/Widgets/SelectPicture.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'package:cattle_weight/Screens/HomePage.dart';
+import 'package:cattle_weight/Widgets/HomePage.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
 
 ConvertHex hex = new ConvertHex();
