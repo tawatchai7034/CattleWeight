@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cattle_weight/Screens/Pages/SetHarthWidth.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
@@ -53,6 +54,7 @@ class _CameraButtonState extends State<CameraButton> {
     final media = await getMedia(source: ImageSource.camera);
     final file = File(media!.path);
 
-    Navigator.of(context).pop(file);
+    Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SetHarthWidth(file)));
   }
 }
