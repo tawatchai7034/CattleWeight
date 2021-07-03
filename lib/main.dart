@@ -1,9 +1,8 @@
-//@dart=2.9
-
+import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 import 'package:flutter/material.dart';
-import 'Widgets/HomePage.dart';
+import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'convetHex.dart';
-import 'package:cattle_weight/Screens/FirstPage.dart';
+import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 
 ConvertHex hex = new ConvertHex();
 void main() {

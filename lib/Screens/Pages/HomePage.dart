@@ -1,11 +1,11 @@
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
-import 'package:cattle_weight/Widgets/ProfileBox.dart';
+import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
-import '../Screens/AddProfile.dart';
-import '../Screens/ConDevice.dart';
-import '../Screens/FirstPage.dart';
+import 'AddProfile.dart';
+import 'ConDevice.dart';
+import 'FirstPage.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
