@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
