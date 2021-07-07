@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math' as Math;
 import 'package:cattle_weight/Screens/Pages/SetHarthWidth.dart';
+import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
@@ -35,11 +36,8 @@ class _CameraButtonState extends State<CameraButton> {
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: new RaisedButton(
             onPressed: () {
-              
               mainCamera();
               // pickCameraMedia(context);
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => FirstAddProfile()));
             },
             child: Text("ถ่ายภาพ",
                 style: TextStyle(
@@ -109,7 +107,7 @@ class TakePictureScreen extends StatefulWidget {
 class TakePictureScreenState extends State<TakePictureScreen>
     with SingleTickerProviderStateMixin {
   // camera
-  late CameraController _controller;
+  late CameraController controller;
   late Future<void> _initializeControllerFuture;
 
   // กรอบภาพ
@@ -122,12 +120,22 @@ class TakePictureScreenState extends State<TakePictureScreen>
   void initState() {
     super.initState();
     // ตำแหน่งของกรอบภาพ
-    cardFront = Image.asset("assets/images/SideLeftNavigation.png",height:380,width: 280,fit: BoxFit.cover,);
-    cardBack = Image.asset("assets/images/SideRightNavigation.png",height:380,width: 280,fit: BoxFit.cover,);
+    cardFront = Image.asset(
+      "assets/images/SideLeftNavigation.png",
+      height: 380,
+      width: 280,
+      fit: BoxFit.cover,
+    );
+    cardBack = Image.asset(
+      "assets/images/SideRightNavigation.png",
+      height: 380,
+      width: 280,
+      fit: BoxFit.cover,
+    );
 
     // To display the current output from the Camera,
     // create a CameraController.
-    _controller = CameraController(
+    controller = CameraController(
       // Get a specific camera from the list of available cameras.
       widget.camera,
       // Define the resolution to use.
@@ -135,7 +143,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
     );
 
     // Next, initialize the controller. This returns a Future.
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = controller.initialize();
     // Initialize the animation controller
     controllerAnimated = AnimationController(
         vsync: this, duration: Duration(milliseconds: 300), value: 0);
@@ -144,7 +152,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -159,6 +167,9 @@ class TakePictureScreenState extends State<TakePictureScreen>
 
   @override
   Widget build(BuildContext context) {
+    // ควบคุมขนาดของ CameraPreview
+    final mediaSize = MediaQuery.of(context).size;
+   
     return Scaffold(
       appBar: AppBar(title: const Text('ถ่ายภาพโค')),
       // You must wait until the controller is initialized before displaying the
@@ -173,7 +184,14 @@ class TakePictureScreenState extends State<TakePictureScreen>
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // If the Future is complete, display the preview.
-                    return CameraPreview(_controller);
+                    return ClipRect(
+                      clipper: _MediaSizeClipper(mediaSize),
+                      child: Transform.scale(
+                        scale: 1 / (controller.value.aspectRatio * mediaSize.aspectRatio),
+                        alignment: Alignment.topCenter,
+                        child: CameraPreview(controller),
+                      ),
+                    );
                   } else {
                     // Otherwise, display a loading indicator.
                     return const Center(child: CircularProgressIndicator());
@@ -199,12 +217,15 @@ class TakePictureScreenState extends State<TakePictureScreen>
             ],
           ),
           Row(children: [
-            Expanded(child: IconButton(onPressed: () async{
-                 // Flip the image              
-              await controllerAnimated.forward();              
-              setState(() => showFront = !showFront);
-              await controllerAnimated.reverse();
-            }, icon: Icon(Icons.circle_outlined))),
+            Expanded(
+                child: IconButton(
+                    onPressed: () async {
+                      // Flip the image
+                      await controllerAnimated.forward();
+                      setState(() => showFront = !showFront);
+                      await controllerAnimated.reverse();
+                    },
+                    icon: Icon(Icons.circle_outlined))),
             Expanded(
               child: FloatingActionButton(
                 // Provide an onPressed callback.
@@ -217,16 +238,20 @@ class TakePictureScreenState extends State<TakePictureScreen>
 
                     // Attempt to take a picture and get the file `image`
                     // where it was saved.
-                    final image = await _controller.takePicture();
+                    final image = await controller.takePicture();
+                    String imageName = DateTime.now().toString()+".jpg";
+
 
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => DisplayPictureScreen(
-                          // Pass the automatically generated path to
-                          // the DisplayPictureScreen widget.
-                          imagePath: image.path,
-                        ),
+                        builder: (context) =>
+                        PreviewScreen(imgPath: image.path, fileName: imageName)
+                        //  DisplayPictureScreen(
+                        //   // Pass the automatically generated path to
+                        //   // the DisplayPictureScreen widget.
+                        //   imagePath: image.path,
+                        // ),
                       ),
                     );
                   } catch (e) {
@@ -237,11 +262,28 @@ class TakePictureScreenState extends State<TakePictureScreen>
                 child: const Icon(Icons.camera_alt),
               ),
             ),
-            Expanded(child: IconButton(onPressed: (){},icon: Icon(Icons.dangerous_outlined)))
+            Expanded(
+                child: IconButton(
+                    onPressed: () {}, icon: Icon(Icons.dangerous_outlined)))
           ]),
         ]),
       ),
     );
+  }
+}
+
+// widget ที่ใช้ควมคุมการแสดง camera preview ให้เต็มหน้าจอ
+class _MediaSizeClipper extends CustomClipper<Rect> {
+  final Size mediaSize;
+  const _MediaSizeClipper(this.mediaSize);
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTWH(0, 0, mediaSize.width, mediaSize.height);
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return true;
   }
 }
 
@@ -263,31 +305,4 @@ class DisplayPictureScreen extends StatelessWidget {
   }
 }
 
-Widget testCamera(){
-  Future<void> testMainCamera() async {
-  // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  WidgetsFlutterBinding.ensureInitialized();
 
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
-
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
-
-  runApp(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      home: TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
-      ),
-    ),
-  );
-}
-
-  return FutureBuilder(future: testMainCamera(),
-  builder: (BuildContext contex,sna){
-    return Text("test");
-  });
-}
