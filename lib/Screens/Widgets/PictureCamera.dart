@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:math' as Math;
 import 'package:cattle_weight/Screens/Pages/SetHarthWidth.dart';
+import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -14,8 +14,7 @@ ConvertHex hex = new ConvertHex();
 // camera :
 //  - https://youtu.be/BAgLOAGga2o
 //  - https://flutter.dev/docs/cookbook/plugins/picture-using-camera
-// กรอบภาพช่วยจัดตำแหน่งโค
-//  - https://alex.domenici.net/archive/rotate-and-flip-an-image-in-flutter-with-or-without-animations
+
 // วิธีใช้ stack widget
 //  - https://api.flutter.dev/flutter/widgets/Stack-class.html
 
@@ -36,6 +35,7 @@ class _CameraButtonState extends State<CameraButton> {
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: new RaisedButton(
             onPressed: () {
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CameraScreen()));
               mainCamera();
               // pickCameraMedia(context);
             },
@@ -111,27 +111,13 @@ class TakePictureScreenState extends State<TakePictureScreen>
   late Future<void> _initializeControllerFuture;
 
   // กรอบภาพ
-  late Image cardFront;
-  late Image cardBack;
   bool showFront = true;
+  bool showState = false;
   late AnimationController controllerAnimated;
 
   @override
   void initState() {
     super.initState();
-    // ตำแหน่งของกรอบภาพ
-    cardFront = Image.asset(
-      "assets/images/SideLeftNavigation.png",
-      height: 380,
-      width: 280,
-      fit: BoxFit.cover,
-    );
-    cardBack = Image.asset(
-      "assets/images/SideRightNavigation.png",
-      height: 380,
-      width: 280,
-      fit: BoxFit.cover,
-    );
 
     // To display the current output from the Camera,
     // create a CameraController.
@@ -156,14 +142,6 @@ class TakePictureScreenState extends State<TakePictureScreen>
     super.dispose();
   }
 
-// animeted
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    precacheImage(cardFront.image, context);
-    precacheImage(cardBack.image, context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,22 +176,8 @@ class TakePictureScreenState extends State<TakePictureScreen>
                   }
                 },
               ),
-              AnimatedBuilder(
-                animation: controllerAnimated,
-                builder: (context, child) {
-                  return Transform(
-                    transform: Matrix4.rotationX(
-                        (controllerAnimated.value) * Math.pi / 2),
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - 200,
-                      margin: EdgeInsets.only(top: 10),
-                      alignment: Alignment.center,
-                      child: showFront ? cardFront : cardBack,
-                    ),
-                  );
-                },
-              ),
+              showState? Container():
+              CattleNavigationLine("assets/images/TopLeftNavigation.png", "assets/images/TopRightNavigation.png", showFront)
             ],
           ),
           Row(children: [
@@ -225,7 +189,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
                       setState(() => showFront = !showFront);
                       await controllerAnimated.reverse();
                     },
-                    icon: Icon(Icons.circle_outlined))),
+                    icon: Icon(Icons.compare_arrows))),
             Expanded(
               child: FloatingActionButton(
                 // Provide an onPressed callback.
@@ -264,7 +228,9 @@ class TakePictureScreenState extends State<TakePictureScreen>
             ),
             Expanded(
                 child: IconButton(
-                    onPressed: () {}, icon: Icon(Icons.dangerous_outlined)))
+                    onPressed: () {
+                      setState(() => showState = !showState);
+                    }, icon: Icon(Icons.dangerous_outlined)))
           ]),
         ]),
       ),
