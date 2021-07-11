@@ -1,4 +1,5 @@
 // หน้าเลือกภาพที่จะนำไปใช้คำนวณน้ำหนัก
+import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureGallory.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
@@ -8,7 +9,8 @@ import 'package:cattle_weight/convetHex.dart';
 ConvertHex hex = new ConvertHex();
 
 class SelectInput extends StatelessWidget {
-  const SelectInput({Key? key}) : super(key: key);
+  final CameraDescription camera;
+  const SelectInput(this.camera);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SelectInput extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          CameraButton(),
+          CameraButton(camera),
           Center(
               child: Image.asset("assets/images/photo01.png",
                   height: 240, width: 240, fit: BoxFit.cover)),

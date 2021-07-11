@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstAddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,8 @@ import 'package:cattle_weight/model/MediaSource.dart';
 ConvertHex hex = new ConvertHex();
 
 class FisrtPage extends StatefulWidget {
-  const FisrtPage({Key? key}) : super(key: key);
+  final CameraDescription camera;
+  const FisrtPage(this.camera);
 
   @override
   _FisrtPageState createState() => _FisrtPageState();
@@ -119,7 +121,7 @@ class _FisrtPageState extends State<FisrtPage> {
 
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => SelectInput(),
+        builder: (context) => SelectInput(widget.camera),
         settings: RouteSettings(
           arguments: source,
         ),

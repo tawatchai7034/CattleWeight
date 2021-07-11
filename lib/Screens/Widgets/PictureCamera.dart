@@ -1,10 +1,15 @@
 import 'dart:io';
+import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Pages/SetHarthWidth.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
+import 'package:cattle_weight/Screens/Widgets/RestartApp.dart';
+import 'package:cattle_weight/Screens/Widgets/camera_screen.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
+import 'package:cattle_weight/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 
@@ -18,8 +23,10 @@ ConvertHex hex = new ConvertHex();
 // วิธีใช้ stack widget
 //  - https://api.flutter.dev/flutter/widgets/Stack-class.html
 
+
 class CameraButton extends StatefulWidget {
-  const CameraButton({Key? key}) : super(key: key);
+  final CameraDescription camera;
+  const CameraButton(this.camera);
 
   @override
   _CameraButtonState createState() => _CameraButtonState();
@@ -28,29 +35,36 @@ class CameraButton extends StatefulWidget {
 class _CameraButtonState extends State<CameraButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 60,
-        width: 240,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: new RaisedButton(
-            onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CameraScreen()));
-              mainCamera();
-              // pickCameraMedia(context);
-            },
-            child: Text("ถ่ายภาพ",
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Color(hex.hexColor("ffffff")),
-                    fontWeight: FontWeight.bold)),
-            color: Color(hex.hexColor("#47B5BE")),
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(20.0),
-              side: BorderSide(color: Colors.white),
+    return Phoenix(
+      child: Container(
+          height: 60,
+          width: 240,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: new RaisedButton(
+              onPressed: () {
+                // RestartWidget.restartApp(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => TakePictureScreen(camera: widget.camera,)
+                    // CameraScreen(cameras: widget.camera) 
+                    ));
+                //  Phoenix.rebirth(context);
+                // mainCamera();
+                // pickCameraMedia(context);
+              },
+              child: Text("ถ่ายภาพ",
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color(hex.hexColor("ffffff")),
+                      fontWeight: FontWeight.bold)),
+              color: Color(hex.hexColor("#47B5BE")),
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(20.0),
+                side: BorderSide(color: Colors.white),
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
 // image_picker
@@ -67,28 +81,6 @@ class _CameraButtonState extends State<CameraButton> {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => SetHarthWidth(file)));
   }
-}
-
-Future<void> mainCamera() async {
-  // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
-
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
-
-  runApp(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      home: TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
-      ),
-    ),
-  );
 }
 
 // A screen that allows users to take a picture using a given camera.
@@ -142,14 +134,22 @@ class TakePictureScreenState extends State<TakePictureScreen>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     // ควบคุมขนาดของ CameraPreview
     final mediaSize = MediaQuery.of(context).size;
-   
+
     return Scaffold(
-      appBar: AppBar(title: const Text('ถ่ายภาพโค')),
+      appBar: AppBar(
+        title: const Text('ถ่ายภาพโค'),
+        actions: [
+          IconButton(
+              onPressed: () {
+               Phoenix.rebirth(context);
+              },
+              icon: Icon(Icons.home))
+        ],
+      ),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
@@ -165,7 +165,9 @@ class TakePictureScreenState extends State<TakePictureScreen>
                     return ClipRect(
                       clipper: _MediaSizeClipper(mediaSize),
                       child: Transform.scale(
-                        scale: 1 / (controller.value.aspectRatio * mediaSize.aspectRatio),
+                        scale: 1 /
+                            (controller.value.aspectRatio *
+                                mediaSize.aspectRatio),
                         alignment: Alignment.topCenter,
                         child: CameraPreview(controller),
                       ),
@@ -176,8 +178,10 @@ class TakePictureScreenState extends State<TakePictureScreen>
                   }
                 },
               ),
-              showState? Container():
-              CattleNavigationLine("assets/images/TopLeftNavigation.png", "assets/images/TopRightNavigation.png", showFront)
+              showState
+                  ? Container()
+                  : CattleNavigationLine("assets/images/TopLeftNavigation.png",
+                      "assets/images/TopRightNavigation.png", showFront)
             ],
           ),
           Row(children: [
@@ -203,20 +207,19 @@ class TakePictureScreenState extends State<TakePictureScreen>
                     // Attempt to take a picture and get the file `image`
                     // where it was saved.
                     final image = await controller.takePicture();
-                    String imageName = DateTime.now().toString()+".jpg";
-
+                    String imageName = DateTime.now().toString() + ".jpg";
 
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                        PreviewScreen(imgPath: image.path, fileName: imageName)
-                        //  DisplayPictureScreen(
-                        //   // Pass the automatically generated path to
-                        //   // the DisplayPictureScreen widget.
-                        //   imagePath: image.path,
-                        // ),
-                      ),
+                          builder: (context) => PreviewScreen(
+                              imgPath: image.path, fileName: imageName)
+                          //  DisplayPictureScreen(
+                          //   // Pass the automatically generated path to
+                          //   // the DisplayPictureScreen widget.
+                          //   imagePath: image.path,
+                          // ),
+                          ),
                     );
                   } catch (e) {
                     // If an error occurs, log the error to the console.
@@ -230,7 +233,8 @@ class TakePictureScreenState extends State<TakePictureScreen>
                 child: IconButton(
                     onPressed: () {
                       setState(() => showState = !showState);
-                    }, icon: Icon(Icons.dangerous_outlined)))
+                    },
+                    icon: Icon(Icons.dangerous_outlined))),
           ]),
         ]),
       ),
@@ -270,5 +274,3 @@ class DisplayPictureScreen extends StatelessWidget {
     );
   }
 }
-
-
