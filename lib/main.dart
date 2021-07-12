@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
-import 'package:cattle_weight/Screens/Widgets/RestartApp.dart';
-import 'package:cattle_weight/Screens/Widgets/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -13,26 +11,6 @@ import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 
 
 ConvertHex hex = new ConvertHex();
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   // Obtain a list of the available cameras on the device.
-//   final cameras = await availableCameras();
-//   runApp(MyApp(cameras: cameras));
-// }
-
-// class MyApp extends StatelessWidget {
-//   final List<CameraDescription> cameras;
-//   const MyApp({Key key, this.cameras}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Camera App',
-//       home: CameraScreen(cameras: cameras,),
-//     );
-//   }
-// }
 
 
 void main() async   {

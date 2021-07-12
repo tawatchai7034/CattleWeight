@@ -1,15 +1,34 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as Math;
+
+import 'package:flutter/material.dart';
 
 // กรอบภาพช่วยจัดตำแหน่งโค
 //  - https://alex.domenici.net/archive/rotate-and-flip-an-image-in-flutter-with-or-without-animations
 
 class CattleNavigationLine extends StatefulWidget {
-  late String front;
-  late String back;
-  bool showFront = true;
+  final String front;
+  final String back;
+  final double imageHeight;
+  final double imageWidth;
+  final bool showFront ;
 
-  CattleNavigationLine(this.front, this.back, this.showFront);
+  const CattleNavigationLine({
+    Key? key,
+    required this.front,
+    required this.back,
+    required this.imageHeight,
+    required this.imageWidth,
+    required this.showFront,
+  }) : super(key: key);
+
+  // const CattleNavigationLine(
+  //   {Key? key,
+  //   required this.front,
+  //   required this.back,
+  //   required this.imageHeight,
+  //   required this.imageWidth,
+  //   required this.showFront,}
+  // ) : super(key: key);
 
   @override
   createState() => _CattleNavigationLineState();
@@ -28,14 +47,14 @@ class _CattleNavigationLineState extends State<CattleNavigationLine>
 // ตำแหน่งของภาพที่ต้องการใช้
     cardFront = Image.asset(
       widget.front,
-      height: 380,
-      width: 280,
+      height: widget.imageHeight,
+      width: widget.imageWidth,
       fit: BoxFit.cover,
     );
     cardBack = Image.asset(
       widget.back,
-      height: 380,
-      width: 280,
+      height: widget.imageHeight,
+      width:widget.imageWidth,
       fit: BoxFit.cover,
     );
 

@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -69,6 +70,7 @@ void onSelected(BuildContext context, int item, String title) {
 }
 
 class ProfileBox extends StatelessWidget {
+  final CameraDescription camera;
   late int cattleNumber;
   late String cattleName;
   late String gender;
@@ -83,6 +85,7 @@ class ProfileBox extends StatelessWidget {
     required this.gender,
     required this.specise,
     required this.img,
+    required this.camera
   });
 
   @override
@@ -103,6 +106,7 @@ class ProfileBox extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CattleProfilPage(
                   title: cattleName,
+                  camera: camera,
                 )));
       },
     ));

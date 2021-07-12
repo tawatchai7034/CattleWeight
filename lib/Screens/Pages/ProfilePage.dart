@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:cattle_weight/DataBase/CattleDB.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
@@ -65,8 +66,10 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class CattleProfilPage extends StatefulWidget {
-  const CattleProfilPage({Key? key, required this.title}) : super(key: key);
+  
+  const CattleProfilPage({Key? key, required this.title,required this.camera}) : super(key: key);
   final String title;
+  final CameraDescription camera;
 
   @override
   _CattleProfilPageState createState() => _CattleProfilPageState();
@@ -87,7 +90,7 @@ class _CattleProfilPageState extends State<CattleProfilPage> {
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             ProfilePage(),
             ChartCattle(title: widget.title),
-            AddProfile()
+            AddProfile(widget.camera)
           ],
         ),
         bottomNavigationBar: TabBar(

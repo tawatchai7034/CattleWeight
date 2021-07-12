@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/PictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/PictureTW.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Pages/SetHarthWidth.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
@@ -80,12 +81,12 @@ class _CameraButtonState extends State<CameraButton> {
 }
 
 // A screen that allows users to take a picture using a given camera.
-class TakePictureScreen extends StatefulWidget {
+class TakePictureScreen2 extends StatefulWidget {
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const TakePictureScreen(
+  const TakePictureScreen2(
       {Key? key,
       required this.camera,
       required this.localFront,
@@ -93,10 +94,10 @@ class TakePictureScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  TakePictureScreenState createState() => TakePictureScreenState();
+  TakePictureScreen2State createState() => TakePictureScreen2State();
 }
 
-class TakePictureScreenState extends State<TakePictureScreen>
+class TakePictureScreen2State extends State<TakePictureScreen2>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;
@@ -186,8 +187,8 @@ class TakePictureScreenState extends State<TakePictureScreen>
                   : CattleNavigationLine(
                       front: widget.localFront,
                       back: widget.localBack,
-                      imageHeight: 380,
-                      imageWidth: 280,
+                      imageHeight: 340,
+                      imageWidth: 240,
                       showFront: showFront)
             ],
           ),
@@ -222,7 +223,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PictureRef(
+                          builder: (context) => PictureTW(
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,

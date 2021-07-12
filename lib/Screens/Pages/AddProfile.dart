@@ -1,4 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
 import 'package:cattle_weight/convetHex.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
@@ -6,6 +9,9 @@ ConvertHex hex = new ConvertHex();
 final formKey = GlobalKey<FormState>();
 
 class AddProfile extends StatelessWidget {
+  final CameraDescription camera;
+  AddProfile(this.camera);
+
   ///controller ใช้ดึงข้อมูลที่กรอกเข้ามา (Input)
   final titleController = TextEditingController(); //รับค่าชื่อรายการ
   final amountController = TextEditingController(); //รับตัวเลขจำนวนเงิน
@@ -26,7 +32,7 @@ class AddProfile extends StatelessWidget {
           //   child: Image.asset("assets/images/IconApp.jpg",
           //       height: 240, width: 360, fit: BoxFit.cover),
           // ),
-          MyCustomForm()
+          MyCustomForm(camera: camera)
         ],
       ),
       backgroundColor: Color(hex.hexColor("ffffff")),
@@ -35,6 +41,8 @@ class AddProfile extends StatelessWidget {
 }
 
 class MyCustomForm extends StatefulWidget {
+  final CameraDescription camera;
+  const MyCustomForm({Key? key,required this.camera});
   @override
   MyCustomFormState createState() {
     return MyCustomFormState();
@@ -45,7 +53,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   String dropdownGender = 'กรุณาเลือกเพศ';
   String dropdownSpecise = 'กรุณาเลือกสายพันธุ์โค';
 
-    final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   ///controller ใช้ดึงข้อมูลที่กรอกเข้ามา (Input)
   final cattleNameController = TextEditingController(); //รับชื่อโค
@@ -205,9 +213,13 @@ class MyCustomFormState extends State<MyCustomForm> {
                               //     SnackBar(content: Text('Processing Data')));
                               print(
                                   "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => TakePictureScreen(
+                                        camera: widget.camera,
+                                        localFront: "assets/images/SideLeftNavigation.png",
+                                        localBack: "assets/images/SideRightNavigation.png",
+                                      )));
                             }
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => SelectInput()));
                           },
                           child: Text("บันทึก",
                               style: TextStyle(

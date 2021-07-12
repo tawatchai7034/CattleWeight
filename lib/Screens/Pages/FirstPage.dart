@@ -90,7 +90,7 @@ class _FisrtPageState extends State<FisrtPage> {
                       // กดแลเวให้ไปหน้า HomePage/TapbarView()
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => TapbarView()));
+                            builder: (context) => TapbarView(camera: widget.camera,)));
                       },
                       child: Text("หน้าประวัติ",
                           style: TextStyle(

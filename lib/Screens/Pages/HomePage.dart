@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
@@ -12,7 +13,8 @@ ConvertHex hex = new ConvertHex();
 
 // widget ที่แสดงส่วนของ card widget ที่ภายในจะประกอบด้วยข้อมูลโปรไฟล์ของโคแต่ละตัว
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  final CameraDescription camera;
+  MyHomePage({Key? key, required this.title,required this.camera}) : super(key: key);
 
   final String title;
 
@@ -56,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
               gender: listProfile.gender,
               specise: listProfile.specise,
               img: listProfile.img,
+              camera: widget.camera,
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
@@ -66,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class TapbarView extends StatefulWidget {
-  const TapbarView({Key? key}) : super(key: key);
+  final CameraDescription camera;
+  const TapbarView({Key? key,required this.camera}) : super(key: key);
 
   @override
   _TapbarViewState createState() => _TapbarViewState();
@@ -86,9 +90,9 @@ class _TapbarViewState extends State<TapbarView> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            MyHomePage(title: "Cattle Weight"),
+            MyHomePage(title: "Cattle Weight",camera: widget.camera,),
             ConNextDevice(),
-            AddProfile()
+            AddProfile(widget.camera)
           ],
         ),
         bottomNavigationBar: TabBar(
