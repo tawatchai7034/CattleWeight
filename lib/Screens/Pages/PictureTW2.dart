@@ -1,16 +1,18 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/PictureBL.dart';
+import 'package:cattle_weight/Screens/Pages/PictureHG2.dart';
+import 'package:cattle_weight/Screens/Pages/PictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureHG extends StatefulWidget {
+class PictureTW2 extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureHG(
+  const PictureTW2(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -18,15 +20,15 @@ class PictureHG extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureHGState createState() => _PictureHGState();
+  _PictureTW2State createState() => _PictureTW2State();
 }
 
-class _PictureHGState extends State<PictureHG> {
+class _PictureTW2State extends State<PictureTW2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Heart Girth page [2/3]",
+          title: Text("Thurl Width page [1/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -46,10 +48,10 @@ class _PictureHGState extends State<PictureHG> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureBL(
+                      builder: (context) => PictureHG2(
                           camera: widget.camera,
                           imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
+                          fileName: widget.fileName,)));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(

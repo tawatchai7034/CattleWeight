@@ -1,16 +1,18 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/PictureBL.dart';
+import 'package:cattle_weight/Screens/Pages/HomePage.dart';
+import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
+
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureHG extends StatefulWidget {
+class PictureHG2 extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureHG(
+  const PictureHG2(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -18,15 +20,15 @@ class PictureHG extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureHGState createState() => _PictureHGState();
+  _PictureHG2State createState() => _PictureHG2State();
 }
 
-class _PictureHGState extends State<PictureHG> {
+class _PictureHG2State extends State<PictureHG2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Heart Girth page [2/3]",
+          title: Text("Heart Girth page [2/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -45,11 +47,21 @@ class _PictureHGState extends State<PictureHG> {
               width: double.infinity,
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureBL(
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
+                  // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => CattleData(
+                                  "01",
+                                  "cattle01",
+                                  "male",
+                                  "Brahman",
+                                  "assets/images/cattle01.jpg",
+                                  "assets/images/cattle01.jpg",
+                                  "assets/images/cattle01.jpg",
+                                  255,
+                                  255,
+                                  255)),
+                      (route) => false);
                 },
                 child: Text("บันทึก",
                     style: TextStyle(

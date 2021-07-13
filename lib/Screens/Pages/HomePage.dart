@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'AddProfile.dart';
 import 'ConDevice.dart';
 import 'FirstPage.dart';
@@ -14,9 +15,8 @@ ConvertHex hex = new ConvertHex();
 // widget ที่แสดงส่วนของ card widget ที่ภายในจะประกอบด้วยข้อมูลโปรไฟล์ของโคแต่ละตัว
 class MyHomePage extends StatefulWidget {
   final CameraDescription camera;
-  MyHomePage({Key? key, required this.title,required this.camera}) : super(key: key);
+  MyHomePage({Key? key,required this.camera}) : super(key: key);
 
-  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -36,7 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title,style: TextStyle(fontFamily: "boogaloo",fontSize: 24, ),),
+        title: Text("Cattle Weight",style: TextStyle(fontFamily: "boogaloo",fontSize: 24, ),),
+ 
         backgroundColor: Color(hex.hexColor("#007BA4")),
         // search icon
         actions: [
@@ -44,7 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 showSearch(context: context, delegate: DataSearch());
               },
-              icon: Icon(Icons.search))
+              icon: Icon(Icons.search)),
+               IconButton(
+              onPressed: () {
+                Phoenix.rebirth(context);
+              },
+              icon: Icon(Icons.home))
         ],
       ),
       // drawer: Drawer(),
@@ -90,7 +96,7 @@ class _TapbarViewState extends State<TapbarView> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            MyHomePage(title: "Cattle Weight",camera: widget.camera,),
+            MyHomePage(camera: widget.camera,),
             ConNextDevice(),
             AddProfile(widget.camera)
           ],

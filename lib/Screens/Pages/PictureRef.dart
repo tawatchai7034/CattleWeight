@@ -26,12 +26,12 @@ class _PictureRefState extends State<PictureRef> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Refferent page [1/3]",
+          title: Text("Refferent page [1/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
                   fontWeight: FontWeight.bold)),
-          backgroundColor: Color(hex.hexColor("#FFC909"))),
+          backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
         PreviewScreen(
           imgPath: widget.imgPath,

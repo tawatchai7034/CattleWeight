@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleBox.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
@@ -42,6 +43,13 @@ class CattleData extends StatelessWidget {
           ),
         ),
         backgroundColor: Color(hex.hexColor("#007BA4")),
+         actions: [
+          IconButton(
+              onPressed: () {
+                Phoenix.rebirth(context);
+              },
+              icon: Icon(Icons.home))
+        ],
       ),
       body: ListView(children: [
         // นำภาพมาแสดงผล

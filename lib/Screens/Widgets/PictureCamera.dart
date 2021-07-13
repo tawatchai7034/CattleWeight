@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
-import 'package:cattle_weight/Screens/Pages/SetHarthWidth.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/main.dart';
@@ -74,8 +73,8 @@ class _CameraButtonState extends State<CameraButton> {
     final media = await getMedia(source: ImageSource.camera);
     final file = File(media!.path);
 
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => SetHarthWidth(file)));
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => SetHarthWidth(file)));
   }
 }
 
@@ -142,7 +141,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ถ่ายภาพโค',
+          'ถ่ายภาพโคด้่านข้างโค',
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -152,6 +151,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
               },
               icon: Icon(Icons.home))
         ],
+        backgroundColor: Color(hex.hexColor("#007BA4")),
       ),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the

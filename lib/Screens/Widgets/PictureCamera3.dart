@@ -1,8 +1,5 @@
 import 'dart:io';
-import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
-import 'package:cattle_weight/Screens/Pages/PictureRef.dart';
-import 'package:cattle_weight/Screens/Pages/PictureRef2.dart';
-import 'package:cattle_weight/Screens/Pages/PictureTW.dart';
+import 'package:cattle_weight/Screens/Pages/PictureTW2.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
@@ -24,69 +21,13 @@ ConvertHex hex = new ConvertHex();
 // วิธีใช้ stack widget
 //  - https://api.flutter.dev/flutter/widgets/Stack-class.html
 
-class CameraButton extends StatefulWidget {
-  final CameraDescription camera;
-  const CameraButton(this.camera);
-
-  @override
-  _CameraButtonState createState() => _CameraButtonState();
-}
-
-class _CameraButtonState extends State<CameraButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      width: 240,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: new RaisedButton(
-          onPressed: () {
-            // RestartWidget.restartApp(context);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AddProfile(widget.camera)));
-            //  Phoenix.rebirth(context);
-            // mainCamera();
-            // pickCameraMedia(context);
-          },
-          child: Text("ถ่ายภาพ",
-              style: TextStyle(
-                  fontSize: 24,
-                  color: Color(hex.hexColor("ffffff")),
-                  fontWeight: FontWeight.bold)),
-          color: Color(hex.hexColor("#47B5BE")),
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(20.0),
-            side: BorderSide(color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
-
-// image_picker
-  Future pickCameraMedia(BuildContext context) async {
-    final source = ModalRoute.of(context)!.settings.arguments as MediaSource;
-
-    final getMedia = source == MediaSource.image
-        ? ImagePicker().getImage
-        : ImagePicker().getVideo;
-
-    final media = await getMedia(source: ImageSource.camera);
-    final file = File(media!.path);
-
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => SetHarthWidth(file)));
-  }
-}
-
 // A screen that allows users to take a picture using a given camera.
-class TakePictureScreen2 extends StatefulWidget {
+class TakePictureScreen3 extends StatefulWidget {
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const TakePictureScreen2(
+  const TakePictureScreen3(
       {Key? key,
       required this.camera,
       required this.localFront,
@@ -94,10 +35,10 @@ class TakePictureScreen2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  TakePictureScreen2State createState() => TakePictureScreen2State();
+  TakePictureScreen3State createState() => TakePictureScreen3State();
 }
 
-class TakePictureScreen2State extends State<TakePictureScreen2>
+class TakePictureScreen3State extends State<TakePictureScreen3>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;
@@ -143,7 +84,7 @@ class TakePictureScreen2State extends State<TakePictureScreen2>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ถ่ายภาพโคด้านหลังโค',
+          'ถ่ายภาพด้านกระดูสันโค',
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -224,7 +165,7 @@ class TakePictureScreen2State extends State<TakePictureScreen2>
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PictureRef2(
+                          builder: (context) => PictureTW2(
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,

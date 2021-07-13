@@ -31,7 +31,7 @@ class _PictureBLState extends State<PictureBL> {
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
                   fontWeight: FontWeight.bold)),
-          backgroundColor: Color(hex.hexColor("#FFC909"))),
+          backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
         PreviewScreen(
           imgPath: widget.imgPath,
