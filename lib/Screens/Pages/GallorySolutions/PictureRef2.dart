@@ -1,16 +1,17 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureTW.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureRef extends StatefulWidget {
+class PictureRef2 extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureRef(
+  const PictureRef2(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -18,10 +19,10 @@ class PictureRef extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureRefState createState() => _PictureRefState();
+  _PictureRef2State createState() => _PictureRef2State();
 }
 
-class _PictureRefState extends State<PictureRef> {
+class _PictureRef2State extends State<PictureRef2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,7 @@ class _PictureRefState extends State<PictureRef> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG(
+                      builder: (context) => PictureTW(
                           camera: widget.camera,
                           imgPath: widget.imgPath,
                           fileName: widget.fileName)));

@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
-import 'package:cattle_weight/Screens/Pages/PictureRef.dart';
-import 'package:cattle_weight/Screens/Pages/PictureRef2.dart';
-import 'package:cattle_weight/Screens/Pages/PictureTW.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef2.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTW.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';

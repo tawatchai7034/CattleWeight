@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/DataBase/CattleDB.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
-import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
+import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleBox.dart';
@@ -12,6 +12,8 @@ import 'ChartPage.dart';
 ConvertHex hex = new ConvertHex();
 
 class ProfilePage extends StatefulWidget {
+  final CameraDescription camera;
+  const ProfilePage({required this.camera});
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -56,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
               heartGirth: listCattle.heartGirth,
               bodyLenght: listCattle.bodyLenght,
               weight: listCattle.weight,
+              camera: widget.camera,
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
@@ -88,9 +91,9 @@ class _CattleProfilPageState extends State<CattleProfilPage> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            ProfilePage(),
+            ProfilePage(camera: widget.camera,),
             ChartCattle(title: widget.title),
-            AddProfile(widget.camera)
+            SelectInput(widget.camera)
           ],
         ),
         bottomNavigationBar: TabBar(

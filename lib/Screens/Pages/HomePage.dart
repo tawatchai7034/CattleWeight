@@ -1,11 +1,11 @@
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'AddProfile.dart';
 import 'ConDevice.dart';
 import 'FirstPage.dart';
 
@@ -98,7 +98,7 @@ class _TapbarViewState extends State<TapbarView> {
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
             ConNextDevice(),
-            AddProfile(widget.camera)
+            SelectInput(widget.camera)
           ],
         ),
         bottomNavigationBar: TabBar(

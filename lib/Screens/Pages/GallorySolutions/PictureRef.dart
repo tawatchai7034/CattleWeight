@@ -1,17 +1,16 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/PictureSaveNext.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureHG.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureTW extends StatefulWidget {
+class PictureRef extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureTW(
+  const PictureRef(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -19,15 +18,15 @@ class PictureTW extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureTWState createState() => _PictureTWState();
+  _PictureRefState createState() => _PictureRefState();
 }
 
-class _PictureTWState extends State<PictureTW> {
+class _PictureRefState extends State<PictureRef> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Thurl Width page [2/2]",
+          title: Text("Refferent page [1/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -47,10 +46,10 @@ class _PictureTWState extends State<PictureTW> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureSaveNext(
+                      builder: (context) => PictureHG(
                           camera: widget.camera,
-                          localFront: "assets/images/TopLeftNavigation.png",
-                          localBack: "assets/images/TopRightNavigation.png")));
+                          imgPath: widget.imgPath,
+                          fileName: widget.fileName)));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(

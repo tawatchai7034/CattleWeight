@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/PictureHG2.dart';
-import 'package:cattle_weight/Screens/Pages/PictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureSaveNext.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -8,11 +7,11 @@ import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureTW2 extends StatefulWidget {
+class PictureTW extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureTW2(
+  const PictureTW(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -20,15 +19,15 @@ class PictureTW2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureTW2State createState() => _PictureTW2State();
+  _PictureTWState createState() => _PictureTWState();
 }
 
-class _PictureTW2State extends State<PictureTW2> {
+class _PictureTWState extends State<PictureTW> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Thurl Width page [1/2]",
+          title: Text("Thurl Width page [2/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -48,10 +47,10 @@ class _PictureTW2State extends State<PictureTW2> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG2(
+                      builder: (context) => PictureSaveNext(
                           camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName,)));
+                          localFront: "assets/images/TopLeftNavigation.png",
+                          localBack: "assets/images/TopRightNavigation.png")));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(

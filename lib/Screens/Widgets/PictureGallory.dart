@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/AddProfile.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureRef.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
@@ -9,25 +12,26 @@ ConvertHex hex = new ConvertHex();
 // reference https://youtu.be/BAgLOAGga2o
 
 class GalloryButton extends StatefulWidget {
-  const GalloryButton({Key? key}) : super(key: key);
+  final CameraDescription camera;
+  const GalloryButton({Key? key, required this.camera}) : super(key: key);
 
   @override
   _GalloryButtonState createState() => _GalloryButtonState();
 }
 
 class _GalloryButtonState extends State<GalloryButton> {
+  late File _image;
+  String imageName = DateTime.now().toString() + ".jpg";
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 60,
+        height: 50,
         width: 240,
         child: Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: new RaisedButton(
-            onPressed: () {
-              pickGalleryMedia(context);
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => FirstAddProfile()));
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddProfile(widget.camera)));
             },
             child: Text("นำเข้าภาพ",
                 style: TextStyle(
@@ -43,16 +47,19 @@ class _GalloryButtonState extends State<GalloryButton> {
         ));
   }
 
-  Future pickGalleryMedia(BuildContext context) async {
-    final source = ModalRoute.of(context)!.settings.arguments as MediaSource;
-
-    final getMedia = source == MediaSource.image
-        ? ImagePicker().getImage
-        : ImagePicker().getVideo;
-
-    final media = await getMedia(source: ImageSource.gallery);
-    final file = File(media!.path);
-
-    Navigator.of(context).pop(file);
+  final picker = ImagePicker();
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PictureRef(
+              camera: widget.camera,
+              imgPath: _image.path,
+              fileName: imageName)));
+    }
   }
 }

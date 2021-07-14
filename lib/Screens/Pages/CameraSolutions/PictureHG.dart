@@ -1,16 +1,16 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureBL.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureRef extends StatefulWidget {
+class PictureHG extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureRef(
+  const PictureHG(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -18,15 +18,15 @@ class PictureRef extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureRefState createState() => _PictureRefState();
+  _PictureHGState createState() => _PictureHGState();
 }
 
-class _PictureRefState extends State<PictureRef> {
+class _PictureHGState extends State<PictureHG> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Refferent page [1/2]",
+          title: Text("Heart Girth page [2/3]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -46,7 +46,7 @@ class _PictureRefState extends State<PictureRef> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG(
+                      builder: (context) => PictureBL(
                           camera: widget.camera,
                           imgPath: widget.imgPath,
                           fileName: widget.fileName)));

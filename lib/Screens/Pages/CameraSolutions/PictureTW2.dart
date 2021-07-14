@@ -1,18 +1,18 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/HomePage.dart';
-import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
-
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG2.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureHG2 extends StatefulWidget {
+class PictureTW2 extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureHG2(
+  const PictureTW2(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -20,15 +20,15 @@ class PictureHG2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureHG2State createState() => _PictureHG2State();
+  _PictureTW2State createState() => _PictureTW2State();
 }
 
-class _PictureHG2State extends State<PictureHG2> {
+class _PictureTW2State extends State<PictureTW2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Heart Girth page [2/2]",
+          title: Text("Thurl Width page [1/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -47,21 +47,11 @@ class _PictureHG2State extends State<PictureHG2> {
               width: double.infinity,
               child: RaisedButton(
                 onPressed: () {
-                  // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => CattleData(
-                                  "01",
-                                  "cattle01",
-                                  "male",
-                                  "Brahman",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  255,
-                                  255,
-                                  255)),
-                      (route) => false);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => PictureHG2(
+                          camera: widget.camera,
+                          imgPath: widget.imgPath,
+                          fileName: widget.fileName,)));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(

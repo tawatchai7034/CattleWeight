@@ -90,7 +90,8 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                                   "assets/images/cattle01.jpg",
                                   255,
                                   255,
-                                  255)),
+                                  255,
+                                  widget.camera)),
                           (route) => false);
                     },
                     child: Text("คำนวณน้ำหนัก",

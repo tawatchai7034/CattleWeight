@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:cattle_weight/Screens/Pages/AddProfile.dart';
-import 'package:cattle_weight/Screens/Pages/PictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
@@ -34,7 +34,7 @@ class _CameraButtonState extends State<CameraButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 50,
       width: 240,
       child: Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),

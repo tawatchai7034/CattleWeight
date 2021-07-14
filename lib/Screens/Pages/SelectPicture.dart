@@ -23,16 +23,16 @@ class SelectInput extends StatelessWidget {
               child: Image.asset("assets/images/camera01.png",
                   height: 240, width: 240, fit: BoxFit.cover)),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           CameraButton(camera),
           Center(
               child: Image.asset("assets/images/photo01.png",
                   height: 240, width: 240, fit: BoxFit.cover)),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
-          GalloryButton(),
+          GalloryButton(camera: camera,),
         ],
       ),
       backgroundColor: Color(hex.hexColor("#47B5BE")),

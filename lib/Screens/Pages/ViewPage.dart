@@ -1,3 +1,5 @@
+import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleBox.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 ConvertHex hex = new ConvertHex();
 
 class CattleData extends StatelessWidget {
+  final CameraDescription camera;
   final String cattleNumber;
   final String cattleName;
   final String gender;
@@ -29,7 +32,8 @@ class CattleData extends StatelessWidget {
       this.img3,
       this.heartGirth,
       this.bodyLenght,
-      this.weight);
+      this.weight,
+      this.camera);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class CattleData extends StatelessWidget {
           ),
         ),
         backgroundColor: Color(hex.hexColor("#007BA4")),
-         actions: [
+        actions: [
           IconButton(
               onPressed: () {
                 Phoenix.rebirth(context);
@@ -89,25 +93,13 @@ class CattleData extends StatelessWidget {
                       style: TextStyle(fontSize: 24, color: Colors.black))),
             ],
           ),
-        )
-            // ListTile(
-            //   title: Text(
-            //     cattleName,
-            //     style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
-            //   ),
-            //   // แสดงรายละเอียดต่างๆ
-            //   subtitle: Text(
-            //     'Cattle number: ${cattleNumber} \t\t\tGender : ${gender} \nSpecise : ${specise} \t\t\tHeart girth : ${heartGirth} \nBody width : ${bodyLenght} \t\t\tWeight : ${weight}',
-            //     style: TextStyle(fontSize: 18,color: Colors.black),
-            //   ),
-            // ),
-            ),
+        )),
         SizedBox(
-          height: 100,
+          height: 40,
         ),
         // ปุ่มแก้ไข
         Container(
-            height: 60,
+            height: 50,
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Row(
@@ -143,7 +135,7 @@ class CattleData extends StatelessWidget {
                   // ปุ่มลบ
                   Expanded(
                     child: Container(
-                        height: 60,
+                        height: 50,
                         width: 80,
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -153,19 +145,27 @@ class CattleData extends StatelessWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("ลบข้อมูลของ $cattleName ",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                                      title: Text("ลบข้อมูลของ $cattleName ",
+                                          style: TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold)),
                                       content: Text(
-                                          'คุณต้องการลบข้อมูลของ $cattleName ในวันที่ *02/01/2564* หรือไม่',style: TextStyle(fontSize: 24, color: Colors.black)),
+                                          'คุณต้องการลบข้อมูลของ $cattleName ในวันที่ *02/01/2564* หรือไม่',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              color: Colors.black)),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context, 'ไม่ใช่'),
-                                          child: const Text('ไม่ใช่',style: TextStyle(fontSize: 24)),
+                                          child: const Text('ไม่ใช่',
+                                              style: TextStyle(fontSize: 24)),
                                         ),
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context, 'ใช่'),
-                                          child: const Text('ใช่',style: TextStyle(fontSize: 24)),
+                                          child: const Text('ใช่',
+                                              style: TextStyle(fontSize: 24)),
                                         ),
                                       ],
                                     );
@@ -196,7 +196,7 @@ class CattleData extends StatelessWidget {
         ),
         // ปุ่มบันทึกหน้าจอ
         Container(
-            height: 60,
+            height: 50,
             width: 160,
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -206,6 +206,38 @@ class CattleData extends StatelessWidget {
                 },
                 child: Text(
                   "บันทึกหน้าจอ",
+                  style: TextStyle(
+                      fontSize: 24, color: Color(hex.hexColor("ffffff"))),
+                ),
+                color: Color(hex.hexColor("#FAA41B")),
+                // สีปุ่มเมื่อกด
+                splashColor: Color(hex.hexColor("#FFC909")),
+                // กำหนดรูปร่างของปุ่ม
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(20.0),
+                  // side: BorderSide(color: Colors.black),
+                ),
+              ),
+            )),
+        SizedBox(
+          height: 15,
+        ),
+        // ปุ่มบันทึกหน้าจอ
+        Container(
+            height: 50,
+            width: 160,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: new RaisedButton(
+                onPressed: () {
+                  print("หน้าหลัก");
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => TapbarView(camera: camera,)),
+                      (route) => false);
+                },
+                child: Text(
+                  "หน้าหลัก",
                   style: TextStyle(
                       fontSize: 24, color: Color(hex.hexColor("ffffff"))),
                 ),

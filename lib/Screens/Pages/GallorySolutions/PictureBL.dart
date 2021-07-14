@@ -1,16 +1,21 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureRef2.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureTW.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureRef extends StatefulWidget {
+class PictureBL extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureRef(
+  const PictureBL(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -18,15 +23,17 @@ class PictureRef extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureRefState createState() => _PictureRefState();
+  _PictureBLState createState() => _PictureBLState();
 }
 
-class _PictureRefState extends State<PictureRef> {
+class _PictureBLState extends State<PictureBL> {
+   late File _image;
+  String imageName = DateTime.now().toString() + ".jpg";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Refferent page [1/2]",
+          title: Text("Bodr Lenght page [3/3]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -44,13 +51,7 @@ class _PictureRefState extends State<PictureRef> {
               height: 50,
               width: double.infinity,
               child: RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG(
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
-                },
+                onPressed: () =>_openImagePicker(),
                 child: Text("บันทึก",
                     style: TextStyle(
                         fontSize: 24,
@@ -67,5 +68,21 @@ class _PictureRefState extends State<PictureRef> {
         ),
       ]),
     );
+  }
+
+   final picker = ImagePicker();
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PictureRef2(
+              camera: widget.camera,
+              imgPath: _image.path,
+              fileName: imageName)));
+    }
   }
 }

@@ -1,17 +1,18 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/PictureHG.dart';
-import 'package:cattle_weight/Screens/Pages/PictureTW.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureHG2.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureRef2 extends StatefulWidget {
+class PictureTW2 extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureRef2(
+  const PictureTW2(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -19,15 +20,15 @@ class PictureRef2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureRef2State createState() => _PictureRef2State();
+  _PictureTW2State createState() => _PictureTW2State();
 }
 
-class _PictureRef2State extends State<PictureRef2> {
+class _PictureTW2State extends State<PictureTW2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Refferent page [1/2]",
+          title: Text("Thurl Width page [1/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -47,10 +48,10 @@ class _PictureRef2State extends State<PictureRef2> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureTW(
+                      builder: (context) => PictureHG2(
                           camera: widget.camera,
                           imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
+                          fileName: widget.fileName,)));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(
