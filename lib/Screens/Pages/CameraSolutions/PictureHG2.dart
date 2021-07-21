@@ -24,6 +24,7 @@ class PictureHG2 extends StatefulWidget {
 }
 
 class _PictureHG2State extends State<PictureHG2> {
+  bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +79,24 @@ class _PictureHG2State extends State<PictureHG2> {
             ),
           ]),
         ),
+        showState
+            ? Container()
+            : AlertDialog(
+                // backgroundColor: Colors.black,
+                title: Text("กรุณาระบุความยาวรอบอกโค",
+                    style:
+                        TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                content: Image.asset("assets/images/TopLeftNavigation4.png"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      setState(() => showState = !showState);
+                    },
+                    // => Navigator.pop(context, 'ตกลง'),
+                    child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                  ),
+                ],
+              ),
       ]),
     );
   }

@@ -23,11 +23,12 @@ class PictureRef2 extends StatefulWidget {
 }
 
 class _PictureRef2State extends State<PictureRef2> {
+  bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Refferent page [1/2]",
+          title: Text("[1/2] กรุณาระบุจุดอ้างอิง",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -66,6 +67,24 @@ class _PictureRef2State extends State<PictureRef2> {
             ),
           ]),
         ),
+        showState
+            ? Container()
+            : AlertDialog(
+                // backgroundColor: Colors.black,
+                title: Text("กรุณาระบุจุดอ้างอิง",
+                    style:
+                        TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                content: Image.asset("assets/images/ReartNavigation4.png"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      setState(() => showState = !showState);
+                    },
+                    // => Navigator.pop(context, 'ตกลง'),
+                    child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                  ),
+                ],
+              ),
       ]),
     );
   }

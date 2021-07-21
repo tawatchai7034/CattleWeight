@@ -217,9 +217,35 @@ class MyCustomFormState extends State<MyCustomForm> {
                               // แสดงข้อความเมื่อกดบันทึก
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //     SnackBar(content: Text('Processing Data')));
-                              print(
-                                  "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
-                              _openImagePicker();
+                              // print(
+                              //     "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
+                              showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      // backgroundColor: Colors.black,
+                                      title: Text("กรุณาเลือกรูปด้านข้างโค",
+                                          style: TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold)),
+                                      content:Image.asset("assets/images/SideLeftNavigation2.png"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'ยกเลิก'),
+                                          child: const Text('ยกเลิก',
+                                              style: TextStyle(fontSize: 24)),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              _openImagePicker(),
+                                          child: const Text('ตกลง',
+                                              style: TextStyle(fontSize: 24)),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                              
                             }
                           },
                           child: Text("บันทึก",

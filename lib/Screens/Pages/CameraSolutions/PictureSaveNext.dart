@@ -121,7 +121,7 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                                 localBack: widget.localBack,
                               )));
                     },
-                    child: Text("ถ่ายภาพถัดไป",
+                    child: Text("ถ่ายภาพกระดูกสันหลังโค",
                         style: TextStyle(
                             fontSize: 24,
                             color: Color(hex.hexColor("ffffff")),

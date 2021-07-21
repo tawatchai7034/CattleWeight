@@ -119,8 +119,35 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                   height: 50,
                   width: double.infinity,
                   child: RaisedButton(
-                    onPressed: () => _openImagePicker(),
-                    child: Text("ภาพถัดไป",
+                    onPressed: () {
+                      showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              // backgroundColor: Colors.black,
+                              title: Text("กรุณาเลือกรูปด้านกระดูกสันหลังโค",
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold)),
+                              content: Image.asset(
+                                  "assets/images/TopLeftNavigation2.png"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'ยกเลิก'),
+                                  child: const Text('ยกเลิก',
+                                      style: TextStyle(fontSize: 24)),
+                                ),
+                                TextButton(
+                                  onPressed: () => _openImagePicker(),
+                                  child: const Text('ตกลง',
+                                      style: TextStyle(fontSize: 24)),
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                    child: Text("ภาพกระดูกสันหลังโค",
                         style: TextStyle(
                             fontSize: 24,
                             color: Color(hex.hexColor("ffffff")),

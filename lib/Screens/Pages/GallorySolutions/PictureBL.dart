@@ -27,13 +27,14 @@ class PictureBL extends StatefulWidget {
 }
 
 class _PictureBLState extends State<PictureBL> {
-   late File _image;
+  late File _image;
   String imageName = DateTime.now().toString() + ".jpg";
+  bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Bodr Lenght page [3/3]",
+          title: Text("[3/3] กรุณาระบุความยาวลำตัวโค",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -51,7 +52,32 @@ class _PictureBLState extends State<PictureBL> {
               height: 50,
               width: double.infinity,
               child: RaisedButton(
-                onPressed: () =>_openImagePicker(),
+                onPressed: () {
+                  showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          // backgroundColor: Colors.black,
+                          title: Text("กรุณาเลือกรูปด้านหลังโค",
+                              style: TextStyle(
+                                  fontSize: 28, fontWeight: FontWeight.bold)),
+                          content: Image.asset(
+                              "assets/images/RearNavigation2.png"),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'ยกเลิก'),
+                              child: const Text('ยกเลิก',
+                                  style: TextStyle(fontSize: 24)),
+                            ),
+                            TextButton(
+                              onPressed: () => _openImagePicker(),
+                              child: const Text('ตกลง',
+                                  style: TextStyle(fontSize: 24)),
+                            ),
+                          ],
+                        );
+                      });
+                },
                 child: Text("บันทึก",
                     style: TextStyle(
                         fontSize: 24,
@@ -66,11 +92,29 @@ class _PictureBLState extends State<PictureBL> {
             ),
           ]),
         ),
+        showState
+            ? Container()
+            : AlertDialog(
+                // backgroundColor: Colors.black,
+                title: Text("กรุณาระบุความยาวลำตัวโค",
+                    style:
+                        TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                content: Image.asset("assets/images/SideLeftNavigation4.png"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      setState(() => showState = !showState);
+                    },
+                    // => Navigator.pop(context, 'ตกลง'),
+                    child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                  ),
+                ],
+              ),
       ]),
     );
   }
 
-   final picker = ImagePicker();
+  final picker = ImagePicker();
   // Implementing the image picker
   Future<void> _openImagePicker() async {
     final pickedImage = await picker.getImage(source: ImageSource.gallery);

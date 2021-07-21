@@ -24,11 +24,12 @@ class PictureTW2 extends StatefulWidget {
 }
 
 class _PictureTW2State extends State<PictureTW2> {
+  bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Thurl Width page [1/2]",
+          title: Text("[1/2] กรุณาระบุความกว้างกระดูกก้นกบของโค",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -49,9 +50,10 @@ class _PictureTW2State extends State<PictureTW2> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PictureHG2(
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName,)));
+                            camera: widget.camera,
+                            imgPath: widget.imgPath,
+                            fileName: widget.fileName,
+                          )));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(
@@ -66,6 +68,22 @@ class _PictureTW2State extends State<PictureTW2> {
               ),
             ),
           ]),
+        ),
+        showState? Container():
+        AlertDialog(
+          // backgroundColor: Colors.black,
+          title: Text("กรุณาระบุความกว้างกระดูกก้นกบของโค",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+          content: Image.asset("assets/images/TopLeftNavigation3.png"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: (){
+                 setState(() => showState = !showState);
+              },
+              // => Navigator.pop(context, 'ตกลง'),
+              child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+            ),
+          ],
         ),
       ]),
     );

@@ -22,11 +22,12 @@ class PictureHG extends StatefulWidget {
 }
 
 class _PictureHGState extends State<PictureHG> {
+  bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Heart Girth page [2/3]",
+          title: Text("[2/3] กรุณาระบุความยาวรอบอกโค ",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -65,6 +66,24 @@ class _PictureHGState extends State<PictureHG> {
             ),
           ]),
         ),
+        showState
+            ? Container()
+            : AlertDialog(
+                // backgroundColor: Colors.black,
+                title: Text("กรุณาระบุความยาวรอบอกโค",
+                    style:
+                        TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                content: Image.asset("assets/images/SideLeftNavigation3.png"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      setState(() => showState = !showState);
+                    },
+                    // => Navigator.pop(context, 'ตกลง'),
+                    child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                  ),
+                ],
+              ),
       ]),
     );
   }

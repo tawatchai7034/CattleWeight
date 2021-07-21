@@ -24,11 +24,12 @@ class PictureHG2 extends StatefulWidget {
 }
 
 class _PictureHG2State extends State<PictureHG2> {
+  bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Heart Girth page [2/2]",
+          title: Text("[2/2] กรุณาระบุความยาวรอบอกโค",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -50,18 +51,19 @@ class _PictureHG2State extends State<PictureHG2> {
                   // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => CattleData(
-                                  "01",
-                                  "cattle01",
-                                  "male",
-                                  "Brahman",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  255,
-                                  255,
-                                  255,
-                                  widget.camera)),
+                      MaterialPageRoute(
+                          builder: (context) => CattleData(
+                              "01",
+                              "cattle01",
+                              "male",
+                              "Brahman",
+                              "assets/images/cattle01.jpg",
+                              "assets/images/cattle01.jpg",
+                              "assets/images/cattle01.jpg",
+                              255,
+                              255,
+                              255,
+                              widget.camera)),
                       (route) => false);
                 },
                 child: Text("บันทึก",
@@ -78,6 +80,24 @@ class _PictureHG2State extends State<PictureHG2> {
             ),
           ]),
         ),
+        showState
+            ? Container()
+            : AlertDialog(
+                // backgroundColor: Colors.black,
+                title: Text("กรุณาระบุความยาวรอบอกโค",
+                    style:
+                        TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                content: Image.asset("assets/images/TopLeftNavigation4.png"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      setState(() => showState = !showState);
+                    },
+                    // => Navigator.pop(context, 'ตกลง'),
+                    child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                  ),
+                ],
+              ),
       ]),
     );
   }
