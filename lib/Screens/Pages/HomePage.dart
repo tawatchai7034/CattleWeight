@@ -1,4 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Pages/ABC.dart';
+import 'package:cattle_weight/Screens/Pages/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +99,9 @@ class _TapbarViewState extends State<TapbarView> {
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
-            ConNextDevice(),
+            // ConNextDevice(),
+            // FlutterBlueApp(),
+            TestBluetooth(),
             SelectInput(widget.camera)
           ],
         ),

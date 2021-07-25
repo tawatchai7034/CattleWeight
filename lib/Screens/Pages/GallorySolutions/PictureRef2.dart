@@ -74,7 +74,7 @@ class _PictureRef2State extends State<PictureRef2> {
                 title: Text("กรุณาระบุจุดอ้างอิง",
                     style:
                         TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/ReartNavigation4.png"),
+                content: Image.asset("assets/images/RearNavigation4.png"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
