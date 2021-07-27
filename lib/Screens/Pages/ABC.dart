@@ -1,115 +1,116 @@
-// Copyright 2017, Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
-import 'dart:async';
-import 'dart:math';
-
-import 'package:cattle_weight/Screens/Pages/ConDevice.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'dart:async';
+import 'package:cattle_weight/Screens/Widgets/bt-controller.dart';
 
-class TestBluetooth extends StatefulWidget {
-  const TestBluetooth({ Key? key }) : super(key: key);
 
-  @override
-  _TestBluetoothState createState() => _TestBluetoothState();
+class ArduinoBT extends StatelessWidget {
+
+	@override
+	Widget build(BuildContext context) {
+
+		return MaterialApp(
+			title: 'Arduino BT Demo',
+			theme: ThemeData(primarySwatch: Colors.deepPurple),
+			home: MainPage(title: 'Arduino BT Demo'),
+		);
+	}
 }
 
-class _TestBluetoothState extends State<TestBluetooth> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      color: Colors.lightBlue,
-      home: StreamBuilder<BluetoothState>(
-          stream: FlutterBlue.instance.state,
-          initialData: BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            if (state == BluetoothState.on) {
-              return FindDevicesScreen();
-            }
-            return BluetoothOffScreen(state: state);
-          }),
-    );
-  }
+class MainPage extends StatefulWidget {
+
+	MainPage({Key? key,required this.title}) : super(key: key);
+
+	final String title;
+
+	@override
+	_MainPageState createState() => _MainPageState();
 }
 
-class BluetoothOffScreen extends StatelessWidget {
-  const BluetoothOffScreen({Key? key, this.state}) : super(key: key);
+class _MainPageState extends State<MainPage> {
 
-  final BluetoothState? state;
+	String sensorValue = "N/A";
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.lightBlue,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(
-              Icons.bluetooth_disabled,
-              size: 200.0,
-              color: Colors.white54,
-            ),
-            Text(
-              'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+	bool ledState = false;
 
-class FindDevicesScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Find Devices'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            StreamBuilder<List<ScanResult>>(
-              stream: FlutterBlue.instance.scanResults,
-              initialData: [],
-              builder: (c, snapshot) => Column(
-                children: snapshot.data!
-                    .map((result) => ListTile(
-                          title: Text(result.device.name == "" ? "No Name " : result.device.name.toString()),
-                          subtitle: Text(result.device.id.toString()),
-                          onTap: () => 
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                            result.device.connect();
-                            return ConNextDevice();
-                            // DeviceScreen(device: result.device);
-                          })),
-                        ))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: StreamBuilder<bool>(
-        stream: FlutterBlue.instance.isScanning,
-        initialData: false,
-        builder: (c, snapshot) {
-          if (snapshot.data!) {
-            return FloatingActionButton(
-              child: Icon(Icons.stop),
-              onPressed: () => FlutterBlue.instance.stopScan(),
-              backgroundColor: Colors.red,
-            );
-          } else {
-            return FloatingActionButton(
-                child: Icon(Icons.search), onPressed: () => FlutterBlue.instance.startScan(timeout: Duration(seconds: 4)));
-          }
-        },
-      ),
-    );
-  }
+	@override
+	initState() {
+		
+		super.initState();
+		BTController.init(onData);
+		scanDevices();
+	}
+
+	void onData(dynamic str) { setState(() { sensorValue = str; }); }
+
+	void switchLed() {
+
+		setState(() { ledState = !ledState; });
+		BTController.transmit(ledState ? '0' : '1');
+	}
+
+	Future<void> scanDevices() async {
+
+		BTController.enumerateDevices()
+			.then((devices) { onGetDevices(devices); });
+	}
+
+	void onGetDevices(List<dynamic> devices) {
+
+		Iterable<SimpleDialogOption> options = devices.map((device) {
+
+			return SimpleDialogOption(
+				child: Text(device.keys.first),
+				onPressed: () { selectDevice(device.values.first); },
+			);
+		});
+
+		// set up the SimpleDialog
+		SimpleDialog dialog = SimpleDialog(
+			title: const Text('Choose a device'),
+			children: options.toList(),
+		);
+
+  		// show the dialog
+		showDialog(
+			barrierDismissible: false,
+			context: context,
+			builder: (BuildContext context) { return dialog; }
+		);
+	}
+
+	selectDevice(String deviceAddress) {
+
+		Navigator.of(context, rootNavigator: true).pop('dialog');
+		BTController.connect(deviceAddress);
+	}
+	
+	@override
+	Widget build(BuildContext context) {
+
+		Color color = ledState ? Colors.deepPurpleAccent : Colors.white24;
+		TextTheme theme = Theme.of(context).textTheme;
+
+		return Scaffold(
+			appBar: AppBar(title: Text(widget.title)),
+			body: Container(
+				decoration: BoxDecoration(color: Colors.black),
+			  	child: Center(
+			  		child: Column(
+						mainAxisAlignment: MainAxisAlignment.center,
+						children: <Widget>[
+							Text('Sensor Value', style: theme.display1!.copyWith(color: Colors.white)),
+							Text(sensorValue, style: theme.display2!.copyWith(color: Colors.white)),
+						],
+					)
+
+			  	),
+			),
+			floatingActionButton: FloatingActionButton(
+				backgroundColor: color,
+				onPressed: switchLed,
+				tooltip: 'Increment',
+				child: Icon(Icons.power_settings_new),
+			), 
+		);
+	}
 }
