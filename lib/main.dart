@@ -8,14 +8,12 @@ import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'convetHex.dart';
 import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 ConvertHex hex = new ConvertHex();
 
 
 void main() async   {
-  SharedPreferences.setMockInitialValues({});
  // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   WidgetsFlutterBinding.ensureInitialized();

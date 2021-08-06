@@ -8,7 +8,6 @@ ConvertHex hex = new ConvertHex();
 
 class ConNextDevice extends StatelessWidget {
   // const ConNextDevice({Key? key}) : super(key: key);
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,13 +15,7 @@ class ConNextDevice extends StatelessWidget {
         //   title: Text("Connext Device"),
         //   backgroundColor: Color(hex.hexColor("#007BA4")),
         // ),
-        body: Center(
-      child: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ArduinoBT()));
-        },
-      ),
-    ));
+        body: FlutterBlueApp()
+        );
   }
 }

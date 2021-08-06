@@ -87,20 +87,20 @@ class DeviceScreen extends StatelessWidget {
                   builder: (c, snapshot) => IndexedStack(
                     index: snapshot.data! ? 1 : 0,
                     children: <Widget>[
-                      TextButton(
-                        child: Text("Show Services"),
-                        onPressed: () => device.discoverServices(),
-                      ),
-                      IconButton(
-                        icon: SizedBox(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.grey),
-                          ),
-                          width: 18.0,
-                          height: 18.0,
-                        ),
-                        onPressed: null,
-                      )
+                      // TextButton(
+                      //   child: Text("Show Services"),
+                      //   onPressed: () => device.discoverServices(),
+                      // ),
+                      // IconButton(
+                      //   icon: SizedBox(
+                      //     child: CircularProgressIndicator(
+                      //       valueColor: AlwaysStoppedAnimation(Colors.grey),
+                      //     ),
+                      //     width: 18.0,
+                      //     height: 18.0,
+                      //   ),
+                      //   onPressed: null,
+                      // )
                     ],
                   ),
                 ),

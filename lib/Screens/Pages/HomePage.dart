@@ -100,8 +100,7 @@ class _TapbarViewState extends State<TapbarView> {
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
             ConNextDevice(),
-            // ArduinoBT(),
-            // FlutterBlueApp(),
+            // MyBluetoothApp(),
             SelectInput(widget.camera)
           ],
         ),
