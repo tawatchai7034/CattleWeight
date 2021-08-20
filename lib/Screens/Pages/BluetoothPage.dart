@@ -3,6 +3,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:cattle_weight/Screens/Widgets/BLE_ConnextDevice.dart';
 
 class FlutterBlueApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,6 +51,8 @@ class BluetoothOffScreen extends StatelessWidget {
 }
 
 class FindDevicesScreen extends StatelessWidget {
+    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +77,7 @@ class FindDevicesScreen extends StatelessWidget {
                                 subtitle: Text(result.device.id.toString()),
                                 onTap: () => Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (context) {
-                                  result.device.connect();
+                                  // result.device.connect();
                                   return DeviceScreen(device: result.device);
                                 })),
                               ))
@@ -82,9 +85,6 @@ class FindDevicesScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: TextButton(onPressed: () {}, child: Text("CONNECT")),
-                )
               ],
             )
           ],
@@ -108,6 +108,28 @@ class FindDevicesScreen extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+}
+
+class FindDevice extends StatefulWidget {
+  FindDevice({ Key? key }) : super(key: key);
+
+  final FlutterBlue flutterBlue = FlutterBlue.instance;
+
+  @override
+  _FindDeviceState createState() => _FindDeviceState();
+}
+
+class _FindDeviceState extends State<FindDevice> {
+
+  late BluetoothDevice _connectedDevice;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
     );
   }
 }

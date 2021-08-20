@@ -1,7 +1,9 @@
-import 'package:cattle_weight/Screens/Pages/ABC.dart';
+import 'dart:convert';
 import 'package:cattle_weight/Screens/Pages/BluetoothPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:flutter_blue/flutter_blue.dart';
+import 'package:cattle_weight/Bluetooth/MainPage.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
@@ -15,7 +17,10 @@ class ConNextDevice extends StatelessWidget {
         //   title: Text("Connext Device"),
         //   backgroundColor: Color(hex.hexColor("#007BA4")),
         // ),
-        body: FlutterBlueApp()
+        body: MainPage()
         );
   }
 }
+
+
+

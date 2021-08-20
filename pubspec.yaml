@@ -44,6 +44,7 @@ dependencies:
   flutter_blue: ^0.8.0
   shared_preferences: ^0.5.12+4
   control_pad: ^1.1.1+1
+  flutter_bluetooth_serial: ^0.4.0
   
 
   

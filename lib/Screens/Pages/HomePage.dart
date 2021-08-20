@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/ABC.dart';
 import 'package:cattle_weight/Screens/Pages/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
@@ -8,6 +7,7 @@ import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'ABC.dart';
 import 'ConDevice.dart';
 import 'FirstPage.dart';
 
@@ -99,8 +99,8 @@ class _TapbarViewState extends State<TapbarView> {
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
-            ConNextDevice(),
-            // MyBluetoothApp(),
+            // ConNextDevice(),
+            TimeViews(),
             SelectInput(widget.camera)
           ],
         ),
@@ -119,5 +119,6 @@ class _TapbarViewState extends State<TapbarView> {
     );
   }
 }
+
 
 
