@@ -99,8 +99,8 @@ class _TapbarViewState extends State<TapbarView> {
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
-            // ConNextDevice(),
-            TimeViews(),
+            ConNextDevice(),
+            // TimeCounter(),
             SelectInput(widget.camera)
           ],
         ),

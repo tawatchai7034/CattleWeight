@@ -21,6 +21,22 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
+class BleMessage {
+String message = "Do not have Message";
+
+  void printMessage() {
+    print("M => $message");
+  }
+
+  void setMessage(String text) {
+    this.message = text;
+  }
+
+  String getMessage() {
+    return this.message;
+  }
+}
+
 class _ChatPage extends State<ChatPage> {
   static final clientID = 0;
   var connection; //BluetoothConnection
@@ -34,7 +50,8 @@ class _ChatPage extends State<ChatPage> {
 
   bool isConnecting = true;
   bool isDisconnecting = false;
-  DateTime _now = DateTime.now();
+
+  BleMessage BM = new BleMessage();
 
   String formatedTime(int secTime) {
     String getParsedTime(String time) {
@@ -93,7 +110,6 @@ class _ChatPage extends State<ChatPage> {
       connection.dispose();
       connection = null;
     }
-
     super.dispose();
   }
 
@@ -128,12 +144,14 @@ class _ChatPage extends State<ChatPage> {
           title: (isConnecting
               ? Text('Connecting chat to  ${widget.server.name} ...')
               : isConnected()
-                  ? Text(
-                      'Live chat with ${widget.server.name}  ${formatedTime(_now.millisecond)}')
+                  ? Text('Live chat with ${widget.server.name}')
                   : Text('Chat log with ${widget.server.name}'))),
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            PrintBleMessage(
+              message: BM.getMessage(),
+            ),
             Flexible(
               child: ListView(
                   padding: const EdgeInsets.all(12.0),
@@ -216,6 +234,9 @@ class _ChatPage extends State<ChatPage> {
           ),
         );
         _messageBuffer = dataString.substring(index);
+        // Class  BleMessage = BM
+        BM.setMessage(dataString.substring(0, index));
+        BM.printMessage();
       });
     } else {
       _messageBuffer = (backspacesCounter > 0
@@ -253,5 +274,24 @@ class _ChatPage extends State<ChatPage> {
 
   bool isConnected() {
     return connection != null && connection.isConnected;
+  }
+}
+
+class PrintBleMessage extends StatefulWidget {
+  final message;
+  const PrintBleMessage({Key? key, this.message}) : super(key: key);
+
+  @override
+  _PrintBleMessageState createState() => _PrintBleMessageState();
+}
+
+class _PrintBleMessageState extends State<PrintBleMessage> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [Text("${widget.message}")],
+    ));
   }
 }
