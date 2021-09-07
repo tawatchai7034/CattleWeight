@@ -29,9 +29,8 @@ class _MainPage extends State<MainPage> {
     });
 
     Future.doWhile(() async {
-
       // Wait if adapter not enabled
-      if ((await FlutterBluetoothSerial.instance.isEnabled)?? false) {
+      if ((await FlutterBluetoothSerial.instance.isEnabled) ?? false) {
         return false;
       }
       await Future.delayed(Duration(milliseconds: 0xDD));
@@ -70,78 +69,54 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Bluetooth Serial'),
-      ),
-      body: Container(
-        child: ListView(
-          children: <Widget>[
-            Divider(),
-            ListTile(title: const Text('General')),
-            SwitchListTile(
-              title: const Text('Enable Bluetooth'),
-              value: _bluetoothState.isEnabled,
-              onChanged: (bool value) {
-                // Do the request and update with the true value then
-                future() async {
-                  // async lambda seems to not working
-                  if (value)
-                    await FlutterBluetoothSerial.instance.requestEnable();
-                  else
-                    await FlutterBluetoothSerial.instance.requestDisable();
-                }
+        // appBar: AppBar(
+        //   title: const Text('Flutter Bluetooth Serial'),
+        // ),
+        body: _bluetoothState.isEnabled
+            ? DiscoveryPage()
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 100),
+                    Container(
+                        child: Text(
+                      "Please enable bluetooth",
+                      style: TextStyle(fontSize: 36),
+                    ))
+                  ],
+                ),
+              )
+        //     Column(children: [
+        //   Container(
+        //     child: ListView(
+        //       children: <Widget>[
+        //         Divider(),
+        //         SwitchListTile(
+        //           title: const Text('Enable Bluetooth'),
+        //           value: _bluetoothState.isEnabled,
+        //           onChanged: (bool value) {
+        //             // Do the request and update with the true value then
+        //             future() async {
+        //               // async lambda seems to not working
+        //               if (value)
+        //                 await FlutterBluetoothSerial.instance.requestEnable();
+        //               else
+        //                 await FlutterBluetoothSerial.instance.requestDisable();
+        //             }
 
-                future().then((_) {
-                  setState(() {});
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Bluetooth status'),
-              subtitle: Text(_bluetoothState.toString()),
-              trailing: RaisedButton(
-                child: const Text('Settings'),
-                onPressed: () {
-                  FlutterBluetoothSerial.instance.openSettings();
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Local adapter address'),
-              subtitle: Text(_address),
-            ),
-            ListTile(
-              title: const Text('Local adapter name'),
-              subtitle: Text(_name),
-              onLongPress: null,
-            ),
-            Divider(),
-            ListTile(
-              title: TextButton(
-                  child:
-                      const Text('Connect to paired device to chat with ESP32'),
-                  onPressed: () async {
-                    final BluetoothDevice selectedDevice =
-                        await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return DiscoveryPage();
-                        },
-                      ),
-                    );
-
-                    if (selectedDevice != null) {
-                      print('Discovery -> selected ' + selectedDevice.address);
-                      _startChat(context, selectedDevice);
-                    } else {
-                      print('Discovery -> no device selected');
-                    }
-                  }),
-            ),
-          ],
-        ),
-      ),
-    );
+        //             future().then((_) {
+        //               setState(() {});
+        //             });
+        //           },
+        //         ),
+        //         ListTile(title: const Text("Availble Devices")),
+        //       ],
+        //     ),
+        //   ),
+        //   DiscoveryPage()
+        // ]),
+        );
   }
 
   void _startChat(BuildContext context, BluetoothDevice server) {

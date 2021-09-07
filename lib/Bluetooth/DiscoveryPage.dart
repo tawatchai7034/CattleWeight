@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cattle_weight/Bluetooth/ChatPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
@@ -95,7 +96,8 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             device: result.device,
             rssi: result.rssi,
             onTap: () {
-              Navigator.of(context).pop(result.device);
+              // Navigator.of(context).pop(result.device);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatPage(server: result.device,)));
             },
           );
         },

@@ -22,7 +22,7 @@ class _Message {
 }
 
 class BleMessage {
-String message = "Do not have Message";
+  String message = "Do not have Message";
 
   void printMessage() {
     print("M => $message");
@@ -152,42 +152,42 @@ class _ChatPage extends State<ChatPage> {
             PrintBleMessage(
               message: BM.getMessage(),
             ),
-            Flexible(
-              child: ListView(
-                  padding: const EdgeInsets.all(12.0),
-                  controller: listScrollController,
-                  children: list),
-            ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 16.0),
-                    child: TextField(
-                      style: const TextStyle(fontSize: 15.0),
-                      controller: textEditingController,
-                      decoration: InputDecoration.collapsed(
-                        hintText: isConnecting
-                            ? 'Wait until connected...'
-                            : isConnected()
-                                ? 'Type your message...'
-                                : 'Chat got disconnected',
-                        hintStyle: const TextStyle(color: Colors.grey),
-                      ),
-                      enabled: isConnected(),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: isConnected()
-                          ? () => _sendMessage(textEditingController.text)
-                          : null),
-                ),
-              ],
-            )
+            // Flexible(
+            //   child: ListView(
+            //       padding: const EdgeInsets.all(12.0),
+            //       controller: listScrollController,
+            //       children: list),
+            // ),
+            // Row(
+            //   children: <Widget>[
+            //     Flexible(
+            //       child: Container(
+            //         margin: const EdgeInsets.only(left: 16.0),
+            //         child: TextField(
+            //           style: const TextStyle(fontSize: 15.0),
+            //           controller: textEditingController,
+            //           decoration: InputDecoration.collapsed(
+            //             hintText: isConnecting
+            //                 ? 'Wait until connected...'
+            //                 : isConnected()
+            //                     ? 'Type your message...'
+            //                     : 'Chat got disconnected',
+            //             hintStyle: const TextStyle(color: Colors.grey),
+            //           ),
+            //           enabled: isConnected(),
+            //         ),
+            //       ),
+            //     ),
+            //     Container(
+            //       margin: const EdgeInsets.all(8.0),
+            //       child: IconButton(
+            //           icon: const Icon(Icons.send),
+            //           onPressed: isConnected()
+            //               ? () => _sendMessage(textEditingController.text)
+            //               : null),
+            //     ),
+            //   ],
+            // )
           ],
         ),
       ),
@@ -289,9 +289,17 @@ class _PrintBleMessageState extends State<PrintBleMessage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [Text("${widget.message}")],
-    ));
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height:240),
+          Container(
+              child: Text(
+                "${widget.message}",
+                style: TextStyle(fontSize: 36),
+              ))
+        ],
+      ),
+    );
   }
 }

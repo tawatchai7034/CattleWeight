@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BluetoothPage.dart';
+import 'package:cattle_weight/Bluetooth/DiscoveryPage.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
@@ -100,6 +100,7 @@ class _TapbarViewState extends State<TapbarView> {
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
             ConNextDevice(),
+            // DiscoveryPage(),
             // TimeCounter(),
             SelectInput(widget.camera)
           ],
