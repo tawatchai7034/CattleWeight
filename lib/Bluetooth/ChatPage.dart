@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+// Messege Management
+BleMessage BM = new BleMessage();
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
 
@@ -21,22 +24,6 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class BleMessage {
-  String message = "Do not have Message";
-
-  void printMessage() {
-    print("M => $message");
-  }
-
-  void setMessage(String text) {
-    this.message = text;
-  }
-
-  String getMessage() {
-    return this.message;
-  }
-}
-
 class _ChatPage extends State<ChatPage> {
   static final clientID = 0;
   var connection; //BluetoothConnection
@@ -51,7 +38,7 @@ class _ChatPage extends State<ChatPage> {
   bool isConnecting = true;
   bool isDisconnecting = false;
 
-  BleMessage BM = new BleMessage();
+
 
   String formatedTime(int secTime) {
     String getParsedTime(String time) {
@@ -292,14 +279,14 @@ class _PrintBleMessageState extends State<PrintBleMessage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height:240),
+          SizedBox(height: 200),
           Container(
               child: Text(
-                "${widget.message}",
-                style: TextStyle(fontSize: 36),
-              ))
+            "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ} ",
+            style: TextStyle(fontSize: 36),
+          ))
         ],
       ),
     );
-  }
-}
+    }}
+

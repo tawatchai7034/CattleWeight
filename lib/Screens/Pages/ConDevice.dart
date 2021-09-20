@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:cattle_weight/Screens/Pages/BluetoothPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:cattle_weight/Bluetooth/MainPage.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter

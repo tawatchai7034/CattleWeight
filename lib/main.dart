@@ -12,7 +12,6 @@ import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 
 ConvertHex hex = new ConvertHex();
 
-
 void main() async   {
  // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
@@ -49,3 +48,4 @@ class MyApp extends StatelessWidget {
         );
   }
 }
+

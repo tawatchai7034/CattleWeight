@@ -7,7 +7,6 @@ import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'ABC.dart';
 import 'ConDevice.dart';
 import 'FirstPage.dart';
 
