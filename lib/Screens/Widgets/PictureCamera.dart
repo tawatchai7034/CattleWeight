@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
@@ -11,6 +12,7 @@ import 'package:cattle_weight/model/MediaSource.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
+// ทำให้ widgetนี้รับค่า paramitor 6 อย่างสวย ๆ  5555
 
 ConvertHex hex = new ConvertHex();
 
@@ -42,7 +44,9 @@ class _CameraButtonState extends State<CameraButton> {
           onPressed: () {
             // RestartWidget.restartApp(context);
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AddProfile(widget.camera)));
+                builder: (context) => BlueMainPage(camera: widget.camera,)
+                // AddProfile(widget.camera)
+                ));
             //  Phoenix.rebirth(context);
             // mainCamera();
             // pickCameraMedia(context);

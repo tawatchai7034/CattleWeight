@@ -2,16 +2,29 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
+import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
+import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+
 // Messege Management
 BleMessage BM = new BleMessage();
+// ConvertHex convert color code from web
+ConvertHex hex = new ConvertHex();
+
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
+  final CameraDescription camera;
 
-  const ChatPage({required this.server});
+  const ChatPage({
+    Key? key,
+    required this.server,
+    required this.camera,
+  }) : super(key: key);
 
   @override
   _ChatPage createState() => new _ChatPage();
@@ -37,8 +50,6 @@ class _ChatPage extends State<ChatPage> {
 
   bool isConnecting = true;
   bool isDisconnecting = false;
-
-
 
   String formatedTime(int secTime) {
     String getParsedTime(String time) {
@@ -128,55 +139,43 @@ class _ChatPage extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(hex.hexColor("#47B5BE")),
           title: (isConnecting
-              ? Text('Connecting chat to  ${widget.server.name} ...')
+              ? Text('Connecting to  ${widget.server.name} ...',
+                  style: TextStyle(fontSize: 24, fontFamily: 'boogaloo'))
               : isConnected()
-                  ? Text('Live chat with ${widget.server.name}')
-                  : Text('Chat log with ${widget.server.name}'))),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            PrintBleMessage(
-              message: BM.getMessage(),
-            ),
-            // Flexible(
-            //   child: ListView(
-            //       padding: const EdgeInsets.all(12.0),
-            //       controller: listScrollController,
-            //       children: list),
-            // ),
-            // Row(
-            //   children: <Widget>[
-            //     Flexible(
-            //       child: Container(
-            //         margin: const EdgeInsets.only(left: 16.0),
-            //         child: TextField(
-            //           style: const TextStyle(fontSize: 15.0),
-            //           controller: textEditingController,
-            //           decoration: InputDecoration.collapsed(
-            //             hintText: isConnecting
-            //                 ? 'Wait until connected...'
-            //                 : isConnected()
-            //                     ? 'Type your message...'
-            //                     : 'Chat got disconnected',
-            //             hintStyle: const TextStyle(color: Colors.grey),
-            //           ),
-            //           enabled: isConnected(),
-            //         ),
-            //       ),
-            //     ),
-            //     Container(
-            //       margin: const EdgeInsets.all(8.0),
-            //       child: IconButton(
-            //           icon: const Icon(Icons.send),
-            //           onPressed: isConnected()
-            //               ? () => _sendMessage(textEditingController.text)
-            //               : null),
-            //     ),
-            //   ],
-            // )
-          ],
-        ),
+                  ? Text('Device : ${widget.server.name}',
+                      style: TextStyle(fontSize: 24, fontFamily: 'boogaloo'))
+                  : Text('Device name : ${widget.server.name}',
+                      style: TextStyle(fontSize: 24, fontFamily: 'boogaloo')))),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          PrintBleMessage(
+            message: BM.getMessage(),
+          ),
+          // Container(
+          //   height: 60,
+          //   width: 240,
+          //   child: RaisedButton(
+          //     onPressed: () {
+          //       Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (context) => SelectInput(widget.camera),
+          //       ));
+          //     },
+          //     child: Text("เพิ่มโค",
+          //         style: TextStyle(
+          //             fontSize: 24,
+          //             color: Color(hex.hexColor("ffffff")),
+          //             fontWeight: FontWeight.bold)),
+          //     color: Color(hex.hexColor("#47B5BE")),
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: new BorderRadius.circular(20.0),
+          //       side: BorderSide(color: Colors.white),
+          //     ),
+          //   ),
+          // )
+        ],
       ),
     );
   }
@@ -275,18 +274,32 @@ class PrintBleMessage extends StatefulWidget {
 class _PrintBleMessageState extends State<PrintBleMessage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 200),
-          Container(
-              child: Text(
-            "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ} ",
-            style: TextStyle(fontSize: 36),
-          ))
+    return Container(
+      margin: EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
+      height: 350,
+      width: 500,
+      child: Center(
+        child: Text(
+          "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ} ",
+          style: TextStyle(fontSize: 36),
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
         ],
       ),
     );
-    }}
-
+  }
+}

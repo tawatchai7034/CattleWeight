@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -8,10 +9,11 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:cattle_weight/Bluetooth/ChatPage.dart';
 import 'package:sqflite/utils/utils.dart';
 
-import './BluetoothDeviceListEntry.dart';
+import 'package:cattle_weight/Bluetooth/BluetoothDeviceListEntry.dart';
 
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
+
 class DiscoveryPage extends StatefulWidget {
   /// If true, discovery starts on page start, otherwise user must press action button.
   final bool start;
@@ -109,7 +111,12 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             rssi: result.rssi,
             onTap: () {
               // Navigator.of(context).pop(result.device);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatPage(server: result.device,camera: widget.camera,)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => TakePictureScreen(
+                        camera: widget.camera,
+                        localFront: "assets/images/SideLeftNavigation.png",
+                        localBack: "assets/images/SideRightNavigation.png",
+                      )));
             },
           );
         },

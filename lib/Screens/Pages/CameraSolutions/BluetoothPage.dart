@@ -4,8 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-import './ChatPage.dart';
-import './DiscoveryPage.dart';
+import 'DiscoveryDevice.dart';
 
 class BlueMainPage extends StatefulWidget {
   final CameraDescription camera;
@@ -127,13 +126,13 @@ class _BlueMainPage extends State<BlueMainPage> {
         );
   }
 
-  void _startChat(BuildContext context, BluetoothDevice server) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return ChatPage(server: server,camera: widget.camera);
-        },
-      ),
-    );
-  }
+  // void _startChat(BuildContext context, BluetoothDevice server) {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (context) {
+  //         return ChatPage(server: server,camera: widget.camera);
+  //       },
+  //     ),
+  //   );
+  // }
 }

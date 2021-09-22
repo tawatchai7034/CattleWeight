@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Bluetooth/DiscoveryPage.dart';
+import 'package:cattle_weight/Bluetooth/MainPage.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'ConDevice.dart';
 import 'FirstPage.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
@@ -98,7 +98,7 @@ class _TapbarViewState extends State<TapbarView> {
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
             MyHomePage(camera: widget.camera,),
-            ConNextDevice(),
+            BlueMainPage(camera: widget.camera,),
             // DiscoveryPage(),
             // TimeCounter(),
             SelectInput(widget.camera)
