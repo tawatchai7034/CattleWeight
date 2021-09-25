@@ -280,7 +280,7 @@ class _PrintBleMessageState extends State<PrintBleMessage> {
       width: 500,
       child: Center(
         child: Text(
-          "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ} ",
+          "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % ",
           style: TextStyle(fontSize: 36),
         ),
       ),

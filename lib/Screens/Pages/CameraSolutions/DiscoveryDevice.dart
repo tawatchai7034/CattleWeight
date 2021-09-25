@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/blueAndCamera.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -112,11 +113,7 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             onTap: () {
               // Navigator.of(context).pop(result.device);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => TakePictureScreen(
-                        camera: widget.camera,
-                        localFront: "assets/images/SideLeftNavigation.png",
-                        localBack: "assets/images/SideRightNavigation.png",
-                      )));
+                  builder: (context) => BlueAndCamera(server:result.device,camera: widget.camera)));
             },
           );
         },

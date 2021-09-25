@@ -33,6 +33,7 @@ class CameraButton extends StatefulWidget {
 }
 
 class _CameraButtonState extends State<CameraButton> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -113,7 +114,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
   @override
   void initState() {
     super.initState();
-
+   
     // To display the current output from the Camera,
     // create a CameraController.
     controller = CameraController(
@@ -128,6 +129,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
     // Initialize the animation controller
     controllerAnimated = AnimationController(
         vsync: this, duration: Duration(milliseconds: 300), value: 0);
+    
   }
 
   @override
