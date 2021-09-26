@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera2.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 ConvertHex hex = new ConvertHex();
 
 class PictureBL extends StatefulWidget {
+  final bool blueConnection;
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureBL(
       {Key? key,
+      required this.blueConnection,
       required this.camera,
       required this.imgPath,
       required this.fileName})
@@ -47,7 +49,8 @@ class _PictureBLState extends State<PictureBL> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => TakePictureScreen2(
+                      builder: (context) => TakePictureRear(
+                        blueConnection: widget.blueConnection,
                           camera: widget.camera,
                           localFront: "assets/images/RearNavigation.png",
                           localBack: "assets/images/RearNavigation.png")));

@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:cattle_weight/convetHex.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
@@ -214,7 +214,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                               print(
                                   "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => TakePictureScreen(
+                                  builder: (context) => TakePictureSide(
+                                    blueConnection: false,
                                         camera: widget.camera,
                                         localFront: "assets/images/SideLeftNavigation.png",
                                         localBack: "assets/images/SideRightNavigation.png",

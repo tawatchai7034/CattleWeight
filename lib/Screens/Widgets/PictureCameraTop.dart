@@ -22,12 +22,12 @@ ConvertHex hex = new ConvertHex();
 //  - https://api.flutter.dev/flutter/widgets/Stack-class.html
 
 // A screen that allows users to take a picture using a given camera.
-class TakePictureScreen3 extends StatefulWidget {
+class TakePictureTop extends StatefulWidget {
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const TakePictureScreen3(
+  const TakePictureTop(
       {Key? key,
       required this.camera,
       required this.localFront,
@@ -35,10 +35,10 @@ class TakePictureScreen3 extends StatefulWidget {
       : super(key: key);
 
   @override
-  TakePictureScreen3State createState() => TakePictureScreen3State();
+  TakePictureTopState createState() => TakePictureTopState();
 }
 
-class TakePictureScreen3State extends State<TakePictureScreen3>
+class TakePictureTopState extends State<TakePictureTop>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;

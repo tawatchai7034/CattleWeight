@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
-import 'package:cattle_weight/Screens/Widgets/blueAndCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
+import 'package:cattle_weight/Screens/Widgets/blueAndCameraSide.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -103,21 +103,59 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                 )
         ],
       ),
-      body: ListView.builder(
-        itemCount: results.length,
-        itemBuilder: (BuildContext context, index) {
-          BluetoothDiscoveryResult result = results[index];
-          return BluetoothDeviceListEntry(
-            device: result.device,
-            rssi: result.rssi,
-            onTap: () {
-              // Navigator.of(context).pop(result.device);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => BlueAndCamera(server:result.device,camera: widget.camera)));
-            },
-          );
-        },
-      ),
+      body: Stack(children: [
+        ListView.builder(
+          itemCount: results.length,
+          itemBuilder: (BuildContext context, index) {
+            BluetoothDiscoveryResult result = results[index];
+            return BluetoothDeviceListEntry(
+              device: result.device,
+              rssi: result.rssi,
+              onTap: () {
+                // Navigator.of(context).pop(result.device);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => BlueAndCameraSide(
+                          server: result.device,
+                          camera: widget.camera,
+                        )));
+              },
+            );
+          },
+        ),
+        Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+              child: Container(
+                height:70,
+                width:250,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TakePictureSide(
+                            blueConnection: false,
+                            camera: widget.camera,
+                            localFront: "assets/images/SideLeftNavigation.png",
+                            localBack: "assets/images/SideRightNavigation.png")));
+                  },
+                  child: Text("ไม่เชื่อมต่ออุปกรณ์",
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Color(hex.hexColor("ffffff")),
+                          fontWeight: FontWeight.bold)),
+                  color: Color(hex.hexColor("#47B5BE")),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(20.0),
+                    side: BorderSide(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ))
+      ]),
     );
   }
 }

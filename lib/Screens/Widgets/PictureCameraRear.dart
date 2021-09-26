@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef2.dart';
@@ -15,6 +16,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 
 ConvertHex hex = new ConvertHex();
+
+// Messege Management
+BleMessage BM = new BleMessage();
 
 // reference
 // camera :
@@ -81,23 +85,25 @@ class _CameraButtonState extends State<CameraButton> {
 }
 
 // A screen that allows users to take a picture using a given camera.
-class TakePictureScreen2 extends StatefulWidget {
+class TakePictureRear extends StatefulWidget {
+  final bool blueConnection;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const TakePictureScreen2(
+  const TakePictureRear(
       {Key? key,
+      required this.blueConnection,
       required this.camera,
       required this.localFront,
       required this.localBack})
       : super(key: key);
 
   @override
-  TakePictureScreen2State createState() => TakePictureScreen2State();
+  TakePictureRearState createState() => TakePictureRearState();
 }
 
-class TakePictureScreen2State extends State<TakePictureScreen2>
+class TakePictureRearState extends State<TakePictureRear>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;
@@ -182,6 +188,7 @@ class TakePictureScreen2State extends State<TakePictureScreen2>
                     return const Center(child: CircularProgressIndicator());
                   }
                 },
+                
               ),
               showState
                   ? Container()
@@ -190,7 +197,59 @@ class TakePictureScreen2State extends State<TakePictureScreen2>
                       back: widget.localBack,
                       imageHeight: 380,
                       imageWidth: 280,
-                      showFront: showFront)
+                      showFront: showFront),
+
+              widget.blueConnection? Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 70, 20, 5),
+                  child: RotationTransition(
+                    turns: new AlwaysStoppedAnimation(90 / 360),
+                    child: Opacity(
+                      opacity: 0.6,
+                      child: Container(
+                        // margin:EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
+                        height: 150,
+                        width: 120,
+                        child: Center(
+                          child: Text(
+                            "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % Connect = ${widget.blueConnection}",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          border: ((BM.distance > 200 && BM.distance < 400) &&
+                                  (BM.axisY >= 80 && BM.axisY <= 90) &&
+                                  (BM.axisZ >= 180 && BM.axisZ <= 190))
+                              ? Border.all(
+                                  color: Colors
+                                      .green, //                   <--- border color
+                                  width: 5.0,
+                                )
+                              : Border.all(
+                                  color: Colors
+                                      .red, //                   <--- border color
+                                  width: 5.0,
+                                ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ): Container()
             ],
           ),
           Row(children: [

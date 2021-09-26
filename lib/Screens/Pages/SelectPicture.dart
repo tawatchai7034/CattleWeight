@@ -1,6 +1,6 @@
 // หน้าเลือกภาพที่จะนำไปใช้คำนวณน้ำหนัก
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureGallory.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
 import 'package:flutter/material.dart';

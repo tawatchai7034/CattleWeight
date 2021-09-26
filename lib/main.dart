@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';

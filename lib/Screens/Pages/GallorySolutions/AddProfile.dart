@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureRef.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:image_picker/image_picker.dart';
 

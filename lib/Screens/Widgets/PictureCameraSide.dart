@@ -4,8 +4,6 @@ import 'package:cattle_weight/Screens/Pages/CameraSolutions/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
-import 'package:cattle_weight/Screens/Widgets/preview.dart';
-import 'package:cattle_weight/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
@@ -84,23 +82,25 @@ class _CameraButtonState extends State<CameraButton> {
 }
 
 // A screen that allows users to take a picture using a given camera.
-class TakePictureScreen extends StatefulWidget {
+class TakePictureSide extends StatefulWidget {
+  final bool blueConnection;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const TakePictureScreen(
+  const TakePictureSide(
       {Key? key,
+      required this.blueConnection,
       required this.camera,
       required this.localFront,
       required this.localBack})
       : super(key: key);
 
   @override
-  TakePictureScreenState createState() => TakePictureScreenState();
+  TakePictureSideState createState() => TakePictureSideState();
 }
 
-class TakePictureScreenState extends State<TakePictureScreen>
+class TakePictureSideState extends State<TakePictureSide>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;
@@ -229,6 +229,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
                     await Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => PictureRef(
+                                blueConnection: widget.blueConnection,
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,

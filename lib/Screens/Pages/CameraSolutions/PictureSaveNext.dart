@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera3.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraTop.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 
@@ -115,7 +115,7 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => TakePictureScreen3(
+                          builder: (context) => TakePictureTop(
                                 camera: widget.camera,
                                 localFront: widget.localFront,
                                 localBack: widget.localBack,

@@ -9,25 +9,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCamera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 
 // Messege Management
 BleMessage BM = new BleMessage();
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
 
-class BlueAndCamera extends StatefulWidget {
+class BlueAndCameraSide extends StatefulWidget {
   final BluetoothDevice server;
   final CameraDescription camera;
 
-  const BlueAndCamera({
+  const BlueAndCameraSide({
     Key? key,
     required this.server,
     required this.camera,
   }) : super(key: key);
 
   @override
-  _BlueAndCamera createState() => new _BlueAndCamera();
+  _BlueAndCameraSide createState() => new _BlueAndCameraSide();
 }
 
 class _Message {
@@ -37,7 +37,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _BlueAndCamera extends State<BlueAndCamera> {
+class _BlueAndCameraSide extends State<BlueAndCameraSide> {
   static final clientID = 0;
   var connection; //BluetoothConnection
 
@@ -150,15 +150,8 @@ class _BlueAndCamera extends State<BlueAndCamera> {
       //                 style: TextStyle(fontSize: 24, fontFamily: 'boogaloo')))),
       body: BlueParamitor(
         camera: widget.camera,
+        blueConnection: isConnected(),
       ),
-      // Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     BlueParamitor(
-      //       camera: widget.camera,
-      //     ),
-      //   ],
-      // ),
     );
   }
 
@@ -247,7 +240,10 @@ class _BlueAndCamera extends State<BlueAndCamera> {
 
 class BlueParamitor extends StatefulWidget {
   final CameraDescription camera;
-  const BlueParamitor({Key? key, required this.camera}) : super(key: key);
+  final bool blueConnection;
+  const BlueParamitor(
+      {Key? key, required this.camera, required this.blueConnection})
+      : super(key: key);
 
   @override
   _BlueParamitorState createState() => _BlueParamitorState();
@@ -259,48 +255,76 @@ class _BlueParamitorState extends State<BlueParamitor> {
     return Center(
       child: Stack(
         children: <Widget>[
-          TakePictureScreen(
+          TakePictureSide(
+            blueConnection: widget.blueConnection,
             camera: widget.camera,
             localFront: "assets/images/SideLeftNavigation.png",
             localBack: "assets/images/SideRightNavigation.png",
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 70, 20, 5),
-            child: RotationTransition(
-              turns: new AlwaysStoppedAnimation(90 / 360),
-              child: Opacity(
-                opacity:0.6, 
-                child: Container(
-                  // margin:EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
-                  height: 150,
-                  width: 120,
-                  child: Center(
-                    child: Text(
-                      "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % ",
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                ),
+          ShowBlueParamitor(blueConnection: widget.blueConnection,)
+        ],
+      ),
+    );
+  }
+}
+
+class ShowBlueParamitor extends StatefulWidget {
+  final bool blueConnection;
+  const ShowBlueParamitor({Key? key,required this.blueConnection}) : super(key: key);
+
+  @override
+  _ShowBlueParamitorState createState() => _ShowBlueParamitorState();
+}
+
+class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40, 70, 20, 5),
+      child: RotationTransition(
+        turns: new AlwaysStoppedAnimation(90 / 360),
+        child: Opacity(
+          opacity: 0.6,
+          child: Container(
+            // margin:EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
+            height: 150,
+            width: 120,
+            child: Center(
+              child: Text(
+                "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % Connect = ${widget.blueConnection}",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
+            decoration: BoxDecoration(
+              border: ((BM.distance > 200 && BM.distance < 400) &&
+                      (BM.axisY >= 80 && BM.axisY <= 90) &&
+                      (BM.axisZ >= 180 && BM.axisZ <= 190))
+                  ? Border.all(
+                      color:
+                          Colors.green, //                   <--- border color
+                      width: 5.0,
+                    )
+                  : Border.all(
+                      color: Colors.red, //                   <--- border color
+                      width: 5.0,
+                    ),
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

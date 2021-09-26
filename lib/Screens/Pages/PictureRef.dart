@@ -47,6 +47,7 @@ class _PictureRefState extends State<PictureRef> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PictureHG(
+                          blueConnection: false,
                           camera: widget.camera,
                           imgPath: widget.imgPath,
                           fileName: widget.fileName)));

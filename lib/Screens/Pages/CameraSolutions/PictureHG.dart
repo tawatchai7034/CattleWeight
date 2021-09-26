@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 ConvertHex hex = new ConvertHex();
 
 class PictureHG extends StatefulWidget {
+  final bool blueConnection;
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureHG(
       {Key? key,
+      required this.blueConnection,
       required this.camera,
       required this.imgPath,
       required this.fileName})
@@ -48,6 +50,7 @@ class _PictureHGState extends State<PictureHG> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PictureBL(
+                          blueConnection: widget.blueConnection,
                           camera: widget.camera,
                           imgPath: widget.imgPath,
                           fileName: widget.fileName)));
