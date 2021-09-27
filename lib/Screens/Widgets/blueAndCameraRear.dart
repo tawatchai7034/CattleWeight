@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/PictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/PictureRef2.dart';
 // import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -20,18 +21,18 @@ BleMessage BM = new BleMessage();
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
 
-class BlueAndCameraSide extends StatefulWidget {
+class BlueAndCameraRear extends StatefulWidget {
   final BluetoothDevice server;
   final CameraDescription camera;
 
-  const BlueAndCameraSide({
+  const BlueAndCameraRear({
     Key? key,
     required this.server,
     required this.camera,
   }) : super(key: key);
 
   @override
-  _BlueAndCameraSide createState() => new _BlueAndCameraSide();
+  _BlueAndCameraRear createState() => new _BlueAndCameraRear();
 }
 
 class _Message {
@@ -41,7 +42,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _BlueAndCameraSide extends State<BlueAndCameraSide> {
+class _BlueAndCameraRear extends State<BlueAndCameraRear> {
   static final clientID = 0;
   var connection; //BluetoothConnection
 
@@ -244,11 +245,11 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
 }
 
 class BlueParamitor extends StatefulWidget {
-  final CameraDescription camera;
   final BluetoothDevice server;
+  final CameraDescription camera;
   final bool blueConnection;
   const BlueParamitor(
-      {Key? key, required this.camera, required this.server,required this.blueConnection})
+      {Key? key, required this.camera, required this.server, required this.blueConnection})
       : super(key: key);
 
   @override
@@ -261,11 +262,11 @@ class _BlueParamitorState extends State<BlueParamitor> {
     return Center(
       child: Stack(
         children: <Widget>[
-          BlueTakePictureSide(
+          BlueTakePictureRear(
             server: widget.server,
             camera: widget.camera,
-            localFront: "assets/images/SideLeftNavigation.png",
-            localBack: "assets/images/SideRightNavigation.png",
+            localFront: "assets/images/RearNavigation.png",
+            localBack: "assets/images/RearNavigation.png",
           ),
           ShowBlueParamitor(blueConnection: widget.blueConnection,)
         ],
@@ -336,14 +337,13 @@ class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
   }
 }
 
-// A screen that allows users to take a picture using a given camera.
-class BlueTakePictureSide extends StatefulWidget {
+class BlueTakePictureRear extends StatefulWidget {
   final BluetoothDevice server;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const BlueTakePictureSide(
+  const BlueTakePictureRear(
       {Key? key,
       required this.server,
       required this.camera,
@@ -352,10 +352,10 @@ class BlueTakePictureSide extends StatefulWidget {
       : super(key: key);
 
   @override
-  BlueTakePictureSideState createState() => BlueTakePictureSideState();
+  BlueTakePictureRearState createState() => BlueTakePictureRearState();
 }
 
-class BlueTakePictureSideState extends State<BlueTakePictureSide>
+class BlueTakePictureRearState extends State<BlueTakePictureRear>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;
@@ -402,7 +402,7 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ถ่ายภาพด้านข้างโค',
+          'ถ่ายภาพด้านหลังโค',
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -483,8 +483,8 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => BluePictureRef(
-                                server: widget.server,
+                          builder: (context) => BluePictureRef2(
+                                // server: widget.server,
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,
@@ -548,4 +548,3 @@ class DisplayPictureScreen extends StatelessWidget {
     );
   }
 }
-

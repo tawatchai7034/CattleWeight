@@ -1,6 +1,6 @@
 import 'dart:io';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
@@ -147,7 +147,7 @@ class TakePictureSideState extends State<TakePictureSide>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ถ่ายภาพโคด้่านข้างโค',
+          'ถ่ายภาพด้่านข้างโค',
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         actions: [

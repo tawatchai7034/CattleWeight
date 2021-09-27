@@ -188,7 +188,6 @@ class TakePictureRearState extends State<TakePictureRear>
                     return const Center(child: CircularProgressIndicator());
                   }
                 },
-                
               ),
               showState
                   ? Container()
@@ -198,58 +197,6 @@ class TakePictureRearState extends State<TakePictureRear>
                       imageHeight: 380,
                       imageWidth: 280,
                       showFront: showFront),
-
-              widget.blueConnection? Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 70, 20, 5),
-                  child: RotationTransition(
-                    turns: new AlwaysStoppedAnimation(90 / 360),
-                    child: Opacity(
-                      opacity: 0.6,
-                      child: Container(
-                        // margin:EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
-                        height: 150,
-                        width: 120,
-                        child: Center(
-                          child: Text(
-                            "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % Connect = ${widget.blueConnection}",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          border: ((BM.distance > 200 && BM.distance < 400) &&
-                                  (BM.axisY >= 80 && BM.axisY <= 90) &&
-                                  (BM.axisZ >= 180 && BM.axisZ <= 190))
-                              ? Border.all(
-                                  color: Colors
-                                      .green, //                   <--- border color
-                                  width: 5.0,
-                                )
-                              : Border.all(
-                                  color: Colors
-                                      .red, //                   <--- border color
-                                  width: 5.0,
-                                ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ): Container()
             ],
           ),
           Row(children: [
