@@ -153,9 +153,14 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
       //             : Text('Device name : ${widget.server.name}',
       //                 style: TextStyle(fontSize: 24, fontFamily: 'boogaloo')))),
       body: BlueParamitor(
-        server: widget.server,
+        height: BM.getHeight(),
+        distance: BM.getDistance(),
+        axisX: BM.getAxisX(),
+        axisY: BM.getAxisY(),
+        axisZ: BM.getAxisZ(),
+        battery: BM.getBattery(),
         camera: widget.camera,
-        blueConnection: isConnected(),
+        blueConnect: isConnected(),
       ),
     );
   }
@@ -244,11 +249,23 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
 }
 
 class BlueParamitor extends StatefulWidget {
+  final double height;
+  final double distance;
+  final double axisX;
+  final double axisY;
+  final double axisZ;
+  final double battery;
   final CameraDescription camera;
-  final BluetoothDevice server;
-  final bool blueConnection;
+  final bool blueConnect;
   const BlueParamitor(
-      {Key? key, required this.camera, required this.server,required this.blueConnection})
+      {Key? key, required this.camera,
+      required this.height,
+      required this.distance,
+      required this.axisX,
+      required this.axisY,
+      required this.axisZ,
+      required this.battery,
+      required this.blueConnect,})
       : super(key: key);
 
   @override
@@ -262,12 +279,18 @@ class _BlueParamitorState extends State<BlueParamitor> {
       child: Stack(
         children: <Widget>[
           BlueTakePictureSide(
-            server: widget.server,
+            height:widget.height,
+            distance: widget.distance,
+            axisX: widget.axisX,
+            axisY: widget.axisY,
+            axisZ: widget.axisZ,
+            battery: widget.battery,
+            blueConnect: widget.blueConnect,
             camera: widget.camera,
             localFront: "assets/images/SideLeftNavigation.png",
             localBack: "assets/images/SideRightNavigation.png",
           ),
-          ShowBlueParamitor(blueConnection: widget.blueConnection,)
+          ShowBlueParamitor(blueConnection: widget.blueConnect,)
         ],
       ),
     );
@@ -338,14 +361,26 @@ class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
 
 // A screen that allows users to take a picture using a given camera.
 class BlueTakePictureSide extends StatefulWidget {
-  final BluetoothDevice server;
+  final double height;
+  final double distance;
+  final double axisX;
+  final double axisY;
+  final double axisZ;
+  final double battery;
+  final bool blueConnect;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
   const BlueTakePictureSide(
       {Key? key,
-      required this.server,
+      required this.height,
+      required this.distance,
+      required this.axisX,
+      required this.axisY,
+      required this.axisZ,
+      required this.battery,
+      required this.blueConnect,
       required this.camera,
       required this.localFront,
       required this.localBack})
@@ -484,7 +519,13 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
                     await Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => BluePictureRef(
-                                server: widget.server,
+                                height: widget.height,
+                                distance: widget.distance,
+                                axisX: widget.axisX,
+                                axisY: widget.axisY,
+                                axisZ: widget.axisZ,
+                                battery: widget.battery,
+                                blueConnect: widget.blueConnect,
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,
