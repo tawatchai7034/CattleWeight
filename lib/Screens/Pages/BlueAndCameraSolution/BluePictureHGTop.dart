@@ -1,18 +1,18 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG2.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
+import 'package:cattle_weight/Screens/Pages/HomePage.dart';
+import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
+
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureTW2 extends StatefulWidget {
+class BluePictureHGTop extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const PictureTW2(
+  const BluePictureHGTop(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -20,16 +20,16 @@ class PictureTW2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PictureTW2State createState() => _PictureTW2State();
+  _BluePictureHGTopState createState() => _BluePictureHGTopState();
 }
 
-class _PictureTW2State extends State<PictureTW2> {
+class _BluePictureHGTopState extends State<BluePictureHGTop> {
   bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("[1/2] กรุณาระบุความกว้างกระดูกก้นกบของโค",
+          title: Text("Heart Girth page [2/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -48,11 +48,22 @@ class _PictureTW2State extends State<PictureTW2> {
               width: double.infinity,
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG2(
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName,)));
+                  // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => CattleData(
+                                  "01",
+                                  "cattle01",
+                                  "male",
+                                  "Brahman",
+                                  "assets/images/cattle01.jpg",
+                                  "assets/images/cattle01.jpg",
+                                  "assets/images/cattle01.jpg",
+                                  255,
+                                  255,
+                                  255,
+                                  widget.camera)),
+                      (route) => false);
                 },
                 child: Text("บันทึก",
                     style: TextStyle(
@@ -72,10 +83,10 @@ class _PictureTW2State extends State<PictureTW2> {
             ? Container()
             : AlertDialog(
                 // backgroundColor: Colors.black,
-                title: Text("กรุณาระบุความกว้างกระดูกก้นกบของโค",
+                title: Text("กรุณาระบุความยาวรอบอกโค",
                     style:
                         TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/TopLeftNavigation3.png"),
+                content: Image.asset("assets/images/TopLeftNavigation4.png"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {

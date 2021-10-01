@@ -1,37 +1,35 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
-import 'package:cattle_weight/Screens/Widgets/blueAndCameraRear.dart';
+import 'package:cattle_weight/Screens/Pages/HomePage.dart';
+import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
+
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class BluePictureBL extends StatefulWidget {
-  final BluetoothDevice server;
+class PictureHGTop extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const BluePictureBL(
+  const PictureHGTop(
       {Key? key,
-      required this.server,
       required this.camera,
       required this.imgPath,
       required this.fileName})
       : super(key: key);
 
   @override
-  _BluePictureBLState createState() => _BluePictureBLState();
+  _PictureHGTopState createState() => _PictureHGTopState();
 }
 
-class _BluePictureBLState extends State<BluePictureBL> {
+class _PictureHGTopState extends State<PictureHGTop> {
   bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("[3/3] กรุณาระบุความยาวลำตัวโค",
+          title: Text("Heart Girth page [2/2]",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -50,11 +48,22 @@ class _BluePictureBLState extends State<BluePictureBL> {
               width: double.infinity,
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => BlueAndCameraRear(
-                          server: widget.server,
-                          camera: widget.camera,
-                          )));
+                  // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => CattleData(
+                                  "01",
+                                  "cattle01",
+                                  "male",
+                                  "Brahman",
+                                  "assets/images/cattle01.jpg",
+                                  "assets/images/cattle01.jpg",
+                                  "assets/images/cattle01.jpg",
+                                  255,
+                                  255,
+                                  255,
+                                  widget.camera)),
+                      (route) => false);
                 },
                 child: Text("บันทึก",
                     style: TextStyle(
@@ -74,10 +83,10 @@ class _BluePictureBLState extends State<BluePictureBL> {
             ? Container()
             : AlertDialog(
                 // backgroundColor: Colors.black,
-                title: Text("กรุณาระบุความยาวลำตัวโค",
+                title: Text("กรุณาระบุความยาวรอบอกโค",
                     style:
                         TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/SideLeftNavigation4.png"),
+                content: Image.asset("assets/images/TopLeftNavigation4.png"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {

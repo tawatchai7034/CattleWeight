@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/PictureBL.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureHG.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,12 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class BluePictureHG extends StatefulWidget {
+class BluePictureRef extends StatefulWidget {
   final BluetoothDevice server;
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const BluePictureHG(
+  const BluePictureRef(
       {Key? key,
       required this.server,
       required this.camera,
@@ -21,16 +22,16 @@ class BluePictureHG extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BluePictureHGState createState() => _BluePictureHGState();
+  _BluePictureRefState createState() => _BluePictureRefState();
 }
 
-class _BluePictureHGState extends State<BluePictureHG> {
+class _BluePictureRefState extends State<BluePictureRef> {
   bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("[2/3] กรุณาระบุความยาวรอบอกโค",
+          title: Text("[1/3] กรุณาระบุจุดอ้างอิง",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -50,7 +51,7 @@ class _BluePictureHGState extends State<BluePictureHG> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => BluePictureBL(
+                      builder: (context) => BluePictureHG(
                           server: widget.server,
                           camera: widget.camera,
                           imgPath: widget.imgPath,
@@ -74,10 +75,10 @@ class _BluePictureHGState extends State<BluePictureHG> {
             ? Container()
             : AlertDialog(
                 // backgroundColor: Colors.black,
-                title: Text("กรุณาระบุความยาวรอบอกโค",
+                title: Text("กรุณาระบุจุดอ้างอิง",
                     style:
                         TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/SideLeftNavigation3.png"),
+                content: Image.asset("assets/images/SideLeftNavigation5.png"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {

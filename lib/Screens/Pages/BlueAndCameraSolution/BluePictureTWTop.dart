@@ -1,17 +1,19 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTW.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureHGTop.dart';
+// import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHGTop.dart';
+// import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
+// import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class BluePictureRef2 extends StatefulWidget {
+class BluePictureTWTop extends StatefulWidget {
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const BluePictureRef2(
+  const BluePictureTWTop(
       {Key? key,
       required this.camera,
       required this.imgPath,
@@ -19,16 +21,16 @@ class BluePictureRef2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BluePictureRef2State createState() => _BluePictureRef2State();
+  _BluePictureTWTopState createState() => _BluePictureTWTopState();
 }
 
-class _BluePictureRef2State extends State<BluePictureRef2> {
+class _BluePictureTWTopState extends State<BluePictureTWTop> {
   bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("[1/2] กรุณาระบุจุดอ้างอิง",
+          title: Text("[1/2] กรุณาระบุความกว้างกระดูกก้นกบของโค",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -48,10 +50,10 @@ class _BluePictureRef2State extends State<BluePictureRef2> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureTW(
+                      builder: (context) => BluePictureHGTop(
                           camera: widget.camera,
                           imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
+                          fileName: widget.fileName,)));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(
@@ -71,10 +73,10 @@ class _BluePictureRef2State extends State<BluePictureRef2> {
             ? Container()
             : AlertDialog(
                 // backgroundColor: Colors.black,
-                title: Text("กรุณาระบุจุดอ้างอิง",
+                title: Text("กรุณาระบุความกว้างกระดูกก้นกบของโค",
                     style:
                         TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/RearNavigation4.png"),
+                content: Image.asset("assets/images/TopLeftNavigation3.png"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {

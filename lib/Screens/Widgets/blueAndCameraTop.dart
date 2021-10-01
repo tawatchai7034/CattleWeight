@@ -4,8 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRef.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefRear.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureTWTop.dart';
 // import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -30,18 +29,18 @@ var connection; //BluetoothConnection
 bool isConnecting = true;
 bool isDisconnecting = false;
 
-class BlueAndCameraRear extends StatefulWidget {
+class BlueAndCameraTop extends StatefulWidget {
   final BluetoothDevice server;
   final CameraDescription camera;
 
-  const BlueAndCameraRear({
+  const BlueAndCameraTop({
     Key? key,
     required this.server,
     required this.camera,
   }) : super(key: key);
 
   @override
-  _BlueAndCameraRear createState() => new _BlueAndCameraRear();
+  _BlueAndCameraTop createState() => new _BlueAndCameraTop();
 }
 
 class _Message {
@@ -51,7 +50,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _BlueAndCameraRear extends State<BlueAndCameraRear> {
+class _BlueAndCameraTop extends State<BlueAndCameraTop> {
   static final clientID = 0;
   // var connection; //BluetoothConnection
 
@@ -276,12 +275,12 @@ class _BlueParamitorState extends State<BlueParamitor> {
     return Center(
       child: Stack(
         children: <Widget>[
-          BlueTakePictureRear(
+          BlueTakePictureTop(
             blueConnection: widget.blueConnection,
             server: widget.server,
             camera: widget.camera,
-            localFront: "assets/images/RearNavigation.png",
-            localBack: "assets/images/RearNavigation.png",
+            localFront: "assets/images/TopLeftNavigation.png",
+            localBack: "assets/images/TopRightNavigation.png",
           ),
           ShowBlueParamitor(
             blueConnection: widget.blueConnection,
@@ -356,14 +355,14 @@ class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
 }
 
 // A screen that allows users to take a picture using a given camera.
-class BlueTakePictureRear extends StatefulWidget {
+class BlueTakePictureTop extends StatefulWidget {
   final BluetoothDevice server;
   final bool blueConnection;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
-  const BlueTakePictureRear(
+  const BlueTakePictureTop(
       {Key? key,
       required this.server,
       required this.blueConnection,
@@ -373,10 +372,10 @@ class BlueTakePictureRear extends StatefulWidget {
       : super(key: key);
 
   @override
-  BlueTakePictureRearState createState() => BlueTakePictureRearState();
+  BlueTakePictureTopState createState() => BlueTakePictureTopState();
 }
 
-class BlueTakePictureRearState extends State<BlueTakePictureRear>
+class BlueTakePictureTopState extends State<BlueTakePictureTop>
     with SingleTickerProviderStateMixin {
   // camera
   late CameraController controller;
@@ -523,8 +522,8 @@ class BlueTakePictureRearState extends State<BlueTakePictureRear>
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => BluePictureRefRear(
-                                server: widget.server,
+                          builder: (context) => BluePictureTWTop(
+                                // server: widget.server,
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,

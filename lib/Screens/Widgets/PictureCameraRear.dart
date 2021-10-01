@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef2.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRefRear.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTW.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';

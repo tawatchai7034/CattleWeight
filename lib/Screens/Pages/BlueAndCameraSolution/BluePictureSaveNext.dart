@@ -2,27 +2,31 @@ import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraTop.dart';
+import 'package:cattle_weight/Screens/Widgets/blueAndCameraTop.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class PictureSaveNext extends StatefulWidget {
+class BluePictureSaveNext extends StatefulWidget {
+  final BluetoothDevice server;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
-  const PictureSaveNext(
+  const BluePictureSaveNext(
       {Key? key,
+      required this.server,
       required this.camera,
       required this.localFront,
       required this.localBack})
       : super(key: key);
 
   @override
-  _PictureSaveNextState createState() => _PictureSaveNextState();
+  _BluePictureSaveNextState createState() => _BluePictureSaveNextState();
 }
 
-class _PictureSaveNextState extends State<PictureSaveNext> {
+class _BluePictureSaveNextState extends State<BluePictureSaveNext> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,10 +119,9 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => TakePictureTop(
+                          builder: (context) => BlueAndCameraTop(
+                                server:widget.server,
                                 camera: widget.camera,
-                                localFront: widget.localFront,
-                                localBack: widget.localBack,
                               )));
                     },
                     child: Text("ถ่ายภาพกระดูกสันหลังโค",

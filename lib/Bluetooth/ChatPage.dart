@@ -139,7 +139,7 @@ class _ChatPage extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(hex.hexColor("#47B5BE")),
+          backgroundColor: Color(hex.hexColor("#47B5BE")),
           title: (isConnecting
               ? Text('Connecting to  ${widget.server.name} ...',
                   style: TextStyle(fontSize: 24, fontFamily: 'boogaloo'))
@@ -154,27 +154,51 @@ class _ChatPage extends State<ChatPage> {
           PrintBleMessage(
             message: BM.getMessage(),
           ),
-          // Container(
-          //   height: 60,
-          //   width: 240,
-          //   child: RaisedButton(
-          //     onPressed: () {
-          //       Navigator.of(context).push(MaterialPageRoute(
-          //         builder: (context) => SelectInput(widget.camera),
-          //       ));
-          //     },
-          //     child: Text("เพิ่มโค",
-          //         style: TextStyle(
-          //             fontSize: 24,
-          //             color: Color(hex.hexColor("ffffff")),
-          //             fontWeight: FontWeight.bold)),
-          //     color: Color(hex.hexColor("#47B5BE")),
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: new BorderRadius.circular(20.0),
-          //       side: BorderSide(color: Colors.white),
-          //     ),
-          //   ),
-          // )
+          Container(
+            height: 60,
+            width: 240,
+            child: RaisedButton(
+              onPressed: () {
+                _disconnect();
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => SelectInput(widget.camera),
+                // ));
+              },
+              child: Text("ยกเลิกการเชื่อมต่อ",
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color(hex.hexColor("ffffff")),
+                      fontWeight: FontWeight.bold)),
+              color: Color(hex.hexColor("#47B5BE")),
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(20.0),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+          SizedBox(height:20),
+          Container(
+            height: 60,
+            width: 240,
+            child: RaisedButton(
+              onPressed: () {
+                _connect();
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => SelectInput(widget.camera),
+                // ));
+              },
+              child: Text("เชื่อมต่ออุปกรณ์",
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color(hex.hexColor("ffffff")),
+                      fontWeight: FontWeight.bold)),
+              color: Color(hex.hexColor("#47B5BE")),
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(20.0),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -260,6 +284,50 @@ class _ChatPage extends State<ChatPage> {
 
   bool isConnected() {
     return connection != null && connection.isConnected;
+  }
+
+  void _connect() async {
+    await BluetoothConnection.toAddress(widget.server.address)
+        .then((_connection) {
+      print('Connected to the device');
+      connection = _connection;
+      setState(() {
+        isConnecting = false;
+        isDisconnecting = false;
+      });
+
+      connection.input.listen(_onDataReceived).onDone(() {
+        // Example: Detect which side closed the connection
+        // There should be `isDisconnecting` flag to show are we are (locally)
+        // in middle of disconnecting process, should be set before calling
+        // `dispose`, `finish` or `close`, which all causes to disconnect.
+        // If we except the disconnection, `onDone` should be fired as result.
+        // If we didn't except this (no flag set), it means closing by remote.
+        if (isDisconnecting) {
+          print('Disconnecting locally!');
+        } else {
+          print('Disconnected remotely!');
+        }
+        if (this.mounted) {
+          setState(() {});
+        }
+      });
+    }).catchError((error) {
+      print('Cannot connect, exception occured');
+      print(error);
+    });
+  }
+
+  // Method to disconnect bluetooth
+  void _disconnect() async {
+    await connection.close();
+    // show('Device disconnected');
+    if (connection.isConnected) {
+      setState(() {
+        isDisconnecting = true;
+        isConnecting = false;
+      });
+    }
   }
 }
 

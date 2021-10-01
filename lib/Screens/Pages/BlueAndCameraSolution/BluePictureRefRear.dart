@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/PictureHG.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureTW.dart';
+// import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+// import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTW.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -8,42 +9,30 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 ConvertHex hex = new ConvertHex();
 
-class BluePictureRef extends StatefulWidget {
-  final double height;
-  final double distance;
-  final double axisX;
-  final double axisY;
-  final double axisZ;
-  final double battery;
-  final bool blueConnect;
+class BluePictureRefRear extends StatefulWidget {
+  final BluetoothDevice server;
   final CameraDescription camera;
   final String imgPath;
   final String fileName;
-  const BluePictureRef(
+  const BluePictureRefRear(
       {Key? key,
-      required this.height,
-      required this.distance,
-      required this.axisX,
-      required this.axisY,
-      required this.axisZ,
-      required this.battery,
-      required this.blueConnect,
       required this.camera,
+      required this.server,
       required this.imgPath,
       required this.fileName})
       : super(key: key);
 
   @override
-  _BluePictureRefState createState() => _BluePictureRefState();
+  _BluePictureRefRearState createState() => _BluePictureRefRearState();
 }
 
-class _BluePictureRefState extends State<BluePictureRef> {
+class _BluePictureRefRearState extends State<BluePictureRefRear> {
   bool showState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("[1/3] กรุณาระบุจุดอ้างอิง",
+          title: Text("[1/2] กรุณาระบุจุดอ้างอิง",
               style: TextStyle(
                   fontSize: 24,
                   color: Color(hex.hexColor("ffffff")),
@@ -54,12 +43,6 @@ class _BluePictureRefState extends State<BluePictureRef> {
           imgPath: widget.imgPath,
           fileName: widget.fileName,
         ),
-        Container(
-          child: Text(
-            "Height = ${widget.height}\nDistance = ${widget.distance}\nAxisX = ${widget.axisX}\nAxisY = ${widget.axisY}\nAxisZ = ${widget.axisZ}\nBattery = ${widget.battery} % \nConnect = ${widget.blueConnect}",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -68,14 +51,12 @@ class _BluePictureRefState extends State<BluePictureRef> {
               width: double.infinity,
               child: RaisedButton(
                 onPressed: () {
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) =>
-                  //     BluePictureHG(
-                  //         server: widget.server,
-                  //         camera: widget.camera,
-                  //         imgPath: widget.imgPath,
-                  //         fileName: widget.fileName)
-                  //         ));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => BluePictureTW(
+                          server: widget.server,
+                          camera: widget.camera,
+                          imgPath: widget.imgPath,
+                          fileName: widget.fileName)));
                 },
                 child: Text("บันทึก",
                     style: TextStyle(
@@ -98,7 +79,7 @@ class _BluePictureRefState extends State<BluePictureRef> {
                 title: Text("กรุณาระบุจุดอ้างอิง",
                     style:
                         TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/SideLeftNavigation5.png"),
+                content: Image.asset("assets/images/RearNavigation4.png"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {

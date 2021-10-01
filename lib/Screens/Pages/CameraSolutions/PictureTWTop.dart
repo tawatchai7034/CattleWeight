@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG2.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHGTop.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
@@ -49,7 +49,7 @@ class _PictureTW2State extends State<PictureTW2> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG2(
+                      builder: (context) => PictureHGTop(
                           camera: widget.camera,
                           imgPath: widget.imgPath,
                           fileName: widget.fileName,)));

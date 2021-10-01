@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTW2.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTWTop.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/PictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRef.dart';
 // import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -15,10 +15,19 @@ import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
 // import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
+// refferent
+// https://morioh.com/p/1f083bb5e877
+// https://camposha.info/flutter/flutter-bluetooth-solutions/
+
 // Messege Management
 BleMessage BM = new BleMessage();
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
+
+  var connection; //BluetoothConnection
+
+  bool isConnecting = true;
+  bool isDisconnecting = false;
 
 class BlueAndCameraSide extends StatefulWidget {
   final BluetoothDevice server;
@@ -43,7 +52,7 @@ class _Message {
 
 class _BlueAndCameraSide extends State<BlueAndCameraSide> {
   static final clientID = 0;
-  var connection; //BluetoothConnection
+  // var connection; //BluetoothConnection
 
   List<_Message> messages = [];
   String _messageBuffer = '';
@@ -52,8 +61,8 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
       new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
-  bool isConnecting = true;
-  bool isDisconnecting = false;
+  // bool isConnecting = true;
+  // bool isDisconnecting = false;
 
   String formatedTime(int secTime) {
     String getParsedTime(String time) {
@@ -152,16 +161,13 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
       //                 style: TextStyle(fontSize: 24, fontFamily: 'boogaloo'))
       //             : Text('Device name : ${widget.server.name}',
       //                 style: TextStyle(fontSize: 24, fontFamily: 'boogaloo')))),
-      body: BlueParamitor(
-        height: BM.getHeight(),
-        distance: BM.getDistance(),
-        axisX: BM.getAxisX(),
-        axisY: BM.getAxisY(),
-        axisZ: BM.getAxisZ(),
-        battery: BM.getBattery(),
-        camera: widget.camera,
-        blueConnect: isConnected(),
-      ),
+      body: Stack(children: [
+        BlueParamitor(
+          server: widget.server,
+          camera: widget.camera,
+          blueConnection: isConnected(),
+        ),
+      ]),
     );
   }
 
@@ -249,23 +255,14 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
 }
 
 class BlueParamitor extends StatefulWidget {
-  final double height;
-  final double distance;
-  final double axisX;
-  final double axisY;
-  final double axisZ;
-  final double battery;
   final CameraDescription camera;
-  final bool blueConnect;
+  final BluetoothDevice server;
+  final bool blueConnection;
   const BlueParamitor(
-      {Key? key, required this.camera,
-      required this.height,
-      required this.distance,
-      required this.axisX,
-      required this.axisY,
-      required this.axisZ,
-      required this.battery,
-      required this.blueConnect,})
+      {Key? key,
+      required this.camera,
+      required this.server,
+      required this.blueConnection})
       : super(key: key);
 
   @override
@@ -279,18 +276,15 @@ class _BlueParamitorState extends State<BlueParamitor> {
       child: Stack(
         children: <Widget>[
           BlueTakePictureSide(
-            height:widget.height,
-            distance: widget.distance,
-            axisX: widget.axisX,
-            axisY: widget.axisY,
-            axisZ: widget.axisZ,
-            battery: widget.battery,
-            blueConnect: widget.blueConnect,
+            server: widget.server,
+            blueConnection: widget.blueConnection,
             camera: widget.camera,
             localFront: "assets/images/SideLeftNavigation.png",
             localBack: "assets/images/SideRightNavigation.png",
           ),
-          ShowBlueParamitor(blueConnection: widget.blueConnect,)
+          ShowBlueParamitor(
+            blueConnection: widget.blueConnection,
+          )
         ],
       ),
     );
@@ -299,7 +293,8 @@ class _BlueParamitorState extends State<BlueParamitor> {
 
 class ShowBlueParamitor extends StatefulWidget {
   final bool blueConnection;
-  const ShowBlueParamitor({Key? key,required this.blueConnection}) : super(key: key);
+  const ShowBlueParamitor({Key? key, required this.blueConnection})
+      : super(key: key);
 
   @override
   _ShowBlueParamitorState createState() => _ShowBlueParamitorState();
@@ -361,26 +356,16 @@ class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
 
 // A screen that allows users to take a picture using a given camera.
 class BlueTakePictureSide extends StatefulWidget {
-  final double height;
-  final double distance;
-  final double axisX;
-  final double axisY;
-  final double axisZ;
-  final double battery;
-  final bool blueConnect;
+  final BluetoothDevice server;
+  final bool blueConnection;
   final CameraDescription camera;
   final String localFront;
   final String localBack;
 
   const BlueTakePictureSide(
       {Key? key,
-      required this.height,
-      required this.distance,
-      required this.axisX,
-      required this.axisY,
-      required this.axisZ,
-      required this.battery,
-      required this.blueConnect,
+      required this.server,
+      required this.blueConnection,
       required this.camera,
       required this.localFront,
       required this.localBack})
@@ -401,10 +386,15 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
   bool showState = false;
   late AnimationController controllerAnimated;
 
+  // var connection; //BluetoothConnection
+
+  // bool isConnecting = true;
+  // bool isDisconnecting = false;
+
   @override
   void initState() {
     super.initState();
-   
+
     // To display the current output from the Camera,
     // create a CameraController.
     controller = CameraController(
@@ -419,11 +409,22 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
     // Initialize the animation controller
     controllerAnimated = AnimationController(
         vsync: this, duration: Duration(milliseconds: 300), value: 0);
-    
   }
 
   @override
-  void dispose() {
+  void dispose() async {
+    // Avoid memory leak (`setState` after dispose) and disconnect
+    if (widget.blueConnection) {
+      isDisconnecting = true;
+      connection.dispose();
+      connection = null;
+      await connection.close();
+      // show('Device disconnected');
+      setState(() {
+        isDisconnecting = true;
+        isConnecting = false;
+      });
+    }
     // Dispose of the controller when the widget is disposed.
     controller.dispose();
     super.dispose();
@@ -514,18 +515,15 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
                     // where it was saved.
                     final image = await controller.takePicture();
                     String imageName = DateTime.now().toString() + ".jpg";
+                    
+                    // Disconnect bluetooth
+                    _disconnect();
 
                     // If the picture was taken, display it on a new screen.
                     await Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => BluePictureRef(
-                                height: widget.height,
-                                distance: widget.distance,
-                                axisX: widget.axisX,
-                                axisY: widget.axisY,
-                                axisZ: widget.axisZ,
-                                battery: widget.battery,
-                                blueConnect: widget.blueConnect,
+                                server: widget.server,
                                 camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,
@@ -554,6 +552,18 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
         ]),
       ),
     );
+  }
+  
+  // Method to disconnect bluetooth
+  void _disconnect() async {
+    await connection.close();
+    // show('Device disconnected');
+    if (connection.isConnected) {
+      setState(() {
+        isDisconnecting = true;
+        isConnecting = false;
+      });
+    }
   }
 }
 
@@ -589,4 +599,3 @@ class DisplayPictureScreen extends StatelessWidget {
     );
   }
 }
-
