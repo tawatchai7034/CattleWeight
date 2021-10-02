@@ -152,16 +152,37 @@ class _BlueAndCameraRear extends State<BlueAndCameraRear> {
     }).toList();
 
     return Scaffold(
-      // appBar: AppBar(
-      //     backgroundColor: Color(hex.hexColor("#47B5BE")),
-      //     title: (isConnecting
-      //         ? Text('Connecting to  ${widget.server.name} ...',
-      //             style: TextStyle(fontSize: 24, fontFamily: 'boogaloo'))
-      //         : isConnected()
-      //             ? Text('Device : ${widget.server.name}',
-      //                 style: TextStyle(fontSize: 24, fontFamily: 'boogaloo'))
-      //             : Text('Device name : ${widget.server.name}',
-      //                 style: TextStyle(fontSize: 24, fontFamily: 'boogaloo')))),
+      appBar: AppBar(
+        title: const Text(
+          'ถ่ายภาพด้านหลังโค',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Row(
+            children: [
+              isConnected()
+                  ? IconButton(
+                      onPressed: () {
+                        _disconnect();
+                      },
+                      icon: Icon(Icons.bluetooth_connected),
+                      color: Colors.white)
+                  : IconButton(
+                      onPressed: () {
+                        _connect();
+                      },
+                      icon: Icon(Icons.bluetooth_disabled),
+                      color: Colors.white),
+              IconButton(
+                  onPressed: () {
+                    Phoenix.rebirth(context);
+                  },
+                  icon: Icon(Icons.home)),
+            ],
+          )
+        ],
+        backgroundColor: Color(hex.hexColor("#007BA4")),
+      ),
       body: Stack(children: [
         BlueParamitor(
           server: widget.server,
@@ -253,6 +274,51 @@ class _BlueAndCameraRear extends State<BlueAndCameraRear> {
   bool isConnected() {
     return connection != null && connection.isConnected;
   }
+
+  // Method to connect bluetooth
+  void _connect() async {
+    await BluetoothConnection.toAddress(widget.server.address)
+        .then((_connection) {
+      print('Connected to the device');
+      connection = _connection;
+      setState(() {
+        isConnecting = false;
+        isDisconnecting = false;
+      });
+
+      connection.input.listen(_onDataReceived).onDone(() {
+        // Example: Detect which side closed the connection
+        // There should be `isDisconnecting` flag to show are we are (locally)
+        // in middle of disconnecting process, should be set before calling
+        // `dispose`, `finish` or `close`, which all causes to disconnect.
+        // If we except the disconnection, `onDone` should be fired as result.
+        // If we didn't except this (no flag set), it means closing by remote.
+        if (isDisconnecting) {
+          print('Disconnecting locally!');
+        } else {
+          print('Disconnected remotely!');
+        }
+        if (this.mounted) {
+          setState(() {});
+        }
+      });
+    }).catchError((error) {
+      print('Cannot connect, exception occured');
+      print(error);
+    });
+  }
+
+  // Method to disconnect bluetooth
+  void _disconnect() async {
+    await connection.close();
+    // show('Device disconnected');
+    if (connection.isConnected) {
+      setState(() {
+        isDisconnecting = true;
+        isConnecting = false;
+      });
+    }
+  }
 }
 
 class BlueParamitor extends StatefulWidget {
@@ -305,52 +371,63 @@ class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40, 70, 20, 5),
-      child: RotationTransition(
-        turns: new AlwaysStoppedAnimation(90 / 360),
-        child: Opacity(
-          opacity: 0.6,
-          child: Container(
-            // margin:EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
-            height: 150,
-            width: 120,
-            child: Center(
-              child: Text(
-                "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % Connect = ${widget.blueConnection}",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.fromLTRB(40, 10, 20, 5),
+      child: widget.blueConnection
+          ? RotationTransition(
+              turns: new AlwaysStoppedAnimation(90 / 360),
+              child: Opacity(
+                opacity: 0.6,
+                child: Container(
+                  // margin:EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 50),
+                  height: 150,
+                  width: 120,
+                  child: Center(
+                    child: Text(
+                      "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % ",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    border: ((BM.distance > 200 && BM.distance < 400) &&
+                            (BM.axisY >= 80 && BM.axisY <= 90) &&
+                            (BM.axisZ >= 180 && BM.axisZ <= 190))
+                        ? Border.all(
+                            color: Colors
+                                .green, //                   <--- border color
+                            width: 5.0,
+                          )
+                        : Border.all(
+                            color: Colors
+                                .red, //                   <--- border color
+                            width: 5.0,
+                          ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : FittedBox(
+              child: Container(
+                margin: new EdgeInsets.all(16.0),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               ),
             ),
-            decoration: BoxDecoration(
-              border: ((BM.distance > 200 && BM.distance < 400) &&
-                      (BM.axisY >= 80 && BM.axisY <= 90) &&
-                      (BM.axisZ >= 180 && BM.axisZ <= 190))
-                  ? Border.all(
-                      color:
-                          Colors.green, //                   <--- border color
-                      width: 5.0,
-                    )
-                  : Border.all(
-                      color: Colors.red, //                   <--- border color
-                      width: 5.0,
-                    ),
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -437,20 +514,20 @@ class BlueTakePictureRearState extends State<BlueTakePictureRear>
     final mediaSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'ถ่ายภาพด้านข้างโค',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Phoenix.rebirth(context);
-              },
-              icon: Icon(Icons.home))
-        ],
-        backgroundColor: Color(hex.hexColor("#007BA4")),
-      ),
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'ถ่ายภาพด้านข้างโค',
+      //     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //         onPressed: () {
+      //           Phoenix.rebirth(context);
+      //         },
+      //         icon: Icon(Icons.home))
+      //   ],
+      //   backgroundColor: Color(hex.hexColor("#007BA4")),
+      // ),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
