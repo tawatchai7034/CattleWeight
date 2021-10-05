@@ -5,7 +5,7 @@ class BleMessage {
   double axisX = 0;
   double axisY = 0;
   double axisZ = 0;
-  double battery = 0;
+  // double battery = 0;
 
   void printMessage() {
     print("M => $message");
@@ -23,14 +23,14 @@ class BleMessage {
     double axisX = double.parse(massages[2]);
     double axisY = double.parse(massages[3]);
     double axisZ = double.parse(massages[4]);
-    double battery = double.parse(massages[5]);
+    // double battery = double.parse(massages[5]);
     
     this.height = height;
     this.distance = distance;
     this.axisX = axisX;
     this.axisY = axisY;
     this.axisZ = axisZ;
-    this.battery = battery;
+    // this.battery = battery;
   }
 
   // get
@@ -58,8 +58,8 @@ class BleMessage {
     return this.axisZ;
   }
   
-  double getBattery() {
-    return this.battery;
-  }
+  // double getBattery() {
+  //   return this.battery;
+  // }
   
 }

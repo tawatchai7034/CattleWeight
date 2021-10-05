@@ -382,7 +382,7 @@ class _ShowBlueParamitorState extends State<ShowBlueParamitor> {
                   width: 120,
                   child: Center(
                     child: Text(
-                      "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}\nBattery = ${BM.battery} % ",
+                      "Height = ${BM.getHeight()}\nDistance = ${BM.distance}\nAxisX = ${BM.axisY}\nAxisY = ${BM.axisY}\nAxisZ = ${BM.axisZ}",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
