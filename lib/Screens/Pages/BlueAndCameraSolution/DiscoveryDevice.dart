@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:cattle_weight/Screens/Widgets/blueAndCameraSide.dart';
-import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
@@ -11,6 +10,7 @@ import 'package:cattle_weight/Bluetooth/ChatPage.dart';
 import 'package:sqflite/utils/utils.dart';
 
 import 'package:cattle_weight/Bluetooth/BluetoothDeviceListEntry.dart';
+import 'package:cattle_weight/convetHex.dart';
 
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
@@ -122,39 +122,6 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             );
           },
         ),
-        Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-              child: Container(
-                height:70,
-                width:250,
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => TakePictureSide(
-                            blueConnection: false,
-                            camera: widget.camera,
-                            localFront: "assets/images/SideLeftNavigation.png",
-                            localBack: "assets/images/SideRightNavigation.png")));
-                  },
-                  child: Text("ไม่เชื่อมต่ออุปกรณ์",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Color(hex.hexColor("ffffff")),
-                          fontWeight: FontWeight.bold)),
-                  color: Color(hex.hexColor("#47B5BE")),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0),
-                    side: BorderSide(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ))
       ]),
     );
   }

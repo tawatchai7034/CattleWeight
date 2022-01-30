@@ -5,6 +5,7 @@ import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/Position.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PaintLine.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PaintPoint.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -81,25 +82,31 @@ class _PictureRefState extends State<PictureRef> {
                 fileName: widget.fileName,
               ),
             ),
-            new Positioned(
-              child: new Text(
-                  '(${positionsX[index].toInt()} , ${positionsY[index].toInt()})'),
-              left: positionsX[index],
-              top: positionsY[index],
-            ),
-            positionsX.length % 2 == 0
-                ? new Positioned(
-                    child: new Text(
-                        '(${positionsX[index - 1].toInt()} , ${positionsY[index - 1].toInt()})'),
-                    left: positionsX[index - 1],
-                    top: positionsY[index - 1],
-                  )
-                : Container(),
-            positionsX.length % 2 == 0
-                ? Text(
-                    "${sqrt(((positionsX[index] - positionsX[index - 1]) * (positionsX[index] - positionsX[index - 1])) + ((positionsY[index] - positionsY[index - 1]) * (positionsY[index] - positionsY[index - 1])))}",
-                    style: TextStyle(fontSize: 24, color: Colors.white))
-                : Container(),
+            // Show data of position
+            // new Positioned(
+            //   child: new Text(
+            //       '(${positionsX[index].toInt()} , ${positionsY[index].toInt()})'),
+            //   left: positionsX[index],
+            //   top: positionsY[index],
+            // ),
+            // positionsX.length % 2 == 0
+            //     ? new Positioned(
+            //         child: new Text(
+            //             '(${positionsX[index - 1].toInt()} , ${positionsY[index - 1].toInt()})'),
+            //         left: positionsX[index - 1],
+            //         top: positionsY[index - 1],
+            //       )
+            //     : Container(),
+            // //Distance
+            // positionsX.length % 2 == 0
+            //     ? Text(
+            //         "${sqrt(((positionsX[index] - positionsX[index - 1]) * (positionsX[index] - positionsX[index - 1])) + ((positionsY[index] - positionsY[index - 1]) * (positionsY[index] - positionsY[index - 1])))}",
+            //         style: TextStyle(fontSize: 24, color: Colors.white))
+            //     : Container(),
+            PathCircle(
+                x1: positionsX[index],
+                y1: positionsY[index],
+              ),
             positionsX.length % 2 == 0
                 ? new PathExample(
                     x1: positionsX[index - 1],

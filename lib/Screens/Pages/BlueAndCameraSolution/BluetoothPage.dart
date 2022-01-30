@@ -1,10 +1,15 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import 'DiscoveryDevice.dart';
+import 'package:cattle_weight/convetHex.dart';
+
+// ConvertHex convert color code from web
+ConvertHex hex = new ConvertHex();
 
 class BlueMainPage extends StatefulWidget {
   final CameraDescription camera;
@@ -80,16 +85,55 @@ class _BlueMainPage extends State<BlueMainPage> {
         //   title: const Text('Flutter Bluetooth Serial'),
         // ),
         body: _bluetoothState.isEnabled
-            ? DiscoveryPage(start: true,camera: widget.camera,)
+            ? DiscoveryPage(
+                start: true,
+                camera: widget.camera,
+              )
             : Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(height: 100),
                     Container(
                         child: Text(
-                      "Please enable bluetooth",
+                      "กรุณาเชื่อมต่อบลูทูธ",
                       style: TextStyle(fontSize: 36),
+                    )),
+                    SizedBox(height:270),
+                    Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                          child: Container(
+                            height: 48,
+                            width: 250,
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TakePictureSide(
+                                        blueConnection: false,
+                                        camera: widget.camera,
+                                        localFront:
+                                            "assets/images/SideLeftNavigation.png",
+                                        localBack:
+                                            "assets/images/SideRightNavigation.png")));
+                              },
+                              child: Text("ไม่เชื่อมต่ออุปกรณ์",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Color(hex.hexColor("ffffff")),
+                                      fontWeight: FontWeight.bold)),
+                              color: Color(hex.hexColor("#47B5BE")),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(20.0),
+                                side: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ))
                   ],
                 ),

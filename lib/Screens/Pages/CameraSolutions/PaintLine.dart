@@ -10,7 +10,13 @@ class PathExample extends StatefulWidget {
   final double x2;
   final double y2;
 
-  const PathExample({Key? key,required this.x1,required this.y1,required this.x2,required this.y2}) : super(key: key);
+  const PathExample(
+      {Key? key,
+      required this.x1,
+      required this.y1,
+      required this.x2,
+      required this.y2})
+      : super(key: key);
   @override
   State<PathExample> createState() => _PathExampleState();
 }
@@ -18,9 +24,13 @@ class PathExample extends StatefulWidget {
 class _PathExampleState extends State<PathExample> {
   @override
   Widget build(BuildContext context) {
-    return 
-    CustomPaint(
-      painter: PathPainter(widget.x1,widget.y1,widget.x2,widget.y2,),
+    return CustomPaint(
+      painter: PathPainter(
+        widget.x1,
+        widget.y1,
+        widget.x2,
+        widget.y2,
+      ),
     );
   }
 }
@@ -31,10 +41,9 @@ class PathPainter extends CustomPainter {
   late double x2;
   late double y2;
 
-  PathPainter(this.x1,this.y1,this.x2,this.y2);
+  PathPainter(this.x1, this.y1, this.x2, this.y2);
   @override
   void paint(Canvas canvas, Size size) {
-    
     Paint paint = Paint()
       ..color = Colors.red
       ..style = PaintingStyle.stroke
@@ -48,8 +57,48 @@ class PathPainter extends CustomPainter {
     ], true);
 
     canvas.drawPath(path, paint);
+    // canvas.drawOval(
+    //   Rect.fromLTWH(x1-1,y1-1, 4, 4),
+    //   paint,
+    // );
+    // canvas.drawOval(
+    //   Rect.fromLTWH(x1,y1, 8, 8),
+    //   paint,
+    // );
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+class PathPoint extends StatefulWidget {
+  final double x1;
+  final double y1;
+  final double x2;
+  final double y2;
+
+  const PathPoint(
+      {Key? key,
+      required this.x1,
+      required this.y1,
+      required this.x2,
+      required this.y2})
+      : super(key: key);
+  @override
+  State<PathPoint> createState() => _PathPointState();
+}
+
+class _PathPointState extends State<PathPoint> {
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: PathPainter(
+        widget.x1,
+        widget.y1,
+        widget.x2,
+        widget.y2,
+      ),
+    );
+  }
+}
+
