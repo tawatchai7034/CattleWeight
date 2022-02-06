@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -43,11 +44,8 @@ class _PictureHG2State extends State<PictureHG2> {
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: RaisedButton(
-                onPressed: () {
+            MainButton(
+                onSelected: () {
                   // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                   Navigator.pushAndRemoveUntil(
                       context,
@@ -66,18 +64,7 @@ class _PictureHG2State extends State<PictureHG2> {
                               widget.camera)),
                       (route) => false);
                 },
-                child: Text("บันทึก",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(hex.hexColor("ffffff")),
-                        fontWeight: FontWeight.bold)),
-                color: Color(hex.hexColor("#47B5BE")),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
+                title: "บันทึก"),
           ]),
         ),
         showState

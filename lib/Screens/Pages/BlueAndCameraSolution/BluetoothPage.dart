@@ -121,8 +121,6 @@ class _BlueMainPage extends State<BlueMainPage> {
                     ))
                   ],
                 ),
-              )
-        );
+              ));
   }
-
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureRef.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/convetHex.dart';
@@ -204,63 +205,43 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
                 // ปุ้มบันทึก
                 Center(
-                  child: Container(
-                      height: 60,
-                      width: 360,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: new RaisedButton(
-                          // กดแลเวให้ไปหน้า FisrtPage/SelectInput
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              // แสดงข้อความเมื่อกดบันทึก
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(content: Text('Processing Data')));
-                              // print(
-                              //     "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
-                              showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      // backgroundColor: Colors.black,
-                                      title: Text("กรุณาเลือกรูปด้านข้างโค",
-                                          style: TextStyle(
-                                              fontSize: 28,
-                                              fontWeight: FontWeight.bold)),
-                                      content:Image.asset("assets/images/SideLeftNavigation2.png"),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'ยกเลิก'),
-                                          child: const Text('ยกเลิก',
-                                              style: TextStyle(fontSize: 24)),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              _openImagePicker(),
-                                          child: const Text('ตกลง',
-                                              style: TextStyle(fontSize: 24)),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                              
-                            }
-                          },
-                          child: Text("บันทึก",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Color(hex.hexColor("ffffff")),
-                                  fontWeight: FontWeight.bold)),
-                          color: Color(hex.hexColor("#47B5BE")),
-                          // รูปทรงปุ่ม
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0),
-                            // กรอบปุ่ม
-                            side: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      )),
+                  child: MainButton(
+                      onSelected: () {
+                        if (formKey.currentState!.validate()) {
+                          // แสดงข้อความเมื่อกดบันทึก
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackBar(content: Text('Processing Data')));
+                          // print(
+                          //     "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
+                          showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  // backgroundColor: Colors.black,
+                                  title: Text("กรุณาเลือกรูปด้านข้างโค",
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold)),
+                                  content: Image.asset(
+                                      "assets/images/SideLeftNavigation2.png"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'ยกเลิก'),
+                                      child: const Text('ยกเลิก',
+                                          style: TextStyle(fontSize: 24)),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => _openImagePicker(),
+                                      child: const Text('ตกลง',
+                                          style: TextStyle(fontSize: 24)),
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
+                      },
+                      title: "นำเข้าภาพ"),
                 ),
                 SizedBox(
                   height: 20,

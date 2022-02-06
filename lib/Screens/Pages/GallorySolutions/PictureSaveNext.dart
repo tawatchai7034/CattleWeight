@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureTW2.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraTop.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -77,11 +78,8 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                 SizedBox(
                   height: 180,
                 ),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  child: RaisedButton(
-                    onPressed: () {
+                MainButton(
+                    onSelected: () {
                       // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                       Navigator.pushAndRemoveUntil(
                           context,
@@ -100,26 +98,12 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                                   widget.camera)),
                           (route) => false);
                     },
-                    child: Text("คำนวณน้ำหนัก",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: Color(hex.hexColor("ffffff")),
-                            fontWeight: FontWeight.bold)),
-                    color: Color(hex.hexColor("#47B5BE")),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0),
-                      side: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                ),
+                    title: "คำนวณน้ำหนัก"),
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  child: RaisedButton(
-                    onPressed: () {
+                MainButton(
+                    onSelected: () {
                       showDialog<String>(
                           context: context,
                           builder: (BuildContext context) {
@@ -147,18 +131,7 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                             );
                           });
                     },
-                    child: Text("ภาพกระดูกสันหลังโค",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: Color(hex.hexColor("ffffff")),
-                            fontWeight: FontWeight.bold)),
-                    color: Color(hex.hexColor("#47B5BE")),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0),
-                      side: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                ),
+                    title: "ภาพกระดูกสันหลังโค"),
               ]),
         ));
   }

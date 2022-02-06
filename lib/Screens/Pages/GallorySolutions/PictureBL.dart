@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureRef2.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureTW.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -48,11 +49,8 @@ class _PictureBLState extends State<PictureBL> {
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: RaisedButton(
-                onPressed: () {
+            MainButton(
+                onSelected: () {
                   showDialog<String>(
                       context: context,
                       builder: (BuildContext context) {
@@ -61,8 +59,8 @@ class _PictureBLState extends State<PictureBL> {
                           title: Text("กรุณาเลือกรูปด้านหลังโค",
                               style: TextStyle(
                                   fontSize: 28, fontWeight: FontWeight.bold)),
-                          content: Image.asset(
-                              "assets/images/RearNavigation2.png"),
+                          content:
+                              Image.asset("assets/images/RearNavigation2.png"),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Navigator.pop(context, 'ยกเลิก'),
@@ -78,18 +76,7 @@ class _PictureBLState extends State<PictureBL> {
                         );
                       });
                 },
-                child: Text("บันทึก",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(hex.hexColor("ffffff")),
-                        fontWeight: FontWeight.bold)),
-                color: Color(hex.hexColor("#47B5BE")),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
+                title: "บันทึก"),
           ]),
         ),
         showState

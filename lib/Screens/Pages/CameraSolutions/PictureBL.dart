@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -115,11 +116,8 @@ class _PictureBLState extends State<PictureBL> {
               padding: EdgeInsets.all(20),
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  child: RaisedButton(
-                    onPressed: () {
+                MainButton(
+                    onSelected: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => TakePictureRear(
                               blueConnection: widget.blueConnection,
@@ -127,18 +125,7 @@ class _PictureBLState extends State<PictureBL> {
                               localFront: "assets/images/RearNavigation.png",
                               localBack: "assets/images/RearNavigation.png")));
                     },
-                    child: Text("บันทึก",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: Color(hex.hexColor("ffffff")),
-                            fontWeight: FontWeight.bold)),
-                    color: Color(hex.hexColor("#47B5BE")),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0),
-                      side: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                ),
+                    title: "บันทึก"),
               ]),
             ),
             showState
