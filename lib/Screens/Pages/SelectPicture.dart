@@ -1,8 +1,8 @@
 // หน้าเลือกภาพที่จะนำไปใช้คำนวณน้ำหนัก
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureGallory.dart';
-import 'package:cattle_weight/model/MediaSource.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluetoothPage.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/AddProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 
@@ -25,17 +25,32 @@ class SelectInput extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          CameraButton(camera),
+          // ปุ่มถ่ายภาพ
+          MainButton(
+              onSelected: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => BlueMainPage(
+                          camera: camera,
+                        )
+                    // AddProfile(widget.camera)
+                    ));
+              },
+              title: "ถ่ายภาพ"),
           Center(
               child: Image.asset("assets/images/photo01.png",
                   height: 240, width: 240, fit: BoxFit.cover)),
           SizedBox(
             height: 5,
           ),
-          GalloryButton(camera: camera,),
+          MainButton(
+              onSelected: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AddProfile(camera)));
+              },
+              title: "นำเข้าภาพ"),
         ],
       ),
-      backgroundColor: Color(hex.hexColor("#47B5BE")),
+      backgroundColor: Color(hex.Blue()),
     );
   }
 }

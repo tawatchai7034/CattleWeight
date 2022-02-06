@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureBL.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -111,52 +112,41 @@ class _PictureHGState extends State<PictureHG> {
                   )
                 : Container(),
             Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureBL(
-                          blueConnection: widget.blueConnection,
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
-                },
-                child: Text("บันทึก",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(hex.hexColor("ffffff")),
-                        fontWeight: FontWeight.bold)),
-                color: Color(hex.hexColor("#47B5BE")),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
-          ]),
-        ),
-        showState
-            ? Container()
-            : AlertDialog(
-                // backgroundColor: Colors.black,
-                title: Text("กรุณาระบุความยาวรอบอกโค",
-                    style:
-                        TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                content: Image.asset("assets/images/SideLeftNavigation3.png"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      setState(() => showState = !showState);
+              padding: EdgeInsets.all(20),
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                MainButton(
+                    onSelected: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PictureBL(
+                              blueConnection: widget.blueConnection,
+                              camera: widget.camera,
+                              imgPath: widget.imgPath,
+                              fileName: widget.fileName)));
                     },
-                    // => Navigator.pop(context, 'ตกลง'),
-                    child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                    title: "บันทึก"),
+              ]),
+            ),
+            showState
+                ? Container()
+                : AlertDialog(
+                    // backgroundColor: Colors.black,
+                    title: Text("กรุณาระบุความยาวรอบอกโค",
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold)),
+                    content:
+                        Image.asset("assets/images/SideLeftNavigation3.png"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          setState(() => showState = !showState);
+                        },
+                        // => Navigator.pop(context, 'ตกลง'),
+                        child:
+                            const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                      ),
+                    ],
                   ),
-                ],
-              ),
           ]),
         ));
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstAddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
@@ -19,7 +20,6 @@ class FisrtPage extends StatefulWidget {
 }
 
 class _FisrtPageState extends State<FisrtPage> {
-
   late File fileMedia;
   late MediaSource source;
   @override
@@ -39,7 +39,7 @@ class _FisrtPageState extends State<FisrtPage> {
                     height: 240, width: 240, fit: BoxFit.cover),
               ),
               SizedBox(
-                height: 10,
+                height: 16,
               ),
               Container(
                 child: Text(
@@ -52,71 +52,37 @@ class _FisrtPageState extends State<FisrtPage> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 32,
               ),
               // ปุ่มคำนวณน้ำหนักโค
-              Container(
-                  height: 60,
-                  width: 240,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: new RaisedButton(
-                      // กดแล้วให้ไปหน้า FisrtPage/SelectInput พร้อบระบุชนิดของสื่เป็น vdo หรือ  image
-                      onPressed: () => capture(MediaSource.image),
-                      child: Text("คำนวณน้ำหนักโค",
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Color(hex.hexColor("ffffff")),
-                              fontWeight: FontWeight.bold)),
-                      color: Color(hex.hexColor("#47B5BE")),
-                      // รูปทรงปุ่ม
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(20.0),
-                        // กรอบปุ่ม
-                        side: BorderSide(color: Colors.white),
-                      ),
-                    ),
-                  )),
+              MainButton(
+                  onSelected: () {
+                    capture(MediaSource.image);
+                  },
+                  title: "คำนวณน้ำหนักโค"),
               SizedBox(
-                height: 20,
+                height: 16,
               ),
               // ปุ่มหน้าประวัติ
-              Container(
-                  height: 60,
-                  width: 240,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: new RaisedButton(
-                      // กดแลเวให้ไปหน้า HomePage/TapbarView()
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => TapbarView(camera: widget.camera,)));
-                      },
-                      child: Text("หน้าประวัติ",
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Color(hex.hexColor("ffffff")),
-                              fontWeight: FontWeight.bold)),
-                      color: Color(hex.hexColor("#47B5BE")),
-                      // รูปทรงปุ่ม
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(20.0),
-                        // กรอบปุ่ม
-                        side: BorderSide(color: Colors.white),
-                      ),
-                    ),
-                  )),
+              MainButton(
+                  onSelected: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TapbarView(
+                              camera: widget.camera,
+                            )));
+                  },
+                  title: "หน้าประวัติ"),
             ]),
       ),
       backgroundColor: Color(hex.hexColor("#47B5BE")),
     );
   }
 
-    Future capture(MediaSource source) async {
+  Future capture(MediaSource source) async {
     setState(() {
       this.source = source;
       var _fileMedia = null;
-            this.fileMedia = _fileMedia;
+      this.fileMedia = _fileMedia;
     });
 
     final result = await Navigator.of(context).push(
@@ -137,4 +103,3 @@ class _FisrtPageState extends State<FisrtPage> {
     }
   }
 }
-

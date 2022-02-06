@@ -1,14 +1,10 @@
 import 'dart:io';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluetoothPage.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/AddProfile.dart';
+
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
-import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'package:cattle_weight/model/MediaSource.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 // ทำให้ widgetนี้รับค่า paramitor 6 อย่างสวย ๆ  5555
 
@@ -21,65 +17,6 @@ ConvertHex hex = new ConvertHex();
 
 // วิธีใช้ stack widget
 //  - https://api.flutter.dev/flutter/widgets/Stack-class.html
-
-class CameraButton extends StatefulWidget {
-  final CameraDescription camera;
-  const CameraButton(this.camera);
-
-  @override
-  _CameraButtonState createState() => _CameraButtonState();
-}
-
-class _CameraButtonState extends State<CameraButton> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 240,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: new RaisedButton(
-          onPressed: () {
-            // RestartWidget.restartApp(context);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BlueMainPage(camera: widget.camera,)
-                // AddProfile(widget.camera)
-                ));
-            //  Phoenix.rebirth(context);
-            // mainCamera();
-            // pickCameraMedia(context);
-          },
-          child: Text("ถ่ายภาพ",
-              style: TextStyle(
-                  fontSize: 24,
-                  color: Color(hex.hexColor("ffffff")),
-                  fontWeight: FontWeight.bold)),
-          color: Color(hex.hexColor("#47B5BE")),
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(20.0),
-            side: BorderSide(color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
-
-// image_picker
-  Future pickCameraMedia(BuildContext context) async {
-    final source = ModalRoute.of(context)!.settings.arguments as MediaSource;
-
-    final getMedia = source == MediaSource.image
-        ? ImagePicker().getImage
-        : ImagePicker().getVideo;
-
-    final media = await getMedia(source: ImageSource.camera);
-    final file = File(media!.path);
-
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => SetHarthWidth(file)));
-  }
-}
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureSide extends StatefulWidget {

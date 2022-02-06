@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -99,84 +100,29 @@ class _BlueMainPage extends State<BlueMainPage> {
                       "กรุณาเชื่อมต่อบลูทูธ",
                       style: TextStyle(fontSize: 36),
                     )),
-                    SizedBox(height:270),
+                    SizedBox(height: 270),
                     Center(
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                          child: Container(
-                            height: 48,
-                            width: 250,
-                            child: RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => TakePictureSide(
-                                        blueConnection: false,
-                                        camera: widget.camera,
-                                        localFront:
-                                            "assets/images/SideLeftNavigation.png",
-                                        localBack:
-                                            "assets/images/SideRightNavigation.png")));
-                              },
-                              child: Text("ไม่เชื่อมต่ออุปกรณ์",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: Color(hex.hexColor("ffffff")),
-                                      fontWeight: FontWeight.bold)),
-                              color: Color(hex.hexColor("#47B5BE")),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(20.0),
-                                side: BorderSide(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
+                        MainButton(
+                            onSelected: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => TakePictureSide(
+                                      blueConnection: false,
+                                      camera: widget.camera,
+                                      localFront:
+                                          "assets/images/SideLeftNavigation.png",
+                                      localBack:
+                                          "assets/images/SideRightNavigation.png")));
+                            },
+                            title: "ไม่เชื่อมต่ออุปกรณ์"),
                       ],
                     ))
                   ],
                 ),
               )
-        //     Column(children: [
-        //   Container(
-        //     child: ListView(
-        //       children: <Widget>[
-        //         Divider(),
-        //         SwitchListTile(
-        //           title: const Text('Enable Bluetooth'),
-        //           value: _bluetoothState.isEnabled,
-        //           onChanged: (bool value) {
-        //             // Do the request and update with the true value then
-        //             future() async {
-        //               // async lambda seems to not working
-        //               if (value)
-        //                 await FlutterBluetoothSerial.instance.requestEnable();
-        //               else
-        //                 await FlutterBluetoothSerial.instance.requestDisable();
-        //             }
-
-        //             future().then((_) {
-        //               setState(() {});
-        //             });
-        //           },
-        //         ),
-        //         ListTile(title: const Text("Availble Devices")),
-        //       ],
-        //     ),
-        //   ),
-        //   DiscoveryPage()
-        // ]),
         );
   }
 
-  // void _startChat(BuildContext context, BluetoothDevice server) {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) {
-  //         return ChatPage(server: server,camera: widget.camera);
-  //       },
-  //     ),
-  //   );
-  // }
 }

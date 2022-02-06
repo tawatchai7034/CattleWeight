@@ -6,5 +6,10 @@ class ConvertHex{
     int colorCode = int.parse(newColor);
     return colorCode;
   }
+  
+  int Blue(){
+    int colorCode = int.parse('0xff47B5BE');
+    return colorCode;
+  }
 
 }

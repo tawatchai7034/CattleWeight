@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
+
 
 // Messege Management
 BleMessage BM = new BleMessage();
