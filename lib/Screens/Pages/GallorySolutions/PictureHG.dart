@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureBL.dart';
+import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -35,7 +36,7 @@ class _PictureHGState extends State<PictureHG> {
                   fontWeight: FontWeight.bold)),
           backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
-        PreviewScreen(
+        LineAndPosition(
           imgPath: widget.imgPath,
           fileName: widget.fileName,
         ),

@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +34,10 @@ class _PictureRefState extends State<PictureRef> {
                   fontWeight: FontWeight.bold)),
           backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
-        PreviewScreen(
-          imgPath: widget.imgPath,
-          fileName: widget.fileName,
-        ),
+        LineAndPosition(
+            imgPath: widget.imgPath,
+            fileName: widget.fileName,
+          ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [

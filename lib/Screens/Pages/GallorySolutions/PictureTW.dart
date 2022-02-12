@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
@@ -36,7 +37,7 @@ class _PictureTWState extends State<PictureTW> {
                   fontWeight: FontWeight.bold)),
           backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
-        PreviewScreen(
+        LineAndPosition(
           imgPath: widget.imgPath,
           fileName: widget.fileName,
         ),
