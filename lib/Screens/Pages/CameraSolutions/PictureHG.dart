@@ -8,12 +8,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:ffi';
 import 'dart:math';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/Position.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PaintLine.dart';
 
 ConvertHex hex = new ConvertHex();
-
-Positions pos = new Positions();
 
 class PictureHG extends StatefulWidget {
   final bool blueConnection;

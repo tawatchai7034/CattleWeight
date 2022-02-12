@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureHG.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -38,18 +40,15 @@ class _BluePictureRefState extends State<BluePictureRef> {
                   fontWeight: FontWeight.bold)),
           backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
-        PreviewScreen(
+        LineAndPosition(
           imgPath: widget.imgPath,
           fileName: widget.fileName,
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: RaisedButton(
-                onPressed: () {
+            MainButton(
+                onSelected: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => BluePictureHG(
                           server: widget.server,
@@ -57,18 +56,7 @@ class _BluePictureRefState extends State<BluePictureRef> {
                           imgPath: widget.imgPath,
                           fileName: widget.fileName)));
                 },
-                child: Text("บันทึก",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(hex.hexColor("ffffff")),
-                        fontWeight: FontWeight.bold)),
-                color: Color(hex.hexColor("#47B5BE")),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
+                title: "บันทึก"),
           ]),
         ),
         showState

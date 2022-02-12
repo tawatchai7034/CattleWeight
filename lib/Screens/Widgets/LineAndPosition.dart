@@ -4,10 +4,10 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:cattle_weight/Screens/Widgets/PaintPoint.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PaintPoint.dart';
 import 'package:cattle_weight/Screens/Widgets/PaintLine.dart';
 import 'package:cattle_weight/Screens/Widgets/position.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';

@@ -5,15 +5,11 @@ import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/Position.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PaintLine.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PaintPoint.dart';
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
-
-Positions pos = new Positions();
 
 class PictureRef extends StatefulWidget {
   final bool blueConnection;

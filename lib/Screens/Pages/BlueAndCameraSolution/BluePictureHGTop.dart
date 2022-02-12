@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
+import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -36,47 +38,34 @@ class _BluePictureHGTopState extends State<BluePictureHGTop> {
                   fontWeight: FontWeight.bold)),
           backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
-        PreviewScreen(
+        LineAndPosition(
           imgPath: widget.imgPath,
           fileName: widget.fileName,
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: RaisedButton(
-                onPressed: () {
+            MainButton(
+                onSelected: () {
                   // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => CattleData(
-                                  "01",
-                                  "cattle01",
-                                  "male",
-                                  "Brahman",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  255,
-                                  255,
-                                  255,
-                                  widget.camera)),
+                      MaterialPageRoute(
+                          builder: (context) => CattleData(
+                              "01",
+                              "cattle01",
+                              "male",
+                              "Brahman",
+                              "assets/images/cattle01.jpg",
+                              "assets/images/cattle01.jpg",
+                              "assets/images/cattle01.jpg",
+                              255,
+                              255,
+                              255,
+                              widget.camera)),
                       (route) => false);
                 },
-                child: Text("บันทึก",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(hex.hexColor("ffffff")),
-                        fontWeight: FontWeight.bold)),
-                color: Color(hex.hexColor("#47B5BE")),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
+                title: "บันทึก"),
           ]),
         ),
         showState
