@@ -29,6 +29,62 @@ class BluePictureRef extends StatefulWidget {
 
 class _BluePictureRefState extends State<BluePictureRef> {
   bool showState = false;
+  TextEditingController _textFieldController = TextEditingController();
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'ระบุความยาวของจุดอ้างอิง',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration:
+                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('ยกเลิก'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('บันทึก'),
+                onPressed: () {
+                  setState(() {
+                    codeDialog = valueText;
+                    print('Input = ' + codeDialog);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => BluePictureHG(
+                            server: widget.server,
+                            camera: widget.camera,
+                            imgPath: widget.imgPath,
+                            fileName: widget.fileName)));
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  late String codeDialog;
+  late String valueText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,12 +105,7 @@ class _BluePictureRefState extends State<BluePictureRef> {
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
             MainButton(
                 onSelected: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => BluePictureHG(
-                          server: widget.server,
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
+                  _displayTextInputDialog(context);
                 },
                 title: "บันทึก"),
           ]),

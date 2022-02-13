@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 
@@ -7,8 +8,8 @@ ConvertHex hex = new ConvertHex();
 class MainButton extends StatefulWidget {
   final VoidCallback onSelected;
   final String title;
-  const MainButton({Key? key, required this.onSelected, required this.title})
-      : super(key: key);
+  final double pixelDistance;
+   MainButton({this.onSelected, this.title,this.pixelDistance});
 
   @override
   _MainButtonState createState() => _MainButtonState();

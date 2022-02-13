@@ -1,8 +1,10 @@
 import 'dart:ffi';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Widgets/Alerts.dart';
 import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
+import 'package:cattle_weight/Screens/Widgets/position.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 
@@ -10,6 +12,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 ConvertHex hex = new ConvertHex();
+Positions pos = new Positions();
 
 class PictureRef extends StatefulWidget {
   final bool blueConnection;
@@ -30,6 +33,63 @@ class PictureRef extends StatefulWidget {
 
 class _PictureRefState extends State<PictureRef> {
   bool showState = false;
+  TextEditingController _textFieldController = TextEditingController();
+
+  Future<void> _displayTextInputDialog(BuildContext context ,double pixel) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'ระบุความยาวของจุดอ้างอิง',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration:
+                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('ยกเลิก'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('บันทึก'),
+                onPressed: () {
+                  setState(() {
+                    codeDialog = valueText;
+                    print('Input = ' + codeDialog);
+                    print('Pixel Distance = ${pixel}');
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PictureHG(
+                            blueConnection: widget.blueConnection,
+                            camera: widget.camera,
+                            imgPath: widget.imgPath,
+                            fileName: widget.fileName)));
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  late String codeDialog;
+  late String valueText;
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +106,22 @@ class _PictureRefState extends State<PictureRef> {
           LineAndPosition(
             imgPath: widget.imgPath,
             fileName: widget.fileName,
+            onSelected: () {
+              _displayTextInputDialog(context,pos.getPixelDistance());
+            },
           ),
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-              MainButton(
-                  onSelected: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PictureHG(
-                            blueConnection: widget.blueConnection,
-                            camera: widget.camera,
-                            imgPath: widget.imgPath,
-                            fileName: widget.fileName)));
-                  },
-                  title: "บันทึก"),
-            ]),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(20),
+          //   child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          //     MainButton(
+          //         onSelected: () {
+          //           _displayTextInputDialog(
+          //             context,
+          //           );
+          //         },
+          //         title: "บันทึก"),
+          //   ]),
+          // ),
           showState
               ? Container()
               : AlertDialog(

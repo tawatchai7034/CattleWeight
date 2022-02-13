@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
 import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,62 @@ class PictureRef extends StatefulWidget {
 }
 
 class _PictureRefState extends State<PictureRef> {
+  TextEditingController _textFieldController = TextEditingController();
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'ระบุความยาวของจุดอ้างอิง',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration:
+                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('ยกเลิก'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('บันทึก'),
+                onPressed: () {
+                  setState(() {
+                    codeDialog = valueText;
+                    print('Input = ' + codeDialog);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PictureHG(
+                            blueConnection: false,
+                            camera: widget.camera,
+                            imgPath: widget.imgPath,
+                            fileName: widget.fileName)));
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  late String codeDialog;
+  late String valueText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,36 +92,17 @@ class _PictureRefState extends State<PictureRef> {
           backgroundColor: Color(hex.hexColor("#007BA4"))),
       body: Stack(children: [
         LineAndPosition(
-            imgPath: widget.imgPath,
-            fileName: widget.fileName,
-          ),
+          imgPath: widget.imgPath,
+          fileName: widget.fileName,
+        ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureHG(
-                          blueConnection: false,
-                          camera: widget.camera,
-                          imgPath: widget.imgPath,
-                          fileName: widget.fileName)));
+            MainButton(
+                onSelected: () {
+                  _displayTextInputDialog(context);
                 },
-                child: Text("บันทึก",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(hex.hexColor("ffffff")),
-                        fontWeight: FontWeight.bold)),
-                color: Color(hex.hexColor("#47B5BE")),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
+                title: "บันทึก")
           ]),
         ),
       ]),
