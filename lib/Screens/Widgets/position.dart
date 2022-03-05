@@ -3,7 +3,7 @@ class Positions{
   //  int x2=0;
    double _y1 = 0;
   //  int y2=0;
-  double _pixelDistance = 0;
+  late double _pixelDistance;
   
   void setX1(double x){
    this._x1=x;

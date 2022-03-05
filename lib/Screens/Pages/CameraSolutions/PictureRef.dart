@@ -35,7 +35,7 @@ class _PictureRefState extends State<PictureRef> {
   bool showState = false;
   TextEditingController _textFieldController = TextEditingController();
 
-  Future<void> _displayTextInputDialog(BuildContext context ,double pixel) async {
+  Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -73,7 +73,7 @@ class _PictureRefState extends State<PictureRef> {
                   setState(() {
                     codeDialog = valueText;
                     print('Input = ' + codeDialog);
-                    print('Pixel Distance = ${pixel}');
+                    print('Pixel Distance = ${pos.getPixelDistance()}');
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => PictureHG(
                             blueConnection: widget.blueConnection,
@@ -107,7 +107,7 @@ class _PictureRefState extends State<PictureRef> {
             imgPath: widget.imgPath,
             fileName: widget.fileName,
             onSelected: () {
-              _displayTextInputDialog(context,pos.getPixelDistance());
+              _displayTextInputDialog(context);
             },
           ),
           // Padding(

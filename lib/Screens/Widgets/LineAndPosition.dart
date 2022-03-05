@@ -39,10 +39,6 @@ class LineAndPositionState extends State<LineAndPosition> {
 
     setState(() {
       index++;
-      // posx = localOffset.dx;
-      // posy = localOffset.dy;
-      // pos.setX1(localOffset.dx);
-      // pos.setY1(localOffset.dy);
       positionsX.add(localOffset.dx);
       positionsY.add(localOffset.dy);
       // Distance calculation
@@ -51,11 +47,11 @@ class LineAndPositionState extends State<LineAndPosition> {
                   (positionsX[index] - positionsX[index - 1])) +
               ((positionsY[index] - positionsY[index - 1]) *
                   (positionsY[index] - positionsY[index - 1])))
-          : pixelDistance = 0;
+          : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");
       pos.setPixelDistance(pixelDistance);
-      // print("POS  = ${pos.getPixelDistance()}");
+      print("POS  = ${pos.getPixelDistance()}");
     });
   }
 
@@ -70,7 +66,7 @@ class LineAndPositionState extends State<LineAndPosition> {
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
-      child: new Stack(fit: StackFit.expand, children: <Widget>[
+      child: new Stack(fit: StackFit.loose, children: <Widget>[
         // Hack to expand stack to fill all the space. There must be a better
         // way to do it.
         // new Container(color: Colors.white),
