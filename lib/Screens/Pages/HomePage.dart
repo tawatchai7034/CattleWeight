@@ -1,30 +1,33 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Bluetooth/DiscoveryPage.dart';
 import 'package:cattle_weight/Bluetooth/MainPage.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/Search.dart';
+import 'package:cattle_weight/model/catProfiles.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'FirstPage.dart';
+import 'package:cattle_weight/DataBase/dbHelper.dart';
+import 'package:cattle_weight/ui/catPro_dialog.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
 
 // widget ที่แสดงส่วนของ card widget ที่ภายในจะประกอบด้วยข้อมูลโปรไฟล์ของโคแต่ละตัว
-class MyHomePage extends StatefulWidget {
+class HistoryList extends StatefulWidget {
   final CameraDescription camera;
-  MyHomePage({Key? key,required this.camera}) : super(key: key);
-
+  HistoryList({Key? key, required this.camera}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HistoryListState createState() => _HistoryListState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HistoryListState extends State<HistoryList> {
   List<String> cities = [];
+  DbHelper dbHelper = new DbHelper();
+  CattleProDialog dialog = new CattleProDialog();
+  List<CattlePro>? catProList;
 
 //  สร้าง DateBase จำลองขึ้นมา
   List<ProfileDB> profile = [
@@ -34,11 +37,32 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   @override
+  void initState() {
+    dialog = CattleProDialog();
+    loadData();
+    super.initState();
+  }
+
+ loadData() async {
+   await dbHelper.initDatabase();
+    catProList =await dbHelper.getListCattlePro();
+    setState(() {
+      catProList = catProList;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cattle Weight",style: TextStyle(fontFamily: "boogaloo",fontSize: 24, ),),
- 
+        title: Text(
+          "Cattle Weight",
+          style: TextStyle(
+            fontFamily: "boogaloo",
+            fontSize: 24,
+          ),
+        ),
+
         backgroundColor: Color(hex.hexColor("#007BA4")),
         // search icon
         actions: [
@@ -47,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 showSearch(context: context, delegate: DataSearch());
               },
               icon: Icon(Icons.search)),
-               IconButton(
+          IconButton(
               onPressed: () {
                 Phoenix.rebirth(context);
               },
@@ -55,36 +79,61 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       // drawer: Drawer(),
-      body: ListView.separated(
-          // สร้าง card widget ตามจำนวนโคที่อยู่ใน dataBase
-          itemBuilder: (BuildContext context, int index) {
-            ProfileDB listProfile = profile[index];
-            return ProfileBox(
-              cattleNumber: listProfile.cattleNumber,
-              cattleName: listProfile.cattleName,
-              gender: listProfile.gender,
-              specise: listProfile.specise,
-              img: listProfile.img,
-              camera: widget.camera,
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-          itemCount: profile.length),
+      body: ListView.builder(
+        itemCount: (CattlePro != null)? catProList?.length:0,
+        itemBuilder: (BuildContext context,int index){
+        return ListTile(title: Text(catProList![index].name),
+        subtitle: Text("gender: ${catProList![index].gender}\tspicies: ${catProList![index]..species}"),
+        trailing: IconButton(icon:Icon( Icons.edit),onPressed: (){},)
+        );
+      }),
+      // ListView.separated(
+      //     // สร้าง card widget ตามจำนวนโคที่อยู่ใน dataBase
+      //     itemBuilder: (BuildContext context, int index) {
+      //       ProfileDB listProfile = profile[index];
+      //       return ProfileBox(
+      //         cattleNumber: listProfile.cattleNumber,
+      //         cattleName: listProfile.cattleName,
+      //         gender: listProfile.gender,
+      //         specise: listProfile.specise,
+      //         img: listProfile.img,
+      //         camera: widget.camera,
+      //       );
+      //     },
+      //     separatorBuilder: (BuildContext context, int index) =>
+      //         const Divider(),
+      //     itemCount: profile.length),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          dbHelper
+              .insertCatPro(CattlePro(name: 'cattle02',gender:true,species:'barhman'))
+              .then((value) {
+            print("add data completed");
+          }).onError((error, stackTrace) {
+            print("Error: " + error.toString());
+          });
+          // showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) =>
+          //       dialog.buildDialog(context, CattlePro(000, '', true, ''), true),
+          // );
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
 
-class TapbarView extends StatefulWidget {
+class CattleHistory extends StatefulWidget {
   final CameraDescription camera;
-  const TapbarView({Key? key,required this.camera}) : super(key: key);
+  const CattleHistory({Key? key, required this.camera}) : super(key: key);
 
   @override
-  _TapbarViewState createState() => _TapbarViewState();
+  _CattleHistoryState createState() => _CattleHistoryState();
 }
 
 // widget ที่แสดงส่วนของ TapฺBarView โดยดึงข้อมูลมาจาก MyHomePage
-class _TapbarViewState extends State<TapbarView> {
+class _CattleHistoryState extends State<CattleHistory> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -97,8 +146,12 @@ class _TapbarViewState extends State<TapbarView> {
         body: TabBarView(
           children: [
             // หน้าแอปที่ต้องการให้ทำงานเมื่อกดเมนู
-            MyHomePage(camera: widget.camera,),
-            BlueMainPage(camera: widget.camera,),
+            HistoryList(
+              camera: widget.camera,
+            ),
+            BlueMainPage(
+              camera: widget.camera,
+            ),
             // DiscoveryPage(),
             // TimeCounter(),
             SelectInput(widget.camera)
@@ -119,6 +172,3 @@ class _TapbarViewState extends State<TapbarView> {
     );
   }
 }
-
-
-

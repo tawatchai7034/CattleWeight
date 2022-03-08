@@ -233,7 +233,7 @@ class CattleData extends StatelessWidget {
                   print("หน้าหลัก");
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => TapbarView(camera: camera,)),
+                      MaterialPageRoute(builder: (context) =>CattleHistory(camera: camera,)),
                       (route) => false);
                 },
                 child: Text(

@@ -67,7 +67,7 @@ class _FisrtPageState extends State<FisrtPage> {
               MainButton(
                   onSelected: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => TapbarView(
+                        builder: (context) => CattleHistory(
                               camera: widget.camera,
                             )));
                   },

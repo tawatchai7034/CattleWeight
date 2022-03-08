@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:flutter/cupertino.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
@@ -26,7 +27,8 @@ class FirstAddProfile extends StatelessWidget {
           //   child: Image.asset("assets/images/IconApp.jpg",
           //       height: 240, width: 360, fit: BoxFit.cover),
           // ),
-          FirstMyCustomForm()
+          // FirstMyCustomForm()
+          ActionSheet()
         ],
       ),
       backgroundColor: Color(hex.hexColor("ffffff")),
@@ -270,5 +272,91 @@ class FirstMyCustomFormState extends State<FirstMyCustomForm> {
         ),
       ],
     );
+  }
+}
+
+
+class ActionSheet extends StatefulWidget {
+  const ActionSheet({Key? key}) : super(key: key);
+
+  @override
+  State<ActionSheet> createState() => _ActionSheetState();
+}
+
+class _ActionSheetState extends State<ActionSheet> {
+  // This function is used to show the action sheet
+  // It will be triggered when the button gets pressed
+  void _show(BuildContext ctx) {
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      setState(() {
+                        _selectedOption = "Option #1";
+                      });
+                      _close(ctx);
+                    },
+                    child: const Text('Option #1')),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      setState(() {
+                        _selectedOption = "Option #2";
+                      });
+                      _close(ctx);
+                    },
+                    child: const Text('Option #2')),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      setState(() {
+                        _selectedOption = "Option #3";
+                      });
+                      _close(ctx);
+                    },
+                    child: const Text('Option #3')),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                onPressed: () => _close(ctx),
+                child: const Text('Close'),
+              ),
+            ));
+  }
+
+  // This function is used to close the action sheet
+  void _close(BuildContext ctx) {
+    Navigator.of(ctx).pop();
+  }
+
+  // This is what you select from the action sheet
+  String? _selectedOption;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+        navigationBar:
+            const CupertinoNavigationBar(middle: Text('KindaCode.com')),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              // The button
+              CupertinoButton(
+                child: const Text('Open Action Sheet'),
+                color: const Color.fromRGBO(200, 200, 0, 1),
+                onPressed: () => _show(context),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              // Display the result
+              Text(
+                _selectedOption != null ? '$_selectedOption' : 'No result',
+                style: const TextStyle(fontSize: 30),
+              )
+            ]),
+          ),
+        ));
   }
 }
