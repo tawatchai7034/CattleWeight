@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/HomePage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleBox.dart';
@@ -230,11 +230,11 @@ class CattleData extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: new RaisedButton(
                 onPressed: () {
-                  print("หน้าหลัก");
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) =>CattleHistory(camera: camera,)),
-                      (route) => false);
+                  // print("หน้าหลัก");
+                  // Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) =>CattleHistory(camera: camera,)),
+                  //     (route) => false);
                 },
                 child: Text(
                   "หน้าหลัก",

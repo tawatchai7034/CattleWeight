@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraTop.dart';

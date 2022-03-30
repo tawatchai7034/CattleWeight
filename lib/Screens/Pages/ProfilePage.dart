@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/DataBase/CattleDB.dart';
 import 'package:cattle_weight/DataBase/ProfileDB.dart';
-import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/ProfileBox.dart';
 import 'package:flutter/material.dart';

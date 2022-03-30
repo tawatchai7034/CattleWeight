@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstAddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
+import 'package:cattle_weight/Screens/Pages/catPro_screen.dart';
+
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
-import 'package:cattle_weight/Screens/Pages/HomePage.dart';
 import 'package:cattle_weight/model/MediaSource.dart';
 
 ConvertHex hex = new ConvertHex();
@@ -67,9 +68,7 @@ class _FisrtPageState extends State<FisrtPage> {
               MainButton(
                   onSelected: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CattleHistory(
-                              camera: widget.camera,
-                            )));
+                        builder: (context) => CatProScreen()));
                   },
                   title: "หน้าประวัติ"),
             ]),
