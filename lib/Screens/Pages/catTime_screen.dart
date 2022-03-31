@@ -1,6 +1,7 @@
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/DataBase/catPro_handler.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/addPhotoCattles.dart';
 import 'package:cattle_weight/model/catPro.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/Screens/Pages/catImage_screen.dart';
@@ -41,18 +42,17 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.catPro.name}"),
-        centerTitle: true,
-        actions: [
-        IconButton(
-            onPressed: () {
-              setState(() {
-                loadData();
-              });
-            },
-            icon: Icon(Icons.refresh)),
-      ]
-      ),
+          title: Text("${widget.catPro.name}"),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    loadData();
+                  });
+                },
+                icon: Icon(Icons.refresh)),
+          ]),
       body: Column(
         children: [
           Expanded(
@@ -106,28 +106,38 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                                       snapshot.data![index].note.toString()),
                                   trailing: IconButton(
                                       onPressed: () {
-                                        dbHelper!.updateCatTime(CatTimeModel(
-                                            id: snapshot.data![index].id!,
-                                            idPro: widget.catPro.id!,
-                                            bodyLenght: 10,
-                                            heartGirth: 10,
-                                            hearLenghtSide: 10,
-                                            hearLenghtRear: 10,
-                                            hearLenghtTop: 10,
-                                            pixelReference: 10,
-                                            distanceReference: 10,
-                                            imageSide: 10,
-                                            imageRear: 10,
-                                            imageTop: 10,
-                                            date: DateTime.now()
-                                                .toIso8601String(),
-                                            note: "New update"));
+                                        // dbHelper!.updateCatTime(CatTimeModel(
+                                        //     id: snapshot.data![index].id!,
+                                        //     idPro: widget.catPro.id!,
+                                        //     bodyLenght: 10,
+                                        //     heartGirth: 10,
+                                        //     hearLenghtSide: 10,
+                                        //     hearLenghtRear: 10,
+                                        //     hearLenghtTop: 10,
+                                        //     pixelReference: 10,
+                                        //     distanceReference: 10,
+                                        //     imageSide: 10,
+                                        //     imageRear: 10,
+                                        //     imageTop: 10,
+                                        //     date: DateTime.now()
+                                        //         .toIso8601String(),
+                                        //     note: "New update"));
 
-                                        setState(() {
-                                          notesList = dbHelper!
-                                              .getCatTimeListWithCatProID(
-                                                  widget.catPro.id!);
-                                        });
+                                        // setState(() {
+                                        //   notesList = dbHelper!
+                                        //       .getCatTimeListWithCatProID(
+                                        //           widget.catPro.id!);
+                                        // });
+
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddPhotoCattles(
+                                                        idPro:
+                                                            widget.catPro.id!,
+                                                        idTime: snapshot
+                                                            .data![index]
+                                                            .id!)));
                                       },
                                       icon: Icon(Icons.edit)),
                                 ),

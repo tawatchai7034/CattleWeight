@@ -2,8 +2,8 @@
 // Create a Form widget.
 import 'package:cattle_weight/DataBase/catPro_handler.dart';
 
-import 'package:cattle_weight/DataBase/catPro_handler.dart';
-import 'package:cattle_weight/Screens/Pages/catPro_screen.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/model/catPro.dart';
@@ -23,6 +23,7 @@ class CatProFormCreate extends StatefulWidget {
 // This class holds data related to the form.
 class CatProFormCreateState extends State<CatProFormCreate> {
   CatProHelper? catProHelper;
+  CatTimeHelper? catTimeHelper;
   final _formKey = GlobalKey<FormState>();
   String _selectedGender = 'male';
   late String cattleName;
@@ -35,6 +36,7 @@ class CatProFormCreateState extends State<CatProFormCreate> {
     // TODO: implement initState
     super.initState();
     catProHelper = new CatProHelper();
+    catTimeHelper = new CatTimeHelper();
     loadData();
   }
 
@@ -133,7 +135,7 @@ class CatProFormCreateState extends State<CatProFormCreate> {
                 child: DropdownButtonFormField<String>(
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue, width: 2),
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.circular(8),
                   )),
                   value: species,
@@ -204,11 +206,6 @@ class CatProFormCreateState extends State<CatProFormCreate> {
                               loadData();
 
                               Navigator.pop(context);
-
-                              // Navigator.of(context).pushAndRemoveUntil(
-                              //     MaterialPageRoute(
-                              //         builder: (context) => CatProScreen()),
-                              //     (Route<dynamic> route) => false);
                             }
                           },
                           child: const Text('Submit'),
