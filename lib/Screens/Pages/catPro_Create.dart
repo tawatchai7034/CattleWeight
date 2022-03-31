@@ -203,12 +203,12 @@ class CatProFormCreateState extends State<CatProFormCreate> {
                               await catProHelper!.insert(cattlePro);
                               loadData();
 
-                              // Navigator.pop(context);
+                              Navigator.pop(context);
 
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => CatProScreen()),
-                                  (Route<dynamic> route) => false);
+                              // Navigator.of(context).pushAndRemoveUntil(
+                              //     MaterialPageRoute(
+                              //         builder: (context) => CatProScreen()),
+                              //     (Route<dynamic> route) => false);
                             }
                           },
                           child: const Text('Submit'),

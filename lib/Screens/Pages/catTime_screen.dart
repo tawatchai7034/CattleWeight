@@ -43,6 +43,15 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
       appBar: AppBar(
         title: Text("${widget.catPro.name}"),
         centerTitle: true,
+        actions: [
+        IconButton(
+            onPressed: () {
+              setState(() {
+                loadData();
+              });
+            },
+            icon: Icon(Icons.refresh)),
+      ]
       ),
       body: Column(
         children: [

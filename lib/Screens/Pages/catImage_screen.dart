@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cattle_weight/Camera/camera_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -107,11 +108,11 @@ class _CatImageScreenState extends State<CatImageScreen> {
               IconButton(
                 icon: Icon(Icons.camera_alt),
                 onPressed: () {
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => CameraScreen(
-                  //           idPro: widget.idPro,
-                  //           idTime: widget.idTime,
-                  //         )));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CameraScreen(
+                            idPro: widget.idPro,
+                            idTime: widget.idTime,
+                          )));
                 },
               ),
             ],
@@ -127,6 +128,14 @@ class _CatImageScreenState extends State<CatImageScreen> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            refreshImages();
+          });
+        },
+        child: Icon(Icons.refresh),
       ),
     );
   }

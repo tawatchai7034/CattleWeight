@@ -1,4 +1,4 @@
-// @dart=2.9
+
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
@@ -10,13 +10,21 @@ import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
 
 ConvertHex hex = new ConvertHex();
 
-void main() async   {
- // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  WidgetsFlutterBinding.ensureInitialized();
+List<CameraDescription> cameras = [];
 
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
+void main() async   {
+//  // Ensure that plugin services are initialized so that `availableCameras()`
+//   // can be called before `runApp()`
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   // Obtain a list of the available cameras on the device.
+//   final cameras = await availableCameras();
+   try {
+    WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print('Error in fetching the cameras: $e');
+  }
 
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras.first;

@@ -28,7 +28,6 @@ class _CatProScreenState extends State<CatProScreen> {
     dbCatTime = new CatTimeHelper();
     dbImage = new CatImageHelper();
     loadData();
-    // NotesModel(title: "User00",age: 22,description: "Default user",email: "User@exemple.com");
   }
 
   loadData() async {
@@ -38,10 +37,15 @@ class _CatProScreenState extends State<CatProScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Cattle SQL"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text("Cattle SQL"), centerTitle: true, actions: [
+        IconButton(
+            onPressed: () {
+              setState(() {
+                loadData();
+              });
+            },
+            icon: Icon(Icons.refresh)),
+      ]),
       body: Column(
         children: [
           Expanded(
@@ -79,8 +83,9 @@ class _CatProScreenState extends State<CatProScreen> {
                                       snapshot.data![index].id!);
 
                                   // delete cattle Image in images table
-                                  dbImage!.deleteWithIDPro(snapshot.data![index].id!);
-                                  
+                                  dbImage!.deleteWithIDPro(
+                                      snapshot.data![index].id!);
+
                                   notesList = dbHelper!.getCatProList();
                                   snapshot.data!.remove(snapshot.data![index]);
                                 });
