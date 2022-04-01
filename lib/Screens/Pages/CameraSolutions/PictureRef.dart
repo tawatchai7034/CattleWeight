@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG.dart';
 import 'package:cattle_weight/Screens/Widgets/Alerts.dart';
@@ -15,16 +16,9 @@ ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 
 class PictureRef extends StatefulWidget {
-  final bool blueConnection;
-  final CameraDescription camera;
-  final String imgPath;
+  final File imageFile;
   final String fileName;
-  const PictureRef(
-      {Key? key,
-      required this.blueConnection,
-      required this.camera,
-      required this.imgPath,
-      required this.fileName})
+  const PictureRef({Key? key, required this.imageFile, required this.fileName})
       : super(key: key);
 
   @override
@@ -76,9 +70,7 @@ class _PictureRefState extends State<PictureRef> {
                     print('Pixel Distance = ${pos.getPixelDistance()}');
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => PictureHG(
-                            blueConnection: widget.blueConnection,
-                            camera: widget.camera,
-                            imgPath: widget.imgPath,
+                            imgPath: widget.imageFile.path,
                             fileName: widget.fileName)));
                   });
                 },
@@ -104,7 +96,7 @@ class _PictureRefState extends State<PictureRef> {
       body: new Stack(
         children: [
           LineAndPosition(
-            imgPath: widget.imgPath,
+            imgPath: widget.imageFile.path,
             fileName: widget.fileName,
             onSelected: () {
               _displayTextInputDialog(context);

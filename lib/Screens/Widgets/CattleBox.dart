@@ -138,7 +138,7 @@ class CattleBox extends StatelessWidget {
                   heartGirth,
                   bodyLenght,
                   weight,
-                  camera
+                  // camera
                 )));
       },
     ));

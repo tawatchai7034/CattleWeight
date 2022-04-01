@@ -163,15 +163,16 @@ class TakePictureSideState extends State<TakePictureSide>
                     String imageName = DateTime.now().toString() + ".jpg";
 
                     // If the picture was taken, display it on a new screen.
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => PictureRef(
-                                blueConnection: widget.blueConnection,
-                                camera: widget.camera,
-                                imgPath: image.path,
-                                fileName: imageName,
-                              )),
-                    );
+                    // await Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //       builder: (context) => 
+                    //       PictureRef(
+                    //             blueConnection: widget.blueConnection,
+                    //             camera: widget.camera,
+                    //             imgPath: image.path,
+                    //             fileName: imageName,
+                    //           )),
+                    // );
                   } catch (e) {
                     // If an error occurs, log the error to the console.
                     print(e);

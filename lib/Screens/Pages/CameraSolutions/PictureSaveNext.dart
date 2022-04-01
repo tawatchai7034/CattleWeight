@@ -8,12 +8,12 @@ import 'package:cattle_weight/convetHex.dart';
 ConvertHex hex = new ConvertHex();
 
 class PictureSaveNext extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final String localFront;
   final String localBack;
   const PictureSaveNext(
       {Key? key,
-      required this.camera,
+
       required this.localFront,
       required this.localBack})
       : super(key: key);
@@ -88,7 +88,7 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                                   255,
                                   255,
                                   255,
-                                  widget.camera)),
+                                  )),
                           (route) => false);
                     },
                     title: "คำนวณน้ำหนัก"),
@@ -97,12 +97,14 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
                 ),
                 MainButton(
                     onSelected: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => TakePictureTop(
-                                camera: widget.camera,
-                                localFront: widget.localFront,
-                                localBack: widget.localBack,
-                              )));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => TakePictureTop(
+                     
+                      //           localFront: widget.localFront,
+                      //           localBack: widget.localBack,
+                      //         )));
+
+                              // change new camera
                     },
                     title: "ถ่ายภาพกระดูกสันหลังโค"),
               ]),

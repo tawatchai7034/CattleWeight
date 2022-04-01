@@ -64,12 +64,12 @@ class _PictureRefState extends State<PictureRef> {
                   setState(() {
                     codeDialog = valueText;
                     print('Input = ' + codeDialog);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PictureHG(
-                            blueConnection: false,
-                            camera: widget.camera,
-                            imgPath: widget.imgPath,
-                            fileName: widget.fileName)));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => PictureHG(
+                    //         blueConnection: false,
+                    //         camera: widget.camera,
+                    //         imgPath: widget.imgPath,
+                    //         fileName: widget.fileName)));
                   });
                 },
               ),

@@ -61,7 +61,7 @@ class _BluePictureHGTopState extends State<BluePictureHGTop> {
                               255,
                               255,
                               255,
-                              widget.camera)),
+                              )),
                       (route) => false);
                 },
                 title: "บันทึก"),

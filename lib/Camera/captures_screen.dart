@@ -61,6 +61,7 @@ class _CapturesScreenState extends State<CapturesScreen> {
                               idTime: widget.idTime,
                               fileList: widget.imageFileList,
                               imageFile: imageFile,
+                              navigator: (){},
                             ),
                           ),
                         );

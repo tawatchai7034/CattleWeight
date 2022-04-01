@@ -12,14 +12,13 @@ import 'dart:math';
 ConvertHex hex = new ConvertHex();
 
 class PictureHG extends StatefulWidget {
-  final bool blueConnection;
-  final CameraDescription camera;
+  // final bool blueConnection;
+  // final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureHG(
       {Key? key,
-      required this.blueConnection,
-      required this.camera,
+
       required this.imgPath,
       required this.fileName})
       : super(key: key);
@@ -55,8 +54,7 @@ class _PictureHGState extends State<PictureHG> {
                     onSelected: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PictureBL(
-                              blueConnection: widget.blueConnection,
-                              camera: widget.camera,
+                             
                               imgPath: widget.imgPath,
                               fileName: widget.fileName)));
                     },

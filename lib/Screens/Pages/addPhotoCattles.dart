@@ -36,6 +36,7 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
   CatImageHelper? ImageHelper;
 
   late List<ImageModel> images;
+    ImageNavidation line = new ImageNavidation();
 
   @override
   void initState() {
@@ -95,6 +96,8 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
                     builder: (context) => CameraScreen(
                           idPro: widget.idPro,
                           idTime: widget.idTime,
+                          localFront: line.sideLeft,
+                          localBack: line.sideRight
                         )));
               },
               title: "ถ่ายภาพ"),

@@ -166,7 +166,7 @@ class TakePictureTopState extends State<TakePictureTop>
                     await Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => PictureTW2(
-                                camera: widget.camera,
+                                // camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,
                               )),

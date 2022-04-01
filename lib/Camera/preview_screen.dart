@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/utility.dart';
 import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
@@ -15,12 +16,14 @@ class PreviewScreen extends StatefulWidget {
   final int idTime;
   final File imageFile;
   final List<File> fileList;
+  final VoidCallback navigator;
   const PreviewScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
     required this.imageFile,
     required this.fileList,
+    required this.navigator
   }) : super(key: key);
 
   @override
@@ -83,10 +86,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
                     refreshImages();
                   });
 
+                  widget.navigator();
+                  
+
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(builder: (context) => CatTimeScreen(catProId: widget.idPro,)),
                   //     (Route<dynamic> route) => false);
-                  Navigator.pop(context);
+
+                  // Navigator.pop(context);
                 },
                 icon: Icon(Icons.save))
           ],

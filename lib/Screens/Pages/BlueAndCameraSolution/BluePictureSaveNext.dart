@@ -92,7 +92,7 @@ class _BluePictureSaveNextState extends State<BluePictureSaveNext> {
                                   255,
                                   255,
                                   255,
-                                  widget.camera)),
+                                  )),
                           (route) => false);
                     },
                     title: "คำนวณน้ำหนัก"),

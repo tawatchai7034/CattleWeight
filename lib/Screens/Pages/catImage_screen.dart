@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cattle_weight/Camera/camera_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -26,6 +27,7 @@ class _CatImageScreenState extends State<CatImageScreen> {
   CatImageHelper? ImageHelper;
   late List<ImageModel> images;
   final ImagePicker _picker = ImagePicker();
+  ImageNavidation line = new ImageNavidation();
 
   @override
   void initState() {
@@ -96,28 +98,29 @@ class _CatImageScreenState extends State<CatImageScreen> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text("Flutter Save Image"),
-        actions: <Widget>[
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.photo),
-                onPressed: () {
-                  pickImageFromGallery();
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.camera_alt),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => CameraScreen(
-                            idPro: widget.idPro,
-                            idTime: widget.idTime,
-                          )));
-                },
-              ),
-            ],
-          ),
-        ],
+        // actions: <Widget>[
+        //   Row(
+        //     children: [
+        //       IconButton(
+        //         icon: Icon(Icons.photo),
+        //         onPressed: () {
+        //           pickImageFromGallery();
+        //         },
+        //       ),
+        //       IconButton(
+        //         icon: Icon(Icons.camera_alt),
+        //         onPressed: () {
+        //           Navigator.of(context).push(MaterialPageRoute(
+        //               builder: (context) => CameraScreen(
+        //                   idPro: widget.idPro,
+        //                   idTime: widget.idTime,
+        //                   localFront: line.sideLeft,
+        //                   localBack: line.sideRight)));
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ],
       ),
       body: Center(
         child: Column(

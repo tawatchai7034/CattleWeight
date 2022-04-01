@@ -9,8 +9,6 @@ ConvertHex hex = new ConvertHex();
 final formKey = GlobalKey<FormState>();
 
 class AddProfile extends StatelessWidget {
-  final CameraDescription camera;
-  AddProfile(this.camera);
 
   ///controller ใช้ดึงข้อมูลที่กรอกเข้ามา (Input)
   final titleController = TextEditingController(); //รับค่าชื่อรายการ
@@ -32,7 +30,7 @@ class AddProfile extends StatelessWidget {
           //   child: Image.asset("assets/images/IconApp.jpg",
           //       height: 240, width: 360, fit: BoxFit.cover),
           // ),
-          MyCustomForm(camera: camera)
+          // MyCustomForm(camera: camera)
         ],
       ),
       backgroundColor: Color(hex.hexColor("ffffff")),

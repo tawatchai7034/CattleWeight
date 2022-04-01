@@ -12,14 +12,12 @@ import 'dart:math';
 ConvertHex hex = new ConvertHex();
 
 class PictureBL extends StatefulWidget {
-  final bool blueConnection;
-  final CameraDescription camera;
+
   final String imgPath;
   final String fileName;
   const PictureBL(
       {Key? key,
-      required this.blueConnection,
-      required this.camera,
+
       required this.imgPath,
       required this.fileName})
       : super(key: key);
@@ -53,12 +51,15 @@ class _PictureBLState extends State<PictureBL> {
                   Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                 MainButton(
                     onSelected: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => TakePictureRear(
-                              blueConnection: widget.blueConnection,
-                              camera: widget.camera,
-                              localFront: "assets/images/RearNavigation.png",
-                              localBack: "assets/images/RearNavigation.png")));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => TakePictureRear(
+                             
+                      //         localFront: "assets/images/RearNavigation.png",
+                      //         localBack: "assets/images/RearNavigation.png")));
+
+                      
+
+                              // chang new camera
                     },
                     title: "บันทึก"),
               ]),

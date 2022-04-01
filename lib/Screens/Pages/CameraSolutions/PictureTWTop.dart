@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 ConvertHex hex = new ConvertHex();
 
 class PictureTW2 extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureTW2(
       {Key? key,
-      required this.camera,
+
       required this.imgPath,
       required this.fileName})
       : super(key: key);
@@ -47,7 +47,7 @@ class _PictureTW2State extends State<PictureTW2> {
                 onSelected: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PictureHGTop(
-                            camera: widget.camera,
+            
                             imgPath: widget.imgPath,
                             fileName: widget.fileName,
                           )));

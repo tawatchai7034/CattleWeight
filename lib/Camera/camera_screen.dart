@@ -2,8 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
-import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -11,17 +9,29 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
 
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
+import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
+import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
+
 import '../Camera/preview_screen.dart';
 import '../main.dart';
 
+ConvertHex hex = new ConvertHex();
 class CameraScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
+  final String localFront;
+  final String localBack;
+  // final VoidCallback navigator;
 
   const CameraScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
+    required this.localFront,
+    required this.localBack,
+    // required this.navigator,
   }) : super(key: key);
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -61,8 +71,6 @@ class _CameraScreenState extends State<CameraScreen>
   bool showFront = true;
   bool showState = false;
   late AnimationController controllerAnimated;
-
-  ImageNavidation line = new ImageNavidation();
 
   getPermissionStatus() async {
     await Permission.camera.request();
@@ -555,26 +563,37 @@ class _CameraScreenState extends State<CameraScreen>
                                               ),
                                             ),
                                             InkWell(
-                                              onTap: _imageFile != null ||
-                                                      _videoFile != null
-                                                  ? () {
-                                                      Navigator.of(context)
-                                                          .push(
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PreviewScreen(
-                                                            idPro: widget.idPro,
-                                                            idTime:
-                                                                widget.idTime,
-                                                            imageFile:
-                                                                _imageFile!,
-                                                            fileList:
-                                                                allFileList,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }
-                                                  : null,
+                                              onTap:
+                                                  _imageFile != null ||
+                                                          _videoFile != null
+                                                      ? () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  PreviewScreen(
+                                                                idPro: widget
+                                                                    .idPro,
+                                                                idTime: widget
+                                                                    .idTime,
+                                                                imageFile:
+                                                                    _imageFile!,
+                                                                fileList:
+                                                                    allFileList,
+                                                                navigator: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .push(MaterialPageRoute(
+                                                                          builder: (context) => PictureRef(
+                                                                                imageFile: _imageFile!,
+                                                                                fileName: _imageFile!.path,
+                                                                              )));
+                                                                },
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      : null,
                                               child: Container(
                                                 width: 60,
                                                 height: 60,
@@ -625,8 +644,8 @@ class _CameraScreenState extends State<CameraScreen>
                             showState
                                 ? Container()
                                 : CattleNavigationLine(
-                                    front: line.sideLeft,
-                                    back: line.sideRight,
+                                    front: widget.localFront,
+                                    back: widget.localBack,
                                     imageHeight: 380,
                                     imageWidth: 280,
                                     showFront: showFront)

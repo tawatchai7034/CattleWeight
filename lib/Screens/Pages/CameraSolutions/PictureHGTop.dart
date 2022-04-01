@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 ConvertHex hex = new ConvertHex();
 
 class PictureHGTop extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureHGTop(
       {Key? key,
-      required this.camera,
+
       required this.imgPath,
       required this.fileName})
       : super(key: key);
@@ -61,7 +61,7 @@ class _PictureHGTopState extends State<PictureHGTop> {
                               255,
                               255,
                               255,
-                              widget.camera)),
+                              )),
                       (route) => false);
                 },
                 title: "บันทึก"),

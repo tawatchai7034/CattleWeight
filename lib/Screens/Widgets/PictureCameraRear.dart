@@ -48,7 +48,7 @@ class _CameraButtonState extends State<CameraButton> {
           onPressed: () {
             // RestartWidget.restartApp(context);
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AddProfile(widget.camera)));
+                builder: (context) => AddProfile()));
             //  Phoenix.rebirth(context);
             // mainCamera();
             // pickCameraMedia(context);
@@ -231,7 +231,7 @@ class TakePictureRearState extends State<TakePictureRear>
                     await Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => PictureRef2(
-                                camera: widget.camera,
+                                // camera: widget.camera,
                                 imgPath: image.path,
                                 fileName: imageName,
                               )),

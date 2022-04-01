@@ -13,12 +13,12 @@ import 'dart:math';
 ConvertHex hex = new ConvertHex();
 
 class PictureRef2 extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureRef2(
       {Key? key,
-      required this.camera,
+
       required this.imgPath,
       required this.fileName})
       : super(key: key);
@@ -54,7 +54,7 @@ class _PictureRef2State extends State<PictureRef2> {
                     onSelected: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PictureTW(
-                              camera: widget.camera,
+                              
                               imgPath: widget.imgPath,
                               fileName: widget.fileName)));
                     },

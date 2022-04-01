@@ -10,7 +10,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 ConvertHex hex = new ConvertHex();
 
 class CattleData extends StatelessWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final String cattleNumber;
   final String cattleName;
   final String gender;
@@ -33,7 +33,7 @@ class CattleData extends StatelessWidget {
       this.heartGirth,
       this.bodyLenght,
       this.weight,
-      this.camera);
+      );
 
   @override
   Widget build(BuildContext context) {

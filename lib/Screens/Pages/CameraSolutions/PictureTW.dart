@@ -13,12 +13,12 @@ import 'dart:math';
 ConvertHex hex = new ConvertHex();
 
 class PictureTW extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final String imgPath;
   final String fileName;
   const PictureTW(
       {Key? key,
-      required this.camera,
+ 
       required this.imgPath,
       required this.fileName})
       : super(key: key);
@@ -54,7 +54,7 @@ class _PictureTWState extends State<PictureTW> {
                     onSelected: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PictureSaveNext(
-                              camera: widget.camera,
+                              
                               localFront: "assets/images/TopLeftNavigation.png",
                               localBack:
                                   "assets/images/TopRightNavigation.png")));
