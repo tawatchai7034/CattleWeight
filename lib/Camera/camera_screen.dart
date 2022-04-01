@@ -12,6 +12,7 @@ import 'package:video_player/video_player.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
 
 import '../Camera/preview_screen.dart';
@@ -23,6 +24,7 @@ class CameraScreen extends StatefulWidget {
   final int idTime;
   final String localFront;
   final String localBack;
+  final CatTimeModel catTime;
   // final VoidCallback navigator;
 
   const CameraScreen({
@@ -31,7 +33,7 @@ class CameraScreen extends StatefulWidget {
     required this.idTime,
     required this.localFront,
     required this.localBack,
-    // required this.navigator,
+    required this.catTime,
   }) : super(key: key);
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -580,15 +582,8 @@ class _CameraScreenState extends State<CameraScreen>
                                                                     _imageFile!,
                                                                 fileList:
                                                                     allFileList,
-                                                                navigator: () {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .push(MaterialPageRoute(
-                                                                          builder: (context) => PictureRef(
-                                                                                imageFile: _imageFile!,
-                                                                                fileName: _imageFile!.path,
-                                                                              )));
-                                                                },
+                                                                catTime: widget.catTime,
+                                                                
                                                               ),
                                                             ),
                                                           );

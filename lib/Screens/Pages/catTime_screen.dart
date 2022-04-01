@@ -137,7 +137,8 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                                                             widget.catPro.id!,
                                                         idTime: snapshot
                                                             .data![index]
-                                                            .id!)));
+                                                            .id!,
+                                                        catTime:snapshot.data![index])));
                                       },
                                       icon: Icon(Icons.edit)),
                                 ),

@@ -2,26 +2,34 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:cattle_weight/Camera/camera_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluetoothPage.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/AddProfile.dart';
 import 'package:cattle_weight/Screens/Pages/catImage_screen.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
-import 'package:cattle_weight/Screens/Pages/GallorySolutions/AddProfile.dart';
+import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:cattle_weight/model/utility.dart';
-import 'package:flutter/material.dart';
-import 'package:cattle_weight/convetHex.dart';
-import 'package:image_picker/image_picker.dart';
 
 ConvertHex hex = new ConvertHex();
 
 class AddPhotoCattles extends StatefulWidget {
   final int idPro;
   final int idTime;
+  final CatTimeModel catTime;
 
-  const AddPhotoCattles({required this.idPro, required this.idTime});
+  const AddPhotoCattles({
+    Key? key,
+    required this.idPro,
+    required this.idTime,
+    required this.catTime,
+  }) : super(key: key);
 
   @override
   State<AddPhotoCattles> createState() => _AddPhotoCattlesState();
@@ -97,7 +105,8 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
                           idPro: widget.idPro,
                           idTime: widget.idTime,
                           localFront: line.sideLeft,
-                          localBack: line.sideRight
+                          localBack: line.sideRight,
+                          catTime: widget.catTime,
                         )));
               },
               title: "ถ่ายภาพ"),

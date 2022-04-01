@@ -2,17 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:cattle_weight/model/catTime.dart';
+
 import '../Camera/preview_screen.dart';
 
 class CapturesScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final List<File> imageFileList;
+  final CatTimeModel catTime;
   const CapturesScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
     required this.imageFileList,
+    required this.catTime,
   }) : super(key: key);
 
   @override
@@ -61,7 +65,7 @@ class _CapturesScreenState extends State<CapturesScreen> {
                               idTime: widget.idTime,
                               fileList: widget.imageFileList,
                               imageFile: imageFile,
-                              navigator: (){},
+                              catTime: widget.catTime,
                             ),
                           ),
                         );
