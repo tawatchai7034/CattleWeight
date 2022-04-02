@@ -29,6 +29,13 @@ class ImageModel {
         idTime = res["idTime"],
         imagePath = res["imagePath"];
 
+  static ImageModel fromJson(Map<String, Object?> json) => ImageModel(
+        id: json[ImageFields.id] as int?,
+        idPro: json[ImageFields.idPro] as int,
+        idTime: json[ImageFields.idTime] as int,
+        imagePath: json[ImageFields.imagePath] as String,
+      );
+
   Map<String, Object?> toMap() {
     return {
       'id': id,

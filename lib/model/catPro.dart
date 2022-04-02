@@ -29,6 +29,13 @@ class CatProModel {
         gender = res["gender"],
         species = res["species"];
 
+  static CatProModel fromJson(Map<String, Object?> json) => CatProModel(
+        id: json[CatProFields.id] as int?,
+        name: json[CatProFields.name] as String,
+        gender: json[CatProFields.gender] as String,
+        species: json[CatProFields.species] as String,
+      );
+
   Map<String, Object?> toMap() {
     return {
       'id': id,

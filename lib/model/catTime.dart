@@ -81,6 +81,23 @@ class CatTimeModel {
         date = res["date"],
         note = res["note"];
 
+  static CatTimeModel fromJson(Map<String, Object?> json) => CatTimeModel(
+        id: json[CatTimeFields.id] as int?,
+        idPro: json[CatTimeFields.idPro] as int,
+        bodyLenght: json[CatTimeFields.bodyLenght] as double,
+        heartGirth: json[CatTimeFields.heartGirth] as double,
+        hearLenghtSide: json[CatTimeFields.hearLenghtSide] as double,
+        hearLenghtRear: json[CatTimeFields.hearLenghtRear] as double,
+        hearLenghtTop: json[CatTimeFields.hearLenghtTop] as double,
+        pixelReference: json[CatTimeFields.pixelReference] as double,
+        distanceReference: json[CatTimeFields.distanceReference] as double,
+        imageSide: json[CatTimeFields.imageSide] as int,
+        imageRear: json[CatTimeFields.imageRear] as int,
+        imageTop: json[CatTimeFields.imageTop] as int,
+        date: json[CatTimeFields.date] as String,
+        note: json[CatTimeFields.note] as String,
+      );
+
   Map<String, Object?> toMap() {
     return {
       'id': id,

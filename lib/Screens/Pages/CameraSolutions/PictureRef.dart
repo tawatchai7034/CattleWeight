@@ -46,28 +46,6 @@ class _PictureRefState extends State<PictureRef> {
   CatTimeHelper catTimeHelper;
   Future<List<CatTimeModel>> notesList;
 
-  void onTapDown(BuildContext context, TapDownDetails details) {
-    print('${details.globalPosition}');
-    final RenderBox box = context.findRenderObject();
-    final Offset localOffset = box.globalToLocal(details.globalPosition);
-
-    setState(() {
-      index++;
-      positionsX.add(localOffset.dx);
-      positionsY.add(localOffset.dy);
-      // Distance calculation
-      positionsX.length % 2 == 0
-          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-                  (positionsX[index] - positionsX[index - 1])) +
-              ((positionsY[index] - positionsY[index - 1]) *
-                  (positionsY[index] - positionsY[index - 1])))
-          : pixelDistance = pixelDistance;
-
-      // print("Pixel Distance = ${pixelDistance}");
-      pos.setPixelDistance(pixelDistance);
-      print("POS  = ${pos.getPixelDistance()}");
-    });
-  }
 
   loadData() async {
     notesList = catTimeHelper.getCatTimeListWithCatProID(widget.catTime.idPro);
@@ -77,8 +55,7 @@ class _PictureRefState extends State<PictureRef> {
   void initState() {
     super.initState();
     catTimeHelper = new CatTimeHelper();
-    positionsX.add(100);
-    positionsY.add(100);
+
     loadData();
   }
 
@@ -150,8 +127,9 @@ class _PictureRefState extends State<PictureRef> {
                         loadData();
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => PictureHG(
-                                imgPath: widget.imageFile.path,
-                                fileName: widget.fileName)));
+                                imageFile: widget.imageFile,
+                                fileName: widget.fileName,
+                                catTime: widget.catTime,)));
                       },
                       child: const Text('บันทึก'),
                     ),
@@ -169,69 +147,19 @@ class _PictureRefState extends State<PictureRef> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("[1/3] กรุณาระบุจุดอ้างอิง",
-              style: TextStyle(
-                  fontSize: 24,
-                  color: Color(hex.hexColor("ffffff")),
-                  fontWeight: FontWeight.bold)),
-          backgroundColor: Color(hex.hexColor("#007BA4"))),
-      body: new Stack(
-        children: [
-          new GestureDetector(
-            onTapDown: (TapDownDetails details) => onTapDown(context, details),
-            child: new Stack(fit: StackFit.loose, children: <Widget>[
-              // Hack to expand stack to fill all the space. There must be a better
-              // way to do it.
-              // new Container(color: Colors.white),
-              new RotatedBox(
-                quarterTurns: 1,
-                child: PreviewScreen(
-                  imgPath: widget.imageFile.path,
-                  fileName: widget.fileName,
-                ),
-              ),
-              //// Show position (x2,y2)
-              // new Positioned(
-              //   child: new Text(
-              //       '(${positionsX[index].toInt()} , ${positionsY[index].toInt()})'),
-              //   left: positionsX[index],
-              //   top: positionsY[index],
-              // ),
-              //// Show position (x1,y1)
-              // positionsX.length % 2 == 0
-              //     ? new Positioned(
-              //         child: new Text(
-              //             '(${positionsX[index - 1].toInt()} , ${positionsY[index - 1].toInt()})'),
-              //         left: positionsX[index - 1],
-              //         top: positionsY[index - 1],
-              //       )
-              //     : Container(),
-              // // Distance calculation
-              // positionsX.length % 2 == 0
-              //     ? Text(
-              //         "${sqrt(((positionsX[index] - positionsX[index - 1]) * (positionsX[index] - positionsX[index - 1])) + ((positionsY[index] - positionsY[index - 1]) * (positionsY[index] - positionsY[index - 1])))}")
-              //     : Container(),
-              PathCircle(
-                x1: positionsX[index],
-                y1: positionsY[index],
-              ),
-              positionsX.length % 2 == 0
-                  ? PathCircle(
-                      x1: positionsX[index - 1],
-                      y1: positionsY[index - 1],
-                    )
-                  : Container(),
-              positionsX.length % 2 == 0
-                  ? new PathExample(
-                      x1: positionsX[index - 1],
-                      y1: positionsY[index - 1],
-                      x2: positionsX[index],
-                      y2: positionsY[index],
-                    )
-                  : Container(),
-
-              Padding(
+        appBar: AppBar(
+            title: Text("[1/3] กรุณาระบุจุดอ้างอิง",
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Color(hex.hexColor("ffffff")),
+                    fontWeight: FontWeight.bold)),
+            backgroundColor: Color(hex.hexColor("#007BA4"))),
+        body: Stack(
+          children: [
+            LineAndPositionPictureRef(
+                imgPath: widget.imageFile.path, fileName: widget.fileName),
+            Center(
+              child: Padding(
                 padding: EdgeInsets.all(20),
                 child:
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -261,28 +189,148 @@ class _PictureRefState extends State<PictureRef> {
                       title: "บันทึก"),
                 ]),
               ),
-            ]),
+            ),
+            showState
+                ? Container()
+                : AlertDialog(
+                    // backgroundColor: Colors.black,
+                    title: Text("กรุณาระบุจุดอ้างอิง",
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold)),
+                    content:
+                        Image.asset("assets/images/SideLeftNavigation5.png"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          setState(() => showState = !showState);
+                        },
+                        // => Navigator.pop(context, 'ตกลง'),
+                        child:
+                            const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                      ),
+                    ],
+                  ),
+          ],
+        )
+        
+        );
+  }
+}
+
+class LineAndPositionPictureRef extends StatefulWidget {
+  final String imgPath;
+  final String fileName;
+  final VoidCallback onSelected;
+  const LineAndPositionPictureRef(
+      {this.imgPath, this.fileName, this.onSelected});
+
+  @override
+  LineAndPositionPictureRefState createState() =>
+      new LineAndPositionPictureRefState();
+}
+
+class LineAndPositionPictureRefState extends State<LineAndPositionPictureRef> {
+  List<double> positionsX = [];
+  List<double> positionsY = [];
+  double pixelDistance = 0;
+  int index = 0;
+
+  void onTapDown(BuildContext context, TapDownDetails details) {
+    print('${details.globalPosition}');
+    final RenderBox box = context.findRenderObject();
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+
+    setState(() {
+      index++;
+      positionsX.add(localOffset.dx);
+      positionsY.add(localOffset.dy);
+      // Distance calculation
+      positionsX.length % 2 == 0
+          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
+                  (positionsX[index] - positionsX[index - 1])) +
+              ((positionsY[index] - positionsY[index - 1]) *
+                  (positionsY[index] - positionsY[index - 1])))
+          : pixelDistance = pixelDistance;
+
+      // print("Pixel Distance = ${pixelDistance}");
+      pos.setPixelDistance(pixelDistance);
+      print("POS  = ${pos.getPixelDistance()}");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    positionsX.add(100);
+    positionsY.add(100);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onTapDown: (TapDownDetails details) => onTapDown(context, details),
+      child: new Stack(fit: StackFit.loose, children: <Widget>[
+        // Hack to expand stack to fill all the space. There must be a better
+        // way to do it.
+        // new Container(color: Colors.white),
+        new RotatedBox(
+          quarterTurns: 1,
+          child: PreviewScreen(
+            imgPath: widget.imgPath,
+            fileName: widget.fileName,
           ),
-          showState
-              ? Container()
-              : AlertDialog(
-                  // backgroundColor: Colors.black,
-                  title: Text("กรุณาระบุจุดอ้างอิง",
-                      style:
-                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                  content: Image.asset("assets/images/SideLeftNavigation5.png"),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        setState(() => showState = !showState);
-                      },
-                      // => Navigator.pop(context, 'ตกลง'),
-                      child: const Text('ตกลง', style: TextStyle(fontSize: 24)),
-                    ),
-                  ],
-                ),
-        ],
-      ),
+        ),
+        //// Show position (x2,y2)
+        // new Positioned(
+        //   child: new Text(
+        //       '(${positionsX[index].toInt()} , ${positionsY[index].toInt()})'),
+        //   left: positionsX[index],
+        //   top: positionsY[index],
+        // ),
+        //// Show position (x1,y1)
+        // positionsX.length % 2 == 0
+        //     ? new Positioned(
+        //         child: new Text(
+        //             '(${positionsX[index - 1].toInt()} , ${positionsY[index - 1].toInt()})'),
+        //         left: positionsX[index - 1],
+        //         top: positionsY[index - 1],
+        //       )
+        //     : Container(),
+        // // Distance calculation
+        // positionsX.length % 2 == 0
+        //     ? Text(
+        //         "${sqrt(((positionsX[index] - positionsX[index - 1]) * (positionsX[index] - positionsX[index - 1])) + ((positionsY[index] - positionsY[index - 1]) * (positionsY[index] - positionsY[index - 1])))}")
+        //     : Container(),
+        PathCircle(
+          x1: positionsX[index],
+          y1: positionsY[index],
+        ),
+        positionsX.length % 2 == 0
+            ? PathCircle(
+                x1: positionsX[index - 1],
+                y1: positionsY[index - 1],
+              )
+            : Container(),
+        positionsX.length % 2 == 0
+            ? new PathExample(
+                x1: positionsX[index - 1],
+                y1: positionsY[index - 1],
+                x2: positionsX[index],
+                y2: positionsY[index],
+              )
+            : Container(),
+
+        // Padding(
+        //   padding: EdgeInsets.all(20),
+        //   child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        //     MainButton(
+        //         onSelected: () {
+        //           widget.onSelected();
+        //         },
+        //         title: "บันทึก"),
+        //   ]),
+        // ),
+      ]),
     );
   }
 }

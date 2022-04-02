@@ -63,6 +63,23 @@ class CatTimeHelper {
     return queryResult.map((e) => CatTimeModel.fromMap(e)).toList();
   }
 
+    Future<CatTimeModel> getCatTimeWithCatTimeID(int idTime) async {
+    var dbClient = await db;
+
+    final queryResult = await dbClient!.query(
+      'cattime',
+      columns: CatTimeFields.values,
+      where: 'id = ?',
+      whereArgs: [idTime],
+    );
+    
+    if (queryResult.isNotEmpty) {
+      return CatTimeModel.fromJson(queryResult.first);
+    } else {
+      throw Exception('ID $idTime not found');
+    }
+  }
+
 //  ************************** Query **************************
 
 //  ************************** Update **************************
