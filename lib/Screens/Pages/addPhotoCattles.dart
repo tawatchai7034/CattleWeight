@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:cattle_weight/Camera/camera_screen.dart';
+import 'package:cattle_weight/Camera/cameraSide_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluetoothPage.dart';
 import 'package:cattle_weight/Screens/Pages/GallorySolutions/AddProfile.dart';
@@ -39,12 +39,11 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
   late Future<File> imageFile;
 
   late Image image;
-  
 
   CatImageHelper? ImageHelper;
 
   late List<ImageModel> images;
-    ImageNavidation line = new ImageNavidation();
+  ImageNavidation line = new ImageNavidation();
 
   @override
   void initState() {
@@ -101,7 +100,7 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
           MainButton(
               onSelected: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CameraScreen(
+                    builder: (context) => CameraSideScreen(
                           idPro: widget.idPro,
                           idTime: widget.idTime,
                           localFront: line.sideLeft,

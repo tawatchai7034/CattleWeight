@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cattle_weight/Camera/capturesRear_screen.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:flutter/material.dart';
 
@@ -11,15 +13,15 @@ import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/utility.dart';
 
-import '../Camera/captures_screen.dart';
+import '../Camera/capturesSide_screen.dart';
 
-class PreviewScreen extends StatefulWidget {
+class PreviewRearScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final File imageFile;
   final List<File> fileList;
   final CatTimeModel catTime;
-  const PreviewScreen({
+  const PreviewRearScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
@@ -29,17 +31,19 @@ class PreviewScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PreviewScreen> createState() => _PreviewScreenState();
+  State<PreviewRearScreen> createState() => _PreviewRearScreenState();
 }
 
-class _PreviewScreenState extends State<PreviewScreen> {
+class _PreviewRearScreenState extends State<PreviewRearScreen> {
   CatImageHelper ImageHelper = CatImageHelper();
+  CatTimeHelper? catTimeHelper;
   late List<ImageModel> images;
 
   @override
   void initState() {
     // TODO: implement initState
     ImageHelper = CatImageHelper();
+    catTimeHelper = new CatTimeHelper();
     refreshImages();
     super.initState();
   }
@@ -63,7 +67,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => CapturesScreen(
+                      builder: (context) => CapturesRearScreen(
                         idPro: widget.idPro,
                         idTime: widget.idTime,
                         imageFileList: widget.fileList,
@@ -83,18 +87,35 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       idTime: widget.idTime,
                       imagePath: imgString);
 
-                  await ImageHelper.save(photo);
+                  // await ImageHelper.save(photo);
 
-                  setState(() {
-                    refreshImages();
-                  });
+                  // print("imgString : $imgString");
+                  // await catTimeHelper!.updateCatTime(CatTimeModel(
+                  //     id: widget.catTime.id,
+                  //     idPro: widget.catTime.idPro,
+                  //     bodyLenght: widget.catTime.bodyLenght,
+                  //     heartGirth: widget.catTime.heartGirth,
+                  //     hearLenghtSide: widget.catTime.hearLenghtSide,
+                  //     hearLenghtRear: widget.catTime.hearLenghtRear,
+                  //     hearLenghtTop: widget.catTime.hearLenghtTop,
+                  //     pixelReference: widget.catTime.pixelReference,
+                  //     distanceReference: widget.catTime.distanceReference,
+                  //     imageSide: imgString,
+                  //     imageRear: widget.catTime.imageRear,
+                  //     imageTop: widget.catTime.imageTop,
+                  //     date: DateTime.now().toIso8601String(),
+                  //     note: "Update pixel reference"));
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureRef(
-                            imageFile: file,
-                            fileName: file.path,
-                            catTime: widget.catTime,
-                          )));
+                  // setState(() {
+                  //   refreshImages();
+                  // });
+
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => PictureRef(
+                  //           imageFile: file,
+                  //           fileName: file.path,
+                  //           catTime: widget.catTime,
+                  //         )));
 
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(builder: (context) => CatTimeScreen(catProId: widget.idPro,)),

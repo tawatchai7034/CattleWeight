@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cattle_weight/Camera/camera_screen.dart';
+import 'package:cattle_weight/Camera/cameraSide_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';

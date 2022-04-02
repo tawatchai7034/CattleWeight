@@ -76,6 +76,24 @@ class CatImageHelper {
     return employees;
   }
 
+  
+    Future<ImageModel> getImageWithPath(String path) async {
+    var dbClient = await db;
+
+    final queryResult = await dbClient.query(
+      'cattime',
+      columns: ImageFields.values,
+      where: 'imagePath = ?',
+      whereArgs: [path],
+    );
+    
+    if (queryResult.isNotEmpty) {
+      return ImageModel.fromJson(queryResult.first);
+    } else {
+      throw Exception('Path $path not found');
+    }
+  }
+
 //  ************************** Query **************************
 
 //  ************************** Update **************************

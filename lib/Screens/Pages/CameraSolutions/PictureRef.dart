@@ -45,10 +45,10 @@ class _PictureRefState extends State<PictureRef> {
   int index = 0;
   CatTimeHelper catTimeHelper;
   Future<List<CatTimeModel>> notesList;
-
+  Future<CatTimeModel> catTimeData;
 
   loadData() async {
-    notesList = catTimeHelper.getCatTimeListWithCatProID(widget.catTime.idPro);
+    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTime.id);
   }
 
   @override
@@ -80,62 +80,75 @@ class _PictureRefState extends State<PictureRef> {
                   InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง"),
             ),
             actions: <Widget>[
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 28, vertical: 16),
-                          textStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('ยกเลิก'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 28, vertical: 16),
-                          textStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      onPressed: () async {
-                        await catTimeHelper.updateCatTime(CatTimeModel(
-                            id: widget.catTime.id,
-                            idPro: widget.catTime.idPro,
-                            bodyLenght: widget.catTime.bodyLenght,
-                            heartGirth: widget.catTime.heartGirth,
-                            hearLenghtSide: widget.catTime.hearLenghtSide,
-                            hearLenghtRear: widget.catTime.hearLenghtRear,
-                            hearLenghtTop: widget.catTime.hearLenghtTop,
-                            pixelReference: pos.getPixelDistance(),
-                            distanceReference:
-                                double.parse(_textFieldController.text),
-                            imageSide: widget.catTime.imageSide,
-                            imageRear: widget.catTime.imageRear,
-                            imageTop: widget.catTime.imageTop,
-                            date: DateTime.now().toIso8601String(),
-                            note: "Update pixel reference"));
+              FutureBuilder(
+                  future: catTimeData,
+                  builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.red,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 28, vertical: 16),
+                                  textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('ยกเลิก'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 28, vertical: 16),
+                                  textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () async {
+                                await catTimeHelper.updateCatTime(CatTimeModel(
+                                    id: snapshot.data.id,
+                                    idPro: snapshot.data.idPro,
+                                    bodyLenght: snapshot.data.bodyLenght,
+                                    heartGirth: snapshot.data.heartGirth,
+                                    hearLenghtSide:
+                                        snapshot.data.hearLenghtSide,
+                                    hearLenghtRear:
+                                        snapshot.data.hearLenghtRear,
+                                    hearLenghtTop: snapshot.data.hearLenghtTop,
+                                    pixelReference: pos.getPixelDistance(),
+                                    distanceReference:
+                                        double.parse(_textFieldController.text),
+                                    imageSide: snapshot.data.imageSide,
+                                    imageRear: snapshot.data.imageRear,
+                                    imageTop: snapshot.data.imageTop,
+                                    date: DateTime.now().toIso8601String(),
+                                    note: "Update pixel reference"));
 
-                        loadData();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PictureHG(
-                                imageFile: widget.imageFile,
-                                fileName: widget.fileName,
-                                catTime: widget.catTime,)));
-                      },
-                      child: const Text('บันทึก'),
-                    ),
-                  ),
-                ],
-              ),
+                                loadData();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => PictureHG(
+                                          imageFile: widget.imageFile,
+                                          fileName: widget.fileName,
+                                          catTime: widget.catTime,
+                                        )));
+                              },
+                              child: const Text('บันทึก'),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Container();
+                    }
+                  })
             ],
           );
         });
@@ -211,9 +224,7 @@ class _PictureRefState extends State<PictureRef> {
                     ],
                   ),
           ],
-        )
-        
-        );
+        ));
   }
 }
 

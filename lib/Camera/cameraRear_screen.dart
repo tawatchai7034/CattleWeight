@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Camera/previewRear_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -15,11 +16,11 @@ import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
 
-import '../Camera/preview_screen.dart';
+import '../Camera/previewSide_screen.dart';
 import '../main.dart';
 
 ConvertHex hex = new ConvertHex();
-class CameraScreen extends StatefulWidget {
+class CameraRearScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final String localFront;
@@ -27,7 +28,7 @@ class CameraScreen extends StatefulWidget {
   final CatTimeModel catTime;
   // final VoidCallback navigator;
 
-  const CameraScreen({
+  const CameraRearScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
@@ -36,10 +37,10 @@ class CameraScreen extends StatefulWidget {
     required this.catTime,
   }) : super(key: key);
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  _CameraRearScreenState createState() => _CameraRearScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen>
+class _CameraRearScreenState extends State<CameraRearScreen>
     with SingleTickerProviderStateMixin {
   CameraController? controller;
   VideoPlayerController? videoController;
@@ -326,7 +327,7 @@ class _CameraScreenState extends State<CameraScreen>
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'ถ่ายภาพด้่านข้างโค',
+            'ถ่ายภาพด้่านหลังโค',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           actions: [
@@ -573,7 +574,7 @@ class _CameraScreenState extends State<CameraScreen>
                                                               .push(
                                                             MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  PreviewScreen(
+                                                                  PreviewRearScreen(
                                                                 idPro: widget
                                                                     .idPro,
                                                                 idTime: widget

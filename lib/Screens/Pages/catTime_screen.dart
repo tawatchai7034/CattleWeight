@@ -165,9 +165,9 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                     hearLenghtTop: 0,
                     pixelReference: 0,
                     distanceReference: 0,
-                    imageSide: 0,
-                    imageRear: 0,
-                    imageTop: 0,
+                    imageSide: '',
+                    imageRear: '',
+                    imageTop: '',
                     date: DateTime.now().toIso8601String(),
                     note: "New create"))
                 .then((value) {

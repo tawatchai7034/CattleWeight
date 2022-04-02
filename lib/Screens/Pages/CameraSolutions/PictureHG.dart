@@ -82,36 +82,43 @@ class _PictureHGState extends State<PictureHG> {
                           children: [
                             MainButton(
                                 onSelected: () async {
-                                  print(
-                                      "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}");
-                                  //   await catTimeHelper.updateCatTime(CatTimeModel(
-                                  //       id: widget.catTime.id,
-                                  //       idPro: widget.catTime.idPro,
-                                  //       bodyLenght: widget.catTime.bodyLenght,
-                                  //       heartGirth: widget.catTime.heartGirth,
-                                  //       hearLenghtSide: widget.catTime.hearLenghtSide,
-                                  //       hearLenghtRear: widget.catTime.hearLenghtRear,
-                                  //       hearLenghtTop: widget.catTime.hearLenghtTop,
-                                  //       pixelReference: pos.getPixelDistance(),
-                                  //       distanceReference:
-                                  //           double.parse(_textFieldController.text),
-                                  //       imageSide: widget.catTime.imageSide,
-                                  //       imageRear: widget.catTime.imageRear,
-                                  //       imageTop: widget.catTime.imageTop,
-                                  //       date: DateTime.now().toIso8601String(),
-                                  //       note: "Update pixel reference"));
-                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  // print(
+                                  //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
 
-                                  //     builder: (context) => PictureBL(
-
-                                  //         imgPath: widget.imageFile.path,
-                                  //         fileName: widget.fileName)));
+                                  await catTimeHelper.updateCatTime(
+                                      CatTimeModel(
+                                          id: snapshot.data.id,
+                                          idPro: snapshot.data.idPro,
+                                          bodyLenght: snapshot.data.bodyLenght,
+                                          heartGirth: snapshot.data.heartGirth,
+                                          hearLenghtSide: pos
+                                              .getPixelDistance(),
+                                          hearLenghtRear:
+                                              snapshot.data.hearLenghtRear,
+                                          hearLenghtTop:
+                                              snapshot.data.hearLenghtTop,
+                                          pixelReference:
+                                              snapshot.data.pixelReference,
+                                          distanceReference:
+                                              snapshot.data.distanceReference,
+                                          imageSide: snapshot.data.imageSide,
+                                          imageRear: snapshot.data.imageRear,
+                                          imageTop: snapshot.data.imageTop,
+                                          date:
+                                              DateTime.now().toIso8601String(),
+                                          note: "Update pixel reference"));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => PictureBL(
+                                        imgPath: widget.imageFile.path,
+                                        fileName: widget.fileName,
+                                        catTimeID: snapshot.data.id),
+                                  ));
                                 },
                                 title: "บันทึก")
                           ]),
                     );
                   } else {
-                   return Container();
+                    return Container();
                   }
                 },
               ),

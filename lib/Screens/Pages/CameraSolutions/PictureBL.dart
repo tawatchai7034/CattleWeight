@@ -1,25 +1,30 @@
+// @dart=2.9
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Camera/cameraRear_screen.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
 import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
+import 'package:cattle_weight/Screens/Widgets/PaintLine.dart';
+import 'package:cattle_weight/Screens/Widgets/PaintPoint.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
+import 'package:cattle_weight/Screens/Widgets/position.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catTime.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:ffi';
 import 'dart:math';
 
 ConvertHex hex = new ConvertHex();
+Positions pos = new Positions();
 
 class PictureBL extends StatefulWidget {
-
+  final catTimeID;
   final String imgPath;
   final String fileName;
-  const PictureBL(
-      {Key? key,
-
-      required this.imgPath,
-      required this.fileName})
+  const PictureBL({Key key, this.imgPath, this.fileName, this.catTimeID})
       : super(key: key);
 
   @override
@@ -28,6 +33,21 @@ class PictureBL extends StatefulWidget {
 
 class _PictureBLState extends State<PictureBL> {
   bool showState = false;
+  CatTimeHelper catTimeHelper;
+  Future<CatTimeModel> catTimeData;
+  ImageNavidation line = new ImageNavidation();
+
+  Future loadData() async {
+    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTimeID);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    catTimeHelper = new CatTimeHelper();
+
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +61,67 @@ class _PictureBLState extends State<PictureBL> {
             backgroundColor: Color(hex.hexColor("#007BA4"))),
         body: new Stack(
           children: [
-            LineAndPosition(
+            LineAndPositionPictureBL(
               imgPath: widget.imgPath,
               fileName: widget.fileName,
             ),
             Padding(
               padding: EdgeInsets.all(20),
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                MainButton(
-                    onSelected: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => TakePictureRear(
-                             
-                      //         localFront: "assets/images/RearNavigation.png",
-                      //         localBack: "assets/images/RearNavigation.png")));
+              child: FutureBuilder(
+                  future: catTimeData,
+                  builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+                    if (snapshot.hasData) {
+                      return Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              MainButton(
+                                  onSelected: () async {
+                                    await catTimeHelper.updateCatTime(
+                                        CatTimeModel(
+                                            id: snapshot.data.id,
+                                            idPro: snapshot.data.idPro,
+                                            bodyLenght:
+                                                pos.getPixelDistance(),
+                                            heartGirth:
+                                                snapshot.data.heartGirth,
+                                            hearLenghtSide:
+                                                snapshot.data.hearLenghtSide,
+                                            hearLenghtRear:
+                                                snapshot.data.hearLenghtRear,
+                                            hearLenghtTop:
+                                                snapshot.data.hearLenghtTop,
+                                            pixelReference:
+                                                snapshot.data.pixelReference,
+                                            distanceReference:
+                                                snapshot.data.distanceReference,
+                                            imageSide: snapshot.data.imageSide,
+                                            imageRear: snapshot.data.imageRear,
+                                            imageTop: snapshot.data.imageTop,
+                                            date: DateTime.now()
+                                                .toIso8601String(),
+                                            note: "Update pixel reference"));
 
-                      
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CameraRearScreen(
+                                                  idPro: snapshot.data.idPro,
+                                                  idTime: snapshot.data.id,
+                                                  localFront: line.rearRight,
+                                                  localBack: line.rearRight,
+                                                  catTime: snapshot.data,
+                                                )));
 
-                              // chang new camera
-                    },
-                    title: "บันทึก"),
-              ]),
+                                    // chang new camera
+                                  },
+                                  title: "บันทึก"),
+                            ]),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
             ),
             showState
                 ? Container()
@@ -86,5 +145,123 @@ class _PictureBLState extends State<PictureBL> {
                   ),
           ],
         ));
+  }
+}
+
+class LineAndPositionPictureBL extends StatefulWidget {
+  final String imgPath;
+  final String fileName;
+  final VoidCallback onSelected;
+  const LineAndPositionPictureBL(
+      {this.imgPath, this.fileName, this.onSelected});
+
+  @override
+  LineAndPositionPictureBLState createState() =>
+      new LineAndPositionPictureBLState();
+}
+
+class LineAndPositionPictureBLState extends State<LineAndPositionPictureBL> {
+  List<double> positionsX = [];
+  List<double> positionsY = [];
+  double pixelDistance = 0;
+  int index = 0;
+
+  void onTapDown(BuildContext context, TapDownDetails details) {
+    print('${details.globalPosition}');
+    final RenderBox box = context.findRenderObject();
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+
+    setState(() {
+      index++;
+      positionsX.add(localOffset.dx);
+      positionsY.add(localOffset.dy);
+      // Distance calculation
+      positionsX.length % 2 == 0
+          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
+                  (positionsX[index] - positionsX[index - 1])) +
+              ((positionsY[index] - positionsY[index - 1]) *
+                  (positionsY[index] - positionsY[index - 1])))
+          : pixelDistance = pixelDistance;
+
+      // print("Pixel Distance = ${pixelDistance}");
+      pos.setPixelDistance(pixelDistance);
+      print("POS  = ${pos.getPixelDistance()}");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    positionsX.add(100);
+    positionsY.add(100);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onTapDown: (TapDownDetails details) => onTapDown(context, details),
+      child: new Stack(fit: StackFit.loose, children: <Widget>[
+        // Hack to expand stack to fill all the space. There must be a better
+        // way to do it.
+        // new Container(color: Colors.white),
+        new RotatedBox(
+          quarterTurns: 1,
+          child: PreviewScreen(
+            imgPath: widget.imgPath,
+            fileName: widget.fileName,
+          ),
+        ),
+        //// Show position (x2,y2)
+        // new Positioned(
+        //   child: new Text(
+        //       '(${positionsX[index].toInt()} , ${positionsY[index].toInt()})'),
+        //   left: positionsX[index],
+        //   top: positionsY[index],
+        // ),
+        //// Show position (x1,y1)
+        // positionsX.length % 2 == 0
+        //     ? new Positioned(
+        //         child: new Text(
+        //             '(${positionsX[index - 1].toInt()} , ${positionsY[index - 1].toInt()})'),
+        //         left: positionsX[index - 1],
+        //         top: positionsY[index - 1],
+        //       )
+        //     : Container(),
+        // // Distance calculation
+        // positionsX.length % 2 == 0
+        //     ? Text(
+        //         "${sqrt(((positionsX[index] - positionsX[index - 1]) * (positionsX[index] - positionsX[index - 1])) + ((positionsY[index] - positionsY[index - 1]) * (positionsY[index] - positionsY[index - 1])))}")
+        //     : Container(),
+        PathCircle(
+          x1: positionsX[index],
+          y1: positionsY[index],
+        ),
+        positionsX.length % 2 == 0
+            ? PathCircle(
+                x1: positionsX[index - 1],
+                y1: positionsY[index - 1],
+              )
+            : Container(),
+        positionsX.length % 2 == 0
+            ? new PathExample(
+                x1: positionsX[index - 1],
+                y1: positionsY[index - 1],
+                x2: positionsX[index],
+                y2: positionsY[index],
+              )
+            : Container(),
+
+        // Padding(
+        //   padding: EdgeInsets.all(20),
+        //   child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        //     MainButton(
+        //         onSelected: () {
+        //           widget.onSelected();
+        //         },
+        //         title: "บันทึก"),
+        //   ]),
+        // ),
+      ]),
+    );
   }
 }

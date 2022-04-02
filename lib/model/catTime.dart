@@ -42,9 +42,9 @@ class CatTimeModel {
   final double hearLenghtTop;
   final double pixelReference;
   final double distanceReference;
-  final int imageSide;
-  final int imageRear;
-  final int imageTop;
+  final String imageSide;
+  final String imageRear;
+  final String imageTop;
   final String date;
   final String note;
 
@@ -91,9 +91,9 @@ class CatTimeModel {
         hearLenghtTop: json[CatTimeFields.hearLenghtTop] as double,
         pixelReference: json[CatTimeFields.pixelReference] as double,
         distanceReference: json[CatTimeFields.distanceReference] as double,
-        imageSide: json[CatTimeFields.imageSide] as int,
-        imageRear: json[CatTimeFields.imageRear] as int,
-        imageTop: json[CatTimeFields.imageTop] as int,
+        imageSide: json[CatTimeFields.imageSide] as String,
+        imageRear: json[CatTimeFields.imageRear] as String,
+        imageTop: json[CatTimeFields.imageTop] as String,
         date: json[CatTimeFields.date] as String,
         note: json[CatTimeFields.note] as String,
       );

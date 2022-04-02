@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/model/catTime.dart';
 
-import '../Camera/preview_screen.dart';
+import '../Camera/previewSide_screen.dart';
 
-class CapturesScreen extends StatefulWidget {
+class CapturesRearScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final List<File> imageFileList;
   final CatTimeModel catTime;
-  const CapturesScreen({
+  const CapturesRearScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
@@ -20,10 +20,10 @@ class CapturesScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CapturesScreen> createState() => _CapturesScreenState();
+  State<CapturesRearScreen> createState() => _CapturesRearScreenState();
 }
 
-class _CapturesScreenState extends State<CapturesScreen> {
+class _CapturesRearScreenState extends State<CapturesRearScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +60,7 @@ class _CapturesScreenState extends State<CapturesScreen> {
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => PreviewScreen(
+                            builder: (context) => PreviewSideScreen(
                               idPro: widget.idPro,
                               idTime: widget.idTime,
                               fileList: widget.imageFileList,
