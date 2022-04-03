@@ -39,12 +39,7 @@ class PictureRef extends StatefulWidget {
 class _PictureRefState extends State<PictureRef> {
   bool showState = false;
   TextEditingController _textFieldController = TextEditingController();
-  List<double> positionsX = [];
-  List<double> positionsY = [];
-  double pixelDistance = 0;
-  int index = 0;
   CatTimeHelper catTimeHelper;
-  Future<List<CatTimeModel>> notesList;
   Future<CatTimeModel> catTimeData;
 
   loadData() async {
@@ -65,7 +60,7 @@ class _PictureRefState extends State<PictureRef> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'ระบุความยาวของจุดอ้างอิง',
+              'ระบุความยาวของจุดอ้างอิง (เซนติเมตร)',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             content: TextField(
@@ -77,7 +72,7 @@ class _PictureRefState extends State<PictureRef> {
               },
               controller: _textFieldController,
               decoration:
-                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง"),
+                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง "),
             ),
             actions: <Widget>[
               FutureBuilder(

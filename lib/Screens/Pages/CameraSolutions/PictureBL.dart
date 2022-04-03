@@ -77,16 +77,21 @@ class _PictureBLState extends State<PictureBL> {
                             children: [
                               MainButton(
                                   onSelected: () async {
+                                    double bl = (pos.getPixelDistance() *
+                                            snapshot.data.distanceReference) /
+                                        snapshot.data.pixelReference;
+
+                                    print("Body Lenght: $bl CM.");
+
                                     await catTimeHelper.updateCatTime(
                                         CatTimeModel(
                                             id: snapshot.data.id,
                                             idPro: snapshot.data.idPro,
-                                            bodyLenght:
-                                                pos.getPixelDistance(),
-                                            heartGirth:
-                                                snapshot.data.heartGirth,
-                                            hearLenghtSide:
-                                                snapshot.data.hearLenghtSide,
+                                            bodyLenght: bl,
+                                            heartGirth: snapshot
+                                                .data.heartGirth,
+                                            hearLenghtSide: snapshot
+                                                .data.hearLenghtSide,
                                             hearLenghtRear:
                                                 snapshot.data.hearLenghtRear,
                                             hearLenghtTop:

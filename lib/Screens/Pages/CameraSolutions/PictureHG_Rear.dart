@@ -20,13 +20,13 @@ import 'package:cattle_weight/model/catTime.dart';
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 
-class PictureHG extends StatefulWidget {
+class PictureHG_Rear extends StatefulWidget {
   // final bool blueConnection;
   // final CameraDescription camera;
   final File imageFile;
   final String fileName;
   final CatTimeModel catTime;
-  const PictureHG({
+  const PictureHG_Rear({
     Key key,
     this.imageFile,
     this.fileName,
@@ -34,10 +34,10 @@ class PictureHG extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PictureHGState createState() => _PictureHGState();
+  _PictureHG_RearState createState() => _PictureHG_RearState();
 }
 
-class _PictureHGState extends State<PictureHG> {
+class _PictureHG_RearState extends State<PictureHG_Rear> {
   bool showState = false;
   CatTimeHelper catTimeHelper;
   Future<CatTimeModel> catTimeData;
@@ -66,7 +66,7 @@ class _PictureHGState extends State<PictureHG> {
             backgroundColor: Color(hex.hexColor("#007BA4"))),
         body: new Stack(
           children: [
-            LineAndPositionPictureHG(
+            LineAndPositionPictureHG_Rear(
               imgPath: widget.imageFile.path,
               fileName: widget.fileName,
             ),
@@ -84,39 +84,38 @@ class _PictureHGState extends State<PictureHG> {
                                 onSelected: () async {
                                   // print(
                                   //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
-                                  double hls = (pos.getPixelDistance() *
+                                  double hlr = (pos.getPixelDistance() *
                                           snapshot.data.distanceReference) /
                                       snapshot.data.pixelReference;
 
-                                  print("Hear Lenght Side: $hls CM.");
-                                  
-                                  await catTimeHelper.updateCatTime(
-                                      CatTimeModel(
-                                          id: snapshot.data.id,
-                                          idPro: snapshot.data.idPro,
-                                          bodyLenght: snapshot.data.bodyLenght,
-                                          heartGirth: snapshot.data.heartGirth,
-                                          hearLenghtSide: hls,
-                                          hearLenghtRear: snapshot
-                                              .data.hearLenghtRear,
-                                          hearLenghtTop: snapshot
-                                              .data.hearLenghtTop,
-                                          pixelReference: snapshot
-                                              .data.pixelReference,
-                                          distanceReference:
-                                              snapshot.data.distanceReference,
-                                          imageSide: snapshot.data.imageSide,
-                                          imageRear: snapshot.data.imageRear,
-                                          imageTop: snapshot.data.imageTop,
-                                          date:
-                                              DateTime.now().toIso8601String(),
-                                          note: "Update pixel reference"));
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => PictureBL(
-                                        imgPath: widget.imageFile.path,
-                                        fileName: widget.fileName,
-                                        catTimeID: snapshot.data.id),
-                                  ));
+                                  print("Hear Lenght Rear: $hlr CM.");
+
+                                  // await catTimeHelper.updateCatTime(
+                                  //     CatTimeModel(
+                                  //         id: snapshot.data.id,
+                                  //         idPro: snapshot.data.idPro,
+                                  //         bodyLenght: snapshot.data.bodyLenght,
+                                  //         heartGirth: snapshot.data.heartGirth,
+                                  //         hearLenghtSide: snapshot.data.hearLenghtSide,
+                                  //         hearLenghtRear: hlr,
+                                  //         hearLenghtTop: snapshot
+                                  //             .data.hearLenghtTop,
+                                  //         pixelReference: snapshot
+                                  //             .data.pixelReference,
+                                  //         distanceReference:
+                                  //             snapshot.data.distanceReference,
+                                  //         imageSide: snapshot.data.imageSide,
+                                  //         imageRear: snapshot.data.imageRear,
+                                  //         imageTop: snapshot.data.imageTop,
+                                  //         date:
+                                  //             DateTime.now().toIso8601String(),
+                                  //         note: "Update pixel reference"));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (context) => PictureBL(
+                                  //       imgPath: widget.imageFile.path,
+                                  //       fileName: widget.fileName,
+                                  //       catTimeID: snapshot.data.id),
+                                  // ));
                                 },
                                 title: "บันทึก")
                           ]),
@@ -152,19 +151,20 @@ class _PictureHGState extends State<PictureHG> {
   }
 }
 
-class LineAndPositionPictureHG extends StatefulWidget {
+class LineAndPositionPictureHG_Rear extends StatefulWidget {
   final String imgPath;
   final String fileName;
   final VoidCallback onSelected;
-  const LineAndPositionPictureHG(
+  const LineAndPositionPictureHG_Rear(
       {this.imgPath, this.fileName, this.onSelected});
 
   @override
-  LineAndPositionPictureHGState createState() =>
-      new LineAndPositionPictureHGState();
+  LineAndPositionPictureHG_RearState createState() =>
+      new LineAndPositionPictureHG_RearState();
 }
 
-class LineAndPositionPictureHGState extends State<LineAndPositionPictureHG> {
+class LineAndPositionPictureHG_RearState
+    extends State<LineAndPositionPictureHG_Rear> {
   List<double> positionsX = [];
   List<double> positionsY = [];
   double pixelDistance = 0;

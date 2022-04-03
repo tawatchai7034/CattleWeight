@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cattle_weight/Camera/capturesRear_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRefRear.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:flutter/material.dart';
 
@@ -87,35 +88,35 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
                       idTime: widget.idTime,
                       imagePath: imgString);
 
-                  // await ImageHelper.save(photo);
+                  await ImageHelper.save(photo);
 
-                  // print("imgString : $imgString");
-                  // await catTimeHelper!.updateCatTime(CatTimeModel(
-                  //     id: widget.catTime.id,
-                  //     idPro: widget.catTime.idPro,
-                  //     bodyLenght: widget.catTime.bodyLenght,
-                  //     heartGirth: widget.catTime.heartGirth,
-                  //     hearLenghtSide: widget.catTime.hearLenghtSide,
-                  //     hearLenghtRear: widget.catTime.hearLenghtRear,
-                  //     hearLenghtTop: widget.catTime.hearLenghtTop,
-                  //     pixelReference: widget.catTime.pixelReference,
-                  //     distanceReference: widget.catTime.distanceReference,
-                  //     imageSide: imgString,
-                  //     imageRear: widget.catTime.imageRear,
-                  //     imageTop: widget.catTime.imageTop,
-                  //     date: DateTime.now().toIso8601String(),
-                  //     note: "Update pixel reference"));
+                  print("imgString : $imgString");
+                  await catTimeHelper!.updateCatTime(CatTimeModel(
+                      id: widget.catTime.id,
+                      idPro: widget.catTime.idPro,
+                      bodyLenght: widget.catTime.bodyLenght,
+                      heartGirth: widget.catTime.heartGirth,
+                      hearLenghtSide: widget.catTime.hearLenghtSide,
+                      hearLenghtRear: widget.catTime.hearLenghtRear,
+                      hearLenghtTop: widget.catTime.hearLenghtTop,
+                      pixelReference: widget.catTime.pixelReference,
+                      distanceReference: widget.catTime.distanceReference,
+                      imageSide: widget.catTime.imageSide,
+                      imageRear: imgString,
+                      imageTop: widget.catTime.imageTop,
+                      date: DateTime.now().toIso8601String(),
+                      note: "Update pixel reference"));
 
-                  // setState(() {
-                  //   refreshImages();
-                  // });
+                  setState(() {
+                    refreshImages();
+                  });
 
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => PictureRef(
-                  //           imageFile: file,
-                  //           fileName: file.path,
-                  //           catTime: widget.catTime,
-                  //         )));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => PictureRefRear(
+                            imageFile: file,
+                            fileName: file.path,
+                            catTime: widget.catTime,
+                          )));
 
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(builder: (context) => CatTimeScreen(catProId: widget.idPro,)),
