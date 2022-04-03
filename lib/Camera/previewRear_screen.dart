@@ -39,6 +39,7 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
   CatImageHelper ImageHelper = CatImageHelper();
   CatTimeHelper? catTimeHelper;
   late List<ImageModel> images;
+  late Future<CatTimeModel> catTimeData;
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
     ImageHelper = CatImageHelper();
     catTimeHelper = new CatTimeHelper();
     refreshImages();
+    loadData();
     super.initState();
   }
 
@@ -58,76 +60,89 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
     });
   }
 
+  loadData() async {
+    catTimeData = catTimeHelper!.getCatTimeWithCatTimeID(widget.catTime.id!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Preview"), actions: [
-        Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => CapturesRearScreen(
-                        idPro: widget.idPro,
-                        idTime: widget.idTime,
-                        imageFileList: widget.fileList,
-                        catTime: widget.catTime,
-                      ),
-                    ),
-                  );
-                },
-                icon: Icon(Icons.photo)),
-            IconButton(
-                onPressed: () async {
-                  final file = widget.imageFile;
-                  String imgString =
-                      Utility.base64String(file.readAsBytesSync());
-                  ImageModel photo = ImageModel(
-                      idPro: widget.idPro,
-                      idTime: widget.idTime,
-                      imagePath: imgString);
+        FutureBuilder(
+            future: catTimeData,
+            builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+              if (snapshot.hasData) {
+                return Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => CapturesRearScreen(
+                                idPro: widget.idPro,
+                                idTime: widget.idTime,
+                                imageFileList: widget.fileList,
+                                catTime: snapshot.data!,
+                              ),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.photo)),
+                    IconButton(
+                        onPressed: () async {
+                          final file = widget.imageFile;
+                          String imgString =
+                              Utility.base64String(file.readAsBytesSync());
+                          ImageModel photo = ImageModel(
+                              idPro: widget.idPro,
+                              idTime: widget.idTime,
+                              imagePath: imgString);
 
-                  await ImageHelper.save(photo);
+                          await ImageHelper.save(photo);
 
-                  print("imgString : $imgString");
-                  await catTimeHelper!.updateCatTime(CatTimeModel(
-                      id: widget.catTime.id,
-                      idPro: widget.catTime.idPro,
-                      weight: widget.catTime.weight,
-                      bodyLenght: widget.catTime.bodyLenght,
-                      heartGirth: widget.catTime.heartGirth,
-                      hearLenghtSide: widget.catTime.hearLenghtSide,
-                      hearLenghtRear: widget.catTime.hearLenghtRear,
-                      hearLenghtTop: widget.catTime.hearLenghtTop,
-                      pixelReference: widget.catTime.pixelReference,
-                      distanceReference: widget.catTime.distanceReference,
-                      imageSide: widget.catTime.imageSide,
-                      imageRear: imgString,
-                      imageTop: widget.catTime.imageTop,
-                      date: DateTime.now().toIso8601String(),
-                      note: "Update pixel reference"));
+                          print("imgString : $imgString");
+                          await catTimeHelper!.updateCatTime(CatTimeModel(
+                              id: snapshot.data!.id,
+                              idPro: snapshot.data!.idPro,
+                              weight: snapshot.data!.weight,
+                              bodyLenght: snapshot.data!.bodyLenght,
+                              heartGirth: snapshot.data!.heartGirth,
+                              hearLenghtSide: snapshot.data!.hearLenghtSide,
+                              hearLenghtRear: snapshot.data!.hearLenghtRear,
+                              hearLenghtTop: snapshot.data!.hearLenghtTop,
+                              pixelReference: snapshot.data!.pixelReference,
+                              distanceReference:
+                                  snapshot.data!.distanceReference,
+                              imageSide: snapshot.data!.imageSide,
+                              imageRear: imgString,
+                              imageTop: snapshot.data!.imageTop,
+                              date: DateTime.now().toIso8601String(),
+                              note: "Update pixel reference"));
 
-                  setState(() {
-                    refreshImages();
-                  });
+                          setState(() {
+                            refreshImages();
+                          });
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureRefRear(
-                            imageFile: file,
-                            fileName: file.path,
-                            catTime: widget.catTime,
-                          )));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PictureRefRear(
+                                    imageFile: file,
+                                    fileName: file.path,
+                                    catTime: snapshot.data!,
+                                  )));
 
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(builder: (context) => CatTimeScreen(catProId: widget.idPro,)),
-                  //     (Route<dynamic> route) => false);
+                          // Navigator.of(context).pushAndRemoveUntil(
+                          //     MaterialPageRoute(builder: (context) => CatTimeScreen(catProId: widget.idPro,)),
+                          //     (Route<dynamic> route) => false);
 
-                  // Navigator.pop(context);
-                },
-                icon: Icon(Icons.save))
-          ],
-        )
+                          // Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.save))
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            })
       ]),
       backgroundColor: Colors.black,
       body: Column(

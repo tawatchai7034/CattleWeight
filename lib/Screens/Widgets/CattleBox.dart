@@ -126,20 +126,20 @@ class CattleBox extends StatelessWidget {
       ),
       trailing: MenuOption(cattleName),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CattleData(
-                  cattleNumber,
-                  cattleName,
-                  gender,
-                  specise,
-                  img,
-                  img,
-                  img,
-                  heartGirth,
-                  bodyLenght,
-                  weight,
-                  // camera
-                )));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => CattlePreview(
+        //           cattleNumber,
+        //           cattleName,
+        //           gender,
+        //           specise,
+        //           img,
+        //           img,
+        //           img,
+        //           heartGirth,
+        //           bodyLenght,
+        //           weight,
+        //           // camera
+        //         )));
       },
     ));
   }

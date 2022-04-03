@@ -9,7 +9,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
 
-class CattleData extends StatelessWidget {
+class CattlePreview extends StatelessWidget {
   // final CameraDescription camera;
   final String cattleNumber;
   final String cattleName;
@@ -22,7 +22,7 @@ class CattleData extends StatelessWidget {
   final double bodyLenght;
   final double weight;
 
-  CattleData(
+  CattlePreview(
       this.cattleNumber,
       this.cattleName,
       this.gender,

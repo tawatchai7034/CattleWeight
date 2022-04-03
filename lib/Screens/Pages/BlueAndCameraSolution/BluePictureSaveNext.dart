@@ -78,22 +78,22 @@ class _BluePictureSaveNextState extends State<BluePictureSaveNext> {
                 MainButton(
                     onSelected: () {
                       // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CattleData(
-                                  "01",
-                                  "cattle01",
-                                  "male",
-                                  "Brahman",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  255,
-                                  255,
-                                  255,
-                                  )),
-                          (route) => false);
+                      // Navigator.pushAndRemoveUntil(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => CattleData(
+                      //             "01",
+                      //             "cattle01",
+                      //             "male",
+                      //             "Brahman",
+                      //             "assets/images/cattle01.jpg",
+                      //             "assets/images/cattle01.jpg",
+                      //             "assets/images/cattle01.jpg",
+                      //             255,
+                      //             255,
+                      //             255,
+                      //             )),
+                      //     (route) => false);
                     },
                     title: "คำนวณน้ำหนัก"),
                 SizedBox(

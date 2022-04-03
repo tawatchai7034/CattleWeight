@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:cattle_weight/Camera/previewRear_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/model/catTime.dart';
 
-import '../Camera/previewSide_screen.dart';
 
 class CapturesRearScreen extends StatefulWidget {
   final int idPro;
@@ -60,7 +60,7 @@ class _CapturesRearScreenState extends State<CapturesRearScreen> {
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => PreviewSideScreen(
+                            builder: (context) => PreviewRearScreen(
                               idPro: widget.idPro,
                               idTime: widget.idTime,
                               fileList: widget.imageFileList,

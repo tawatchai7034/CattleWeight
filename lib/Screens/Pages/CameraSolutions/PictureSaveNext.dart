@@ -61,8 +61,10 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
               future: catTimeData,
               builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
                 if (snapshot.hasData) {
-                  double hg = calculate.calHeartGirth(snapshot.data.hearLenghtRear, snapshot.data.hearLenghtSide);
-                  
+                  double hg = calculate.calHeartGirth(
+                      snapshot.data.hearLenghtRear,
+                      snapshot.data.hearLenghtSide);
+
                   return Center(
                     child: ListView(
                         // mainAxisAlignment: MainAxisAlignment.center,
@@ -123,13 +125,42 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 MainButton(
-                                    onSelected: () {
+                                    onSelected: () async {
+                                      double weight = calculate.calWeight(snapshot.data.bodyLenght, hg);
 
+                                      print("Cattle Weight: $weight Kg.");
+
+                                      await catTimeHelper.updateCatTime(
+                                          CatTimeModel(
+                                              id: snapshot.data.id,
+                                              idPro: snapshot.data.idPro,
+                                              weight: weight,
+                                              bodyLenght:
+                                                  snapshot.data.bodyLenght,
+                                              heartGirth:
+                                                  hg,
+                                              hearLenghtSide: snapshot.data.hearLenghtSide,
+                                              hearLenghtRear:
+                                                  snapshot.data.hearLenghtRear,
+                                              hearLenghtTop:
+                                                  snapshot.data.hearLenghtTop,
+                                              pixelReference:
+                                                  snapshot.data.pixelReference,
+                                              distanceReference: snapshot
+                                                  .data.distanceReference,
+                                              imageSide:
+                                                  snapshot.data.imageSide,
+                                              imageRear:
+                                                  snapshot.data.imageRear,
+                                              imageTop: snapshot.data.imageTop,
+                                              date: DateTime.now()
+                                                  .toIso8601String(),
+                                              note: ""));
                                       // // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                                       // Navigator.pushAndRemoveUntil(
                                       //     context,
                                       //     MaterialPageRoute(
-                                      //         builder: (context) => CattleData(
+                                      //         builder: (context) => CattlePreview(
                                       //               "01",
                                       //               "cattle01",
                                       //               "male",
