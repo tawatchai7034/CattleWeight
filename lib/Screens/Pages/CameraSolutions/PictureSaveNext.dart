@@ -1,28 +1,49 @@
+// @dart=2.9
+import 'dart:io';
+import 'dart:math';
+
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/model/calculation.dart';
+import 'package:cattle_weight/model/catTime.dart';
+import 'package:cattle_weight/model/utility.dart';
+import 'package:flutter/material.dart';
+
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraTop.dart';
-import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 
 ConvertHex hex = new ConvertHex();
+CattleCalculation calculate = new CattleCalculation();
 
-class PictureSaveNext extends StatefulWidget {
-  // final CameraDescription camera;
-  final String localFront;
-  final String localBack;
-  const PictureSaveNext(
-      {Key? key,
-
-      required this.localFront,
-      required this.localBack})
-      : super(key: key);
+class SaveNextCamera extends StatefulWidget {
+  final int catTimeID;
+  const SaveNextCamera({
+    Key key,
+    this.catTimeID,
+  }) : super(key: key);
 
   @override
-  _PictureSaveNextState createState() => _PictureSaveNextState();
+  _SaveNextCameraState createState() => _SaveNextCameraState();
 }
 
-class _PictureSaveNextState extends State<PictureSaveNext> {
+class _SaveNextCameraState extends State<SaveNextCamera> {
+  CatTimeHelper catTimeHelper;
+  Future<CatTimeModel> catTimeData;
+
+  Future loadData() async {
+    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTimeID);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    catTimeHelper = new CatTimeHelper();
+
+    loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,78 +57,115 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
         ),
         body: Padding(
           padding: EdgeInsets.all(10),
-          child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 120,
-                  width: double.infinity,
-                  child: Center(
-                      child: Text(
-                    "Heart Girth : 2XX CM.",
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  )),
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 120,
-                  width: double.infinity,
-                  child: Center(
-                      child: Text(
-                    "Boar Lenght : 2XX CM.",
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  )),
-                  color: Colors.green,
-                ),
-                SizedBox(
-                  height: 180,
-                ),
-                MainButton(
-                    onSelected: () {
-                      // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CattleData(
-                                  "01",
-                                  "cattle01",
-                                  "male",
-                                  "Brahman",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  "assets/images/cattle01.jpg",
-                                  255,
-                                  255,
-                                  255,
-                                  )),
-                          (route) => false);
-                    },
-                    title: "คำนวณน้ำหนัก"),
-                SizedBox(
-                  height: 10,
-                ),
-                MainButton(
-                    onSelected: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => TakePictureTop(
-                     
-                      //           localFront: widget.localFront,
-                      //           localBack: widget.localBack,
-                      //         )));
+          child: FutureBuilder(
+              future: catTimeData,
+              builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+                if (snapshot.hasData) {
+                  double hg = calculate.calHeartGirth(snapshot.data.hearLenghtRear, snapshot.data.hearLenghtSide);
+                  
+                  return Center(
+                    child: ListView(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 240,
+                            width: double.infinity,
+                            child: Center(
+                                child: ListTile(
+                              title: RotatedBox(
+                                quarterTurns: -1,
+                                child: Image.asset(
+                                  "assets/images/SideLeftNavigation3.png",
+                                  height: 120,
+                                  width: 180,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "รอบอก: ${hg.toStringAsFixed(3)} ซม.",
+                                style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            )),
+                            color: Colors.blue,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Container(
+                            height: 240,
+                            width: double.infinity,
+                            child: Center(
+                                child: ListTile(
+                              title: RotatedBox(
+                                quarterTurns: -1,
+                                child: Image.asset(
+                                  "assets/images/SideLeftNavigation4.png",
+                                  height: 120,
+                                  width: 180,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "ความยาวลำตัว: ${snapshot.data.bodyLenght.toStringAsFixed(3)} ซม.",
+                                style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            )),
+                            color: Colors.green,
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                MainButton(
+                                    onSelected: () {
 
-                              // change new camera
-                    },
-                    title: "ถ่ายภาพกระดูกสันหลังโค"),
-              ]),
+                                      // // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                                      // Navigator.pushAndRemoveUntil(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) => CattleData(
+                                      //               "01",
+                                      //               "cattle01",
+                                      //               "male",
+                                      //               "Brahman",
+                                      //               "assets/images/cattle01.jpg",
+                                      //               "assets/images/cattle01.jpg",
+                                      //               "assets/images/cattle01.jpg",
+                                      //               255,
+                                      //               255,
+                                      //               255,
+                                      //             )),
+                                      //     (route) => false);
+                                    },
+                                    title: "คำนวณน้ำหนัก"),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                MainButton(
+                                    onSelected: () {
+                                      // Navigator.of(context).push(MaterialPageRoute(
+                                      //     builder: (context) => TakePictureTop(
+
+                                      //           localFront: widget.localFront,
+                                      //           localBack: widget.localBack,
+                                      //         )));
+
+                                      // change new camera
+                                    },
+                                    title: "ถ่ายภาพกระดูกสันหลังโค"),
+                              ])
+                        ]),
+                  );
+                } else {
+                  return Container();
+                }
+              }),
         ));
   }
 }

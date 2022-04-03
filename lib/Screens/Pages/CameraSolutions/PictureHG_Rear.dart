@@ -4,6 +4,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
+import 'package:cattle_weight/model/calculation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
@@ -19,10 +21,9 @@ import 'package:cattle_weight/model/catTime.dart';
 
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
+CattleCalculation calculate = new CattleCalculation();
 
 class PictureHG_Rear extends StatefulWidget {
-  // final bool blueConnection;
-  // final CameraDescription camera;
   final File imageFile;
   final String fileName;
   final CatTimeModel catTime;
@@ -58,7 +59,7 @@ class _PictureHG_RearState extends State<PictureHG_Rear> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("[2/3] กรุณาระบุความยาวรอบอกโค",
+            title: Text("[2/2] กรุณาระบุความกว้างกระดูกก้นกบของโค",
                 style: TextStyle(
                     fontSize: 24,
                     color: Color(hex.hexColor("ffffff")),
@@ -84,38 +85,40 @@ class _PictureHG_RearState extends State<PictureHG_Rear> {
                                 onSelected: () async {
                                   // print(
                                   //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
-                                  double hlr = (pos.getPixelDistance() *
-                                          snapshot.data.distanceReference) /
-                                      snapshot.data.pixelReference;
+                                  double hlr = calculate.distance(
+                                      snapshot.data.pixelReference,
+                                      snapshot.data.distanceReference,
+                                      pos.getPixelDistance());
 
                                   print("Hear Lenght Rear: $hlr CM.");
 
-                                  // await catTimeHelper.updateCatTime(
-                                  //     CatTimeModel(
-                                  //         id: snapshot.data.id,
-                                  //         idPro: snapshot.data.idPro,
-                                  //         bodyLenght: snapshot.data.bodyLenght,
-                                  //         heartGirth: snapshot.data.heartGirth,
-                                  //         hearLenghtSide: snapshot.data.hearLenghtSide,
-                                  //         hearLenghtRear: hlr,
-                                  //         hearLenghtTop: snapshot
-                                  //             .data.hearLenghtTop,
-                                  //         pixelReference: snapshot
-                                  //             .data.pixelReference,
-                                  //         distanceReference:
-                                  //             snapshot.data.distanceReference,
-                                  //         imageSide: snapshot.data.imageSide,
-                                  //         imageRear: snapshot.data.imageRear,
-                                  //         imageTop: snapshot.data.imageTop,
-                                  //         date:
-                                  //             DateTime.now().toIso8601String(),
-                                  //         note: "Update pixel reference"));
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (context) => PictureBL(
-                                  //       imgPath: widget.imageFile.path,
-                                  //       fileName: widget.fileName,
-                                  //       catTimeID: snapshot.data.id),
-                                  // ));
+                                  await catTimeHelper.updateCatTime(
+                                      CatTimeModel(
+                                          id: snapshot.data.id,
+                                          idPro: snapshot.data.idPro,
+                                          weight: snapshot.data.weight,
+                                          bodyLenght: snapshot.data.bodyLenght,
+                                          heartGirth: snapshot.data.heartGirth,
+                                          hearLenghtSide: snapshot
+                                              .data.hearLenghtSide,
+                                          hearLenghtRear: hlr,
+                                          hearLenghtTop: snapshot
+                                              .data.hearLenghtTop,
+                                          pixelReference: snapshot
+                                              .data.pixelReference,
+                                          distanceReference:
+                                              snapshot.data.distanceReference,
+                                          imageSide: snapshot.data.imageSide,
+                                          imageRear: snapshot.data.imageRear,
+                                          imageTop: snapshot.data.imageTop,
+                                          date:
+                                              DateTime.now().toIso8601String(),
+                                          note: ""));
+
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SaveNextCamera(
+                                            catTimeID: snapshot.data.id,
+                                          )));
                                 },
                                 title: "บันทึก")
                           ]),
@@ -130,11 +133,10 @@ class _PictureHG_RearState extends State<PictureHG_Rear> {
                 ? Container()
                 : AlertDialog(
                     // backgroundColor: Colors.black,
-                    title: Text("กรุณาระบุความยาวรอบอกโค",
+                    title: Text("กรุณาระบุความกว้างกระดูกก้นกบของโค",
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
-                    content:
-                        Image.asset("assets/images/SideLeftNavigation3.png"),
+                    content: Image.asset("assets/images/RearNavigation3.png"),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -181,10 +183,7 @@ class LineAndPositionPictureHG_RearState
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-                  (positionsX[index] - positionsX[index - 1])) +
-              ((positionsY[index] - positionsY[index - 1]) *
-                  (positionsY[index] - positionsY[index - 1])))
+          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

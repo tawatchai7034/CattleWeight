@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/model/calculation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
@@ -20,6 +21,7 @@ import 'package:cattle_weight/model/catTime.dart';
 
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
+CattleCalculation calculate = new CattleCalculation();
 
 class PictureRef extends StatefulWidget {
   final File imageFile;
@@ -111,6 +113,7 @@ class _PictureRefState extends State<PictureRef> {
                                 await catTimeHelper.updateCatTime(CatTimeModel(
                                     id: snapshot.data.id,
                                     idPro: snapshot.data.idPro,
+                                    weight: snapshot.data.weight,
                                     bodyLenght: snapshot.data.bodyLenght,
                                     heartGirth: snapshot.data.heartGirth,
                                     hearLenghtSide:
@@ -173,22 +176,6 @@ class _PictureRefState extends State<PictureRef> {
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   MainButton(
                       onSelected: () async {
-                        // await catTimeHelper.updateCatTime(CatTimeModel(
-                        //     id: widget.catTime.id,
-                        //     idPro: widget.catTime.idPro,
-                        //     bodyLenght: widget.catTime.bodyLenght,
-                        //     heartGirth: widget.catTime.heartGirth,
-                        //     hearLenghtSide: widget.catTime.hearLenghtSide,
-                        //     hearLenghtRear: widget.catTime.hearLenghtRear,
-                        //     hearLenghtTop: widget.catTime.hearLenghtTop,
-                        //     pixelReference: pos.getPixelDistance(),
-                        //     distanceReference: widget.catTime.distanceReference,
-                        //     imageSide: widget.catTime.imageSide,
-                        //     imageRear: widget.catTime.imageRear,
-                        //     imageTop: widget.catTime.imageTop,
-                        //     date: DateTime.now().toIso8601String(),
-                        //     note: "Update pixel reference"));
-                        // loadData();
 
                         _displayTextInputDialog(
                           context,
@@ -252,10 +239,11 @@ class LineAndPositionPictureRefState extends State<LineAndPositionPictureRef> {
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-                  (positionsX[index] - positionsX[index - 1])) +
-              ((positionsY[index] - positionsY[index - 1]) *
-                  (positionsY[index] - positionsY[index - 1])))
+          ?  pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
+          // pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
+          //         (positionsX[index] - positionsX[index - 1])) +
+          //     ((positionsY[index] - positionsY[index - 1]) *
+          //         (positionsY[index] - positionsY[index - 1])))
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

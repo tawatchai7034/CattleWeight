@@ -24,7 +24,7 @@ class CatTimeHelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-      "CREATE TABLE cattime(id INTEGER PRIMARY KEY, idPro INTEGER,bodyLenght REAL,heartGirth REAL,hearLenghtSide REAL,hearLenghtRear REAL,hearLenghtTop REAL,pixelReference REAL,distanceReference REAL,imageSide TEXT, imageRear TEXT, imageTop TEXT,date TEXT,note TEXT)",
+      "CREATE TABLE cattime(id INTEGER PRIMARY KEY, idPro INTEGER,weight REAL,bodyLenght REAL,heartGirth REAL,hearLenghtSide REAL,hearLenghtRear REAL,hearLenghtTop REAL,pixelReference REAL,distanceReference REAL,imageSide TEXT, imageRear TEXT, imageTop TEXT,date TEXT,note TEXT)",
     );
   }
 

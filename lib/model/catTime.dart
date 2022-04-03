@@ -3,6 +3,7 @@ class CatTimeFields {
     /// Add all fields
     id,
     idPro,
+    weight,
     bodyLenght,
     heartGirth,
     hearLenghtSide,
@@ -18,6 +19,7 @@ class CatTimeFields {
   ];
   static final String id = 'id';
   static final String idPro = 'idPro';
+  static final String weight = 'weight';
   static final String bodyLenght = 'bodyLenght';
   static final String heartGirth = 'heartGirth';
   static final String hearLenghtSide = 'hearLenghtSide';
@@ -35,6 +37,7 @@ class CatTimeFields {
 class CatTimeModel {
   final int? id;
   final int idPro;
+  final double weight;
   final double bodyLenght;
   final double heartGirth;
   final double hearLenghtSide;
@@ -51,6 +54,7 @@ class CatTimeModel {
   CatTimeModel({
     this.id,
     required this.idPro,
+    required this.weight,
     required this.bodyLenght,
     required this.heartGirth,
     required this.hearLenghtSide,
@@ -68,6 +72,7 @@ class CatTimeModel {
   CatTimeModel.fromMap(Map<String, dynamic> res)
       : id = res["id"],
         idPro = res["idPro"],
+        weight = res["weight"],
         bodyLenght = res["bodyLenght"],
         heartGirth = res["heartGirth"],
         hearLenghtSide = res["hearLenghtSide"],
@@ -84,6 +89,7 @@ class CatTimeModel {
   static CatTimeModel fromJson(Map<String, Object?> json) => CatTimeModel(
         id: json[CatTimeFields.id] as int?,
         idPro: json[CatTimeFields.idPro] as int,
+        weight: json[CatTimeFields.weight] as double,
         bodyLenght: json[CatTimeFields.bodyLenght] as double,
         heartGirth: json[CatTimeFields.heartGirth] as double,
         hearLenghtSide: json[CatTimeFields.hearLenghtSide] as double,
@@ -102,6 +108,7 @@ class CatTimeModel {
     return {
       'id': id,
       'idPro': idPro,
+      'weight': weight,
       'bodyLenght': bodyLenght,
       'heartGirth': heartGirth,
       'hearLenghtSide': hearLenghtSide,

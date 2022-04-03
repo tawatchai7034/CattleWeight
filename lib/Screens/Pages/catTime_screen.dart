@@ -158,6 +158,7 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
             dbHelper!
                 .insert(CatTimeModel(
                     idPro: widget.catPro.id!,
+                    weight: 0,
                     bodyLenght: 0,
                     heartGirth: 0,
                     hearLenghtSide: 0,

@@ -84,9 +84,10 @@ class _PictureHGState extends State<PictureHG> {
                                 onSelected: () async {
                                   // print(
                                   //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
-                                  double hls = (pos.getPixelDistance() *
-                                          snapshot.data.distanceReference) /
-                                      snapshot.data.pixelReference;
+                                  double hls = calculate.distance(
+                                      snapshot.data.pixelReference,
+                                      snapshot.data.distanceReference,
+                                      pos.getPixelDistance());
 
                                   print("Hear Lenght Side: $hls CM.");
                                   
@@ -94,6 +95,7 @@ class _PictureHGState extends State<PictureHG> {
                                       CatTimeModel(
                                           id: snapshot.data.id,
                                           idPro: snapshot.data.idPro,
+                                          weight: snapshot.data.weight,
                                           bodyLenght: snapshot.data.bodyLenght,
                                           heartGirth: snapshot.data.heartGirth,
                                           hearLenghtSide: hls,
@@ -181,10 +183,7 @@ class LineAndPositionPictureHGState extends State<LineAndPositionPictureHG> {
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-                  (positionsX[index] - positionsX[index - 1])) +
-              ((positionsY[index] - positionsY[index - 1]) *
-                  (positionsY[index] - positionsY[index - 1])))
+          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

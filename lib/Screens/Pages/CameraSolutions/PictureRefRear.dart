@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG_Rear.dart';
+import 'package:cattle_weight/model/calculation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
@@ -16,6 +17,7 @@ import 'package:cattle_weight/model/catTime.dart';
 
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
+CattleCalculation calculate = new CattleCalculation();
 
 class PictureRefRear extends StatefulWidget {
   final File imageFile;
@@ -107,6 +109,7 @@ class _PictureRefRearState extends State<PictureRefRear> {
                                 await catTimeHelper.updateCatTime(CatTimeModel(
                                     id: snapshot.data.id,
                                     idPro: snapshot.data.idPro,
+                                    weight: snapshot.data.weight,
                                     bodyLenght: snapshot.data.bodyLenght,
                                     heartGirth: snapshot.data.heartGirth,
                                     hearLenghtSide:
@@ -202,7 +205,7 @@ class _PictureRefRearState extends State<PictureRefRear> {
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
                     content:
-                        Image.asset("assets/images/SideLeftNavigation5.png"),
+                        Image.asset("assets/images/RearNavigation4.png"),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -248,10 +251,7 @@ class LineAndPositionPictureRefRearState extends State<LineAndPositionPictureRef
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-                  (positionsX[index] - positionsX[index - 1])) +
-              ((positionsY[index] - positionsY[index - 1]) *
-                  (positionsY[index] - positionsY[index - 1])))
+          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

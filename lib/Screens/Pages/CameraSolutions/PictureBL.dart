@@ -10,6 +10,7 @@ import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/position.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/calculation.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'dart:math';
 
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
+CattleCalculation calculate = new CattleCalculation();
 
 class PictureBL extends StatefulWidget {
   final catTimeID;
@@ -77,9 +79,10 @@ class _PictureBLState extends State<PictureBL> {
                             children: [
                               MainButton(
                                   onSelected: () async {
-                                    double bl = (pos.getPixelDistance() *
-                                            snapshot.data.distanceReference) /
-                                        snapshot.data.pixelReference;
+                                    double bl = calculate.distance(
+                                      snapshot.data.pixelReference,
+                                      snapshot.data.distanceReference,
+                                      pos.getPixelDistance());
 
                                     print("Body Lenght: $bl CM.");
 
@@ -87,6 +90,7 @@ class _PictureBLState extends State<PictureBL> {
                                         CatTimeModel(
                                             id: snapshot.data.id,
                                             idPro: snapshot.data.idPro,
+                                            weight: snapshot.data.weight,
                                             bodyLenght: bl,
                                             heartGirth: snapshot
                                                 .data.heartGirth,
@@ -182,10 +186,7 @@ class LineAndPositionPictureBLState extends State<LineAndPositionPictureBL> {
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ? pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-                  (positionsX[index] - positionsX[index - 1])) +
-              ((positionsY[index] - positionsY[index - 1]) *
-                  (positionsY[index] - positionsY[index - 1])))
+          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

@@ -94,6 +94,7 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
                   await catTimeHelper!.updateCatTime(CatTimeModel(
                       id: widget.catTime.id,
                       idPro: widget.catTime.idPro,
+                      weight: widget.catTime.weight,
                       bodyLenght: widget.catTime.bodyLenght,
                       heartGirth: widget.catTime.heartGirth,
                       hearLenghtSide: widget.catTime.hearLenghtSide,
