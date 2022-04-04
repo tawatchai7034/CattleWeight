@@ -6,6 +6,7 @@ import 'package:cattle_weight/model/catPro.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/Screens/Pages/catImage_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:intl/intl.dart';
 
 class CatTimeScreen extends StatefulWidget {
@@ -58,6 +59,12 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                           });
                         },
                         icon: Icon(Icons.refresh)),
+
+                        IconButton(
+                        onPressed: () {
+                          Phoenix.rebirth(context);
+                        },
+                        icon: Icon(Icons.home_filled)),
                   ]),
               body: Column(
                 children: [

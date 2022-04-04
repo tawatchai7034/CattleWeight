@@ -84,9 +84,12 @@ class _PictureHGTopState extends State<PictureHGTop> {
                                         snapshot.data.pixelReference,
                                         snapshot.data.distanceReference,
                                         pos.getPixelDistance());
+
+                                    double newHG = calculate.calHeartGirth(
+                                        hlt, snapshot.data.hearLenghtRear);
+
                                     double weight = calculate.calWeight(
-                                        snapshot.data.bodyLenght,
-                                        snapshot.data.heartGirth);
+                                        snapshot.data.bodyLenght, newHG);
 
                                     // print("Hear Lenght Top: $hlt CM.\tCattle Weight: $weight Kg.");
 
@@ -98,7 +101,7 @@ class _PictureHGTopState extends State<PictureHGTop> {
                                             bodyLenght:
                                                 snapshot.data.bodyLenght,
                                             heartGirth:
-                                                snapshot.data.heartGirth,
+                                                newHG,
                                             hearLenghtSide:
                                                 snapshot.data.hearLenghtSide,
                                             hearLenghtRear:
@@ -111,8 +114,7 @@ class _PictureHGTopState extends State<PictureHGTop> {
                                             imageSide: snapshot.data.imageSide,
                                             imageRear: snapshot.data.imageRear,
                                             imageTop: snapshot.data.imageTop,
-                                            date: DateTime.now()
-                                                .toIso8601String(),
+                                            date: snapshot.data.date,
                                             note: ""));
 
                                     // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้

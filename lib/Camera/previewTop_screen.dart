@@ -102,9 +102,9 @@ class _PreviewTopScreenState extends State<PreviewTopScreen> {
                       hearLenghtTop: widget.catTime.hearLenghtTop,
                       pixelReference: widget.catTime.pixelReference,
                       distanceReference: widget.catTime.distanceReference,
-                      imageSide: imgString,
+                      imageSide: widget.catTime.imageSide,
                       imageRear: widget.catTime.imageRear,
-                      imageTop: widget.catTime.imageTop,
+                      imageTop: imgString,
                       date: DateTime.now().toIso8601String(),
                       note: "Update pixel reference"));
 

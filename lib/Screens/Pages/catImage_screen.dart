@@ -6,6 +6,7 @@ import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/DataBase/catPro_handler.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/catPro_Edit.dart';
 import 'package:cattle_weight/model/catPro.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
@@ -39,6 +40,7 @@ class _CatImageScreenState extends State<CatImageScreen> {
   final ImagePicker _picker = ImagePicker();
   final formatDay = DateFormat('dd/MM/yyyy hh:mm a');
   ImageNavidation line = new ImageNavidation();
+  NoteDialog dialog = new NoteDialog();
 
   @override
   void initState() {
@@ -124,77 +126,94 @@ class _CatImageScreenState extends State<CatImageScreen> {
                         DataRow(cells: [
                           DataCell(Text('${CatProFields.name}',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Container(
                             width: 96,
-                            child: Text('${catPro.data!.name}',overflow: TextOverflow.ellipsis,
+                            child: Text('${catPro.data!.name}',
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 24, fontWeight: FontWeight.bold)),
                           )),
                           DataCell(IconButton(
-                              onPressed: () {}, icon: Icon(Icons.edit))),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        CatProFormEdit(catPro: catPro.data!)));
+                              },
+                              icon: Icon(Icons.edit))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('${CatProFields.gender}',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Text('${catPro.data!.gender}',
                               style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold))),
+                                  fontSize: 24, fontWeight: FontWeight.bold))),
                           DataCell(IconButton(
-                              onPressed: () {}, icon: Icon(Icons.edit))),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        CatProFormEdit(catPro: catPro.data!)));
+                              },
+                              icon: Icon(Icons.edit))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('${CatProFields.species}',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Text('${catPro.data!.species}',
                               style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold))),
+                                  fontSize: 24, fontWeight: FontWeight.bold))),
                           DataCell(IconButton(
-                              onPressed: () {}, icon: Icon(Icons.edit))),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        CatProFormEdit(catPro: catPro.data!)));
+                              },
+                              icon: Icon(Icons.edit))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('${CatTimeFields.heartGirth}',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Text(
                               '${snapshot.data!.heartGirth.toStringAsFixed(2)}',
                               style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold))),
+                                  fontSize: 24, fontWeight: FontWeight.bold))),
                           DataCell(Text('')),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('${CatTimeFields.bodyLenght}',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Text(
                               '${snapshot.data!.bodyLenght.toStringAsFixed(2)}',
                               style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold))),
+                                  fontSize: 24, fontWeight: FontWeight.bold))),
                           DataCell(Text('')),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('${CatTimeFields.weight}\t(Kg)',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Text(
                               '${snapshot.data!.weight.toStringAsFixed(2)}',
                               style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold))),
+                                  fontSize: 24, fontWeight: FontWeight.bold))),
                           DataCell(Text('')),
                         ]),
                         DataRow(cells: [
                           DataCell(Text(
                             '${CatTimeFields.date}',
                             style: TextStyle(
-                                fontSize: 24,),
+                              fontSize: 24,
+                            ),
                           )),
                           DataCell(Container(
                             width: 108,
@@ -202,26 +221,38 @@ class _CatImageScreenState extends State<CatImageScreen> {
                                 '${formatDay.format(DateTime.parse(snapshot.data!.date))}',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 24, fontWeight: FontWeight.bold)),
                           )),
                           DataCell(Text('')),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('${CatTimeFields.note}',
                               style: TextStyle(
-                                  fontSize: 24,))),
+                                fontSize: 24,
+                              ))),
                           DataCell(Container(
                             width: 96,
-                            child: Text(
-                                '${snapshot.data!.note}',
+                            child: Text('${snapshot.data!.note}',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 24, fontWeight: FontWeight.bold)),
                           )),
                           DataCell(IconButton(
-                              onPressed: () {}, icon: Icon(Icons.edit))),
+                              onPressed: () {
+                                bool newNote = true;
+
+                                ((snapshot.data!.note == null) ||
+                                        (snapshot.data!.note == ''))
+                                    ? newNote = true
+                                    : newNote = false;
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      dialog.buildDialog(
+                                          context, snapshot.data!, newNote),
+                                );
+                              },
+                              icon: Icon(Icons.edit))),
                         ])
                       ];
                     }
@@ -330,5 +361,51 @@ class _CatImageScreenState extends State<CatImageScreen> {
                 children: [CircularProgressIndicator()]);
           }
         });
+  }
+}
+
+class NoteDialog {
+  final txtNote = TextEditingController();
+
+  Widget buildDialog(BuildContext context, CatTimeModel catTime, bool isNew) {
+    CatTimeHelper catTimeHelper = new CatTimeHelper();
+    if (!isNew) {
+      txtNote.text = catTime.note;
+    }
+    return AlertDialog(
+        title: Text((isNew) ? 'เพิ่มข้อความ' : 'แก้ไขข้อความ'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        content: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            TextField(
+                controller: txtNote,
+                decoration: InputDecoration(hintText: 'Note')),
+            SizedBox(height: 8),
+            RaisedButton(
+              child: Text('บันทึก'),
+              onPressed: () async {
+                print("${txtNote.text}");
+                await catTimeHelper.updateCatTime(CatTimeModel(
+                    id: catTime.id,
+                    idPro: catTime.idPro,
+                    weight: catTime.weight,
+                    bodyLenght: catTime.bodyLenght,
+                    heartGirth: catTime.heartGirth,
+                    hearLenghtSide: catTime.hearLenghtSide,
+                    hearLenghtRear: catTime.hearLenghtRear,
+                    hearLenghtTop: catTime.hearLenghtTop,
+                    pixelReference: catTime.pixelReference,
+                    distanceReference: catTime.distanceReference,
+                    imageSide: catTime.imageSide,
+                    imageRear: catTime.imageRear,
+                    imageTop: catTime.imageTop,
+                    date: catTime.date,
+                    note: txtNote.text));
+
+                Navigator.pop(context);
+              },
+            ),
+          ]),
+        ));
   }
 }

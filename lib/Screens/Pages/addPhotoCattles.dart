@@ -117,7 +117,7 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
           ),
           MainButton(
               onSelected: () {
-                pickImageFromGallery();
+                // pickImageFromGallery();
               },
               title: "นำเข้าภาพ"),
         ],
