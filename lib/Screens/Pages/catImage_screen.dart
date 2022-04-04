@@ -4,12 +4,18 @@ import 'dart:io';
 import 'package:cattle_weight/Camera/cameraSide_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/DataBase/catPro_handler.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/model/catPro.dart';
+import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/utility.dart';
+import 'package:intl/intl.dart';
 
 class CatImageScreen extends StatefulWidget {
   final int idPro;
@@ -25,8 +31,13 @@ class _CatImageScreenState extends State<CatImageScreen> {
   late Future<File> imageFile;
   late Image image;
   CatImageHelper? ImageHelper;
+  CatTimeHelper? catTimeHelper;
+  CatProHelper? catProHelper;
+  late Future<CatProModel> catProData;
+  late Future<CatTimeModel> catTimeData;
   late List<ImageModel> images;
   final ImagePicker _picker = ImagePicker();
+  final formatDay = DateFormat('dd/MM/yyyy hh:mm a');
   ImageNavidation line = new ImageNavidation();
 
   @override
@@ -34,10 +45,14 @@ class _CatImageScreenState extends State<CatImageScreen> {
     super.initState();
     images = [];
     ImageHelper = CatImageHelper();
+    catTimeHelper = new CatTimeHelper();
+    catProHelper = new CatProHelper();
     refreshImages();
   }
 
   refreshImages() {
+    catProData = catProHelper!.getCatProWithID(widget.idPro);
+    catTimeData = catTimeHelper!.getCatTimeWithCatTimeID(widget.idTime);
     ImageHelper!.getCatTimePhotos(widget.idTime).then((imgs) {
       setState(() {
         images.clear();
@@ -45,17 +60,6 @@ class _CatImageScreenState extends State<CatImageScreen> {
       });
     });
   }
-
-  // Future<void> pickImageFromGallery() async{
-  //   final pickedImage = await _picker.pickImage(source: ImageSource.gallery).then((imgFile) {
-  //     final file = File(imgFile!.path);
-  //     String imgString = Utility.base64String(file.readAsBytesSync());
-  //     ImageModel photo = ImageModel(
-  //         idPro: widget.idPro, idTime: widget.idTime, imagePath: imgString);
-  //     ImageHelper!.save(photo);
-  //     refreshImages();
-  //   });
-  // }
 
   final picker = ImagePicker();
   // Implementing the image picker
@@ -94,52 +98,237 @@ class _CatImageScreenState extends State<CatImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("Flutter Save Image"),
-        // actions: <Widget>[
-        //   Row(
-        //     children: [
-        //       IconButton(
-        //         icon: Icon(Icons.photo),
-        //         onPressed: () {
-        //           pickImageFromGallery();
-        //         },
-        //       ),
-        //       IconButton(
-        //         icon: Icon(Icons.camera_alt),
-        //         onPressed: () {
-        //           Navigator.of(context).push(MaterialPageRoute(
-        //               builder: (context) => CameraScreen(
-        //                   idPro: widget.idPro,
-        //                   idTime: widget.idTime,
-        //                   localFront: line.sideLeft,
-        //                   localBack: line.sideRight)));
-        //         },
-        //       ),
-        //     ],
-        //   ),
-        // ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              child: gridView(),
-            )
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            refreshImages();
-          });
-        },
-        child: Icon(Icons.refresh),
-      ),
-    );
+    return FutureBuilder(
+        future: catProData,
+        builder: (context, AsyncSnapshot<CatProModel> catPro) {
+          if (catPro.hasData) {
+            return FutureBuilder(
+                future: catTimeData,
+                builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+                  if (snapshot.hasData) {
+                    List<DataColumn> _createColumns() {
+                      return [
+                        DataColumn(
+                            label:
+                                Text('หัวข้อ', style: TextStyle(fontSize: 24))),
+                        DataColumn(
+                            label: Text('รายละเอียด'.toUpperCase(),
+                                style: TextStyle(fontSize: 24))),
+                        DataColumn(
+                            label: Text('', style: TextStyle(fontSize: 24))),
+                      ];
+                    }
+
+                    List<DataRow> _createRows() {
+                      return [
+                        DataRow(cells: [
+                          DataCell(Text('${CatProFields.name}',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Container(
+                            width: 96,
+                            child: Text('${catPro.data!.name}',overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                          DataCell(IconButton(
+                              onPressed: () {}, icon: Icon(Icons.edit))),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('${CatProFields.gender}',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Text('${catPro.data!.gender}',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold))),
+                          DataCell(IconButton(
+                              onPressed: () {}, icon: Icon(Icons.edit))),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('${CatProFields.species}',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Text('${catPro.data!.species}',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold))),
+                          DataCell(IconButton(
+                              onPressed: () {}, icon: Icon(Icons.edit))),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('${CatTimeFields.heartGirth}',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Text(
+                              '${snapshot.data!.heartGirth.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold))),
+                          DataCell(Text('')),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('${CatTimeFields.bodyLenght}',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Text(
+                              '${snapshot.data!.bodyLenght.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold))),
+                          DataCell(Text('')),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('${CatTimeFields.weight}\t(Kg)',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Text(
+                              '${snapshot.data!.weight.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold))),
+                          DataCell(Text('')),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            '${CatTimeFields.date}',
+                            style: TextStyle(
+                                fontSize: 24,),
+                          )),
+                          DataCell(Container(
+                            width: 108,
+                            child: Text(
+                                '${formatDay.format(DateTime.parse(snapshot.data!.date))}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                          DataCell(Text('')),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('${CatTimeFields.note}',
+                              style: TextStyle(
+                                  fontSize: 24,))),
+                          DataCell(Container(
+                            width: 96,
+                            child: Text(
+                                '${snapshot.data!.note}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                          DataCell(IconButton(
+                              onPressed: () {}, icon: Icon(Icons.edit))),
+                        ])
+                      ];
+                    }
+
+                    DataTable _createDataTable() {
+                      return DataTable(
+                          columns: _createColumns(), rows: _createRows());
+                    }
+
+                    return Scaffold(
+                      appBar: AppBar(
+                        title: Text("${catPro.data!.name}"),
+                        actions: [
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  refreshImages();
+                                });
+                              },
+                              icon: Icon(Icons.refresh))
+                        ],
+                      ),
+                      body: Center(
+                        child: ListView(
+                          children: <Widget>[
+                            // Flexible(
+                            //  // show all image
+                            //   child: gridView(),
+                            // )
+                            ImageSlideshow(
+                              width: double.infinity,
+                              height: 280,
+                              initialPage: 0,
+                              indicatorColor: Color(hex.hexColor("#FAA41B")),
+                              indicatorBackgroundColor: Colors.grey,
+                              children: [
+                                ((snapshot.data!.imageSide == null) ||
+                                        (snapshot.data!.imageSide == ''))
+                                    ? RotatedBox(
+                                        quarterTurns: 0,
+                                        child: Image.asset(
+                                          "assets/images/SideLeftNavigation2.png",
+                                          // height: 120,
+                                          // width: 180,
+                                        ),
+                                      )
+                                    : RotatedBox(
+                                        quarterTurns: -1,
+                                        child: Utility.imageFromBase64String(
+                                            snapshot.data!.imageSide),
+                                      ),
+                                ((snapshot.data!.imageRear == null) ||
+                                        (snapshot.data!.imageRear == ''))
+                                    ? RotatedBox(
+                                        quarterTurns: 0,
+                                        child: Image.asset(
+                                          "assets/images/RearNavigation2.png",
+                                          // height: 120,
+                                          // width: 180,
+                                        ),
+                                      )
+                                    : RotatedBox(
+                                        quarterTurns: -1,
+                                        child: Utility.imageFromBase64String(
+                                            snapshot.data!.imageRear),
+                                      ),
+                                ((snapshot.data!.imageTop == null) ||
+                                        (snapshot.data!.imageTop == ''))
+                                    ? RotatedBox(
+                                        quarterTurns: -1,
+                                        child: Image.asset(
+                                          "assets/images/TopLeftNavigation2.png",
+                                          // height: 120,
+                                          // width: 180,
+                                        ),
+                                      )
+                                    : RotatedBox(
+                                        quarterTurns: -1,
+                                        child: Utility.imageFromBase64String(
+                                            snapshot.data!.imageTop),
+                                      ),
+                              ],
+                            ),
+                            _createDataTable(),
+                          ],
+                        ),
+                      ),
+                      // floatingActionButton: FloatingActionButton(
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       refreshImages();
+                      //     });
+                      //   },
+                      //   child: Icon(Icons.refresh),
+                      // ),
+                    );
+                  } else {
+                    return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [CircularProgressIndicator()]);
+                  }
+                });
+          } else {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [CircularProgressIndicator()]);
+          }
+        });
   }
 }

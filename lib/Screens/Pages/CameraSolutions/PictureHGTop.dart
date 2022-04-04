@@ -2,6 +2,7 @@
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Camera/cameraRear_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
 import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PaintLine.dart';
@@ -80,54 +81,48 @@ class _PictureHGTopState extends State<PictureHGTop> {
                               MainButton(
                                   onSelected: () async {
                                     double hlt = calculate.distance(
-                                      snapshot.data.pixelReference,
-                                      snapshot.data.distanceReference,
-                                      pos.getPixelDistance());
+                                        snapshot.data.pixelReference,
+                                        snapshot.data.distanceReference,
+                                        pos.getPixelDistance());
+                                    double weight = calculate.calWeight(
+                                        snapshot.data.bodyLenght,
+                                        snapshot.data.heartGirth);
 
-                                    print("Hear Lenght Top: $hlt CM.");
+                                    // print("Hear Lenght Top: $hlt CM.\tCattle Weight: $weight Kg.");
 
-                                    // await catTimeHelper.updateCatTime(
-                                    //     CatTimeModel(
-                                    //         id: snapshot.data.id,
-                                    //         idPro: snapshot.data.idPro,
-                                    //         weight: snapshot.data.weight,
-                                    //         bodyLenght: snapshot.data.bodyLenght,
-                                    //         heartGirth: snapshot
-                                    //             .data.heartGirth,
-                                    //         hearLenghtSide: snapshot
-                                    //             .data.hearLenghtSide,
-                                    //         hearLenghtRear:
-                                    //             snapshot.data.hearLenghtRear,
-                                    //         hearLenghtTop:
-                                    //             hlt,
-                                    //         pixelReference:
-                                    //             snapshot.data.pixelReference,
-                                    //         distanceReference:
-                                    //             snapshot.data.distanceReference,
-                                    //         imageSide: snapshot.data.imageSide,
-                                    //         imageRear: snapshot.data.imageRear,
-                                    //         imageTop: snapshot.data.imageTop,
-                                    //         date: DateTime.now()
-                                    //             .toIso8601String(),
-                                    //         note: ""));
+                                    await catTimeHelper.updateCatTime(
+                                        CatTimeModel(
+                                            id: snapshot.data.id,
+                                            idPro: snapshot.data.idPro,
+                                            weight: weight,
+                                            bodyLenght:
+                                                snapshot.data.bodyLenght,
+                                            heartGirth:
+                                                snapshot.data.heartGirth,
+                                            hearLenghtSide:
+                                                snapshot.data.hearLenghtSide,
+                                            hearLenghtRear:
+                                                snapshot.data.hearLenghtRear,
+                                            hearLenghtTop: hlt,
+                                            pixelReference:
+                                                snapshot.data.pixelReference,
+                                            distanceReference:
+                                                snapshot.data.distanceReference,
+                                            imageSide: snapshot.data.imageSide,
+                                            imageRear: snapshot.data.imageRear,
+                                            imageTop: snapshot.data.imageTop,
+                                            date: DateTime.now()
+                                                .toIso8601String(),
+                                            note: ""));
 
-                                    // // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
-                                      // Navigator.pushAndRemoveUntil(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) => CattlePreview(
-                                      //               "01",
-                                      //               "cattle01",
-                                      //               "male",
-                                      //               "Brahman",
-                                      //               "assets/images/cattle01.jpg",
-                                      //               "assets/images/cattle01.jpg",
-                                      //               "assets/images/cattle01.jpg",
-                                      //               255,
-                                      //               255,
-                                      //               255,
-                                      //             )),
-                                      //     (route) => false);
+                                    // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => CatTimeScreen(
+                                                  catProID: snapshot.data.idPro,
+                                                )),
+                                        (route) => false);
                                   },
                                   title: "บันทึก"),
                             ]),
@@ -174,7 +169,8 @@ class LineAndPositionPictureHGTop extends StatefulWidget {
       new LineAndPositionPictureHGTopState();
 }
 
-class LineAndPositionPictureHGTopState extends State<LineAndPositionPictureHGTop> {
+class LineAndPositionPictureHGTopState
+    extends State<LineAndPositionPictureHGTop> {
   List<double> positionsX = [];
   List<double> positionsY = [];
   double pixelDistance = 0;
@@ -191,7 +187,8 @@ class LineAndPositionPictureHGTopState extends State<LineAndPositionPictureHGTop
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
+          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1],
+              positionsY[index - 1], positionsX[index], positionsY[index])
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

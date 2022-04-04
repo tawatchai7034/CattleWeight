@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Camera/cameraTop_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
 import 'package:cattle_weight/model/calculation.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/imageNavidation.dart';
@@ -129,7 +130,8 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                               children: [
                                 MainButton(
                                     onSelected: () async {
-                                      double weight = calculate.calWeight(snapshot.data.bodyLenght, hg);
+                                      double weight = calculate.calWeight(
+                                          snapshot.data.bodyLenght, hg);
 
                                       print("Cattle Weight: $weight Kg.");
 
@@ -140,9 +142,9 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                                               weight: weight,
                                               bodyLenght:
                                                   snapshot.data.bodyLenght,
-                                              heartGirth:
-                                                  hg,
-                                              hearLenghtSide: snapshot.data.hearLenghtSide,
+                                              heartGirth: hg,
+                                              hearLenghtSide:
+                                                  snapshot.data.hearLenghtSide,
                                               hearLenghtRear:
                                                   snapshot.data.hearLenghtRear,
                                               hearLenghtTop:
@@ -159,23 +161,16 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                                               date: DateTime.now()
                                                   .toIso8601String(),
                                               note: ""));
-                                      // // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
-                                      // Navigator.pushAndRemoveUntil(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) => CattlePreview(
-                                      //               "01",
-                                      //               "cattle01",
-                                      //               "male",
-                                      //               "Brahman",
-                                      //               "assets/images/cattle01.jpg",
-                                      //               "assets/images/cattle01.jpg",
-                                      //               "assets/images/cattle01.jpg",
-                                      //               255,
-                                      //               255,
-                                      //               255,
-                                      //             )),
-                                      //     (route) => false);
+                                      // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CatTimeScreen(
+                                                    catProID:
+                                                        snapshot.data.idPro,
+                                                  )),
+                                          (route) => false);
                                     },
                                     title: "คำนวณน้ำหนัก"),
                                 SizedBox(
@@ -184,15 +179,15 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                                 MainButton(
                                     onSelected: () {
                                       Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CameraTopScreen(
-                                                  idPro: snapshot.data.idPro,
-                                                  idTime: snapshot.data.id,
-                                                  localFront: line.TopRight,
-                                                  localBack: line.TopLeft,
-                                                  catTime: snapshot.data,
-                                                )));
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CameraTopScreen(
+                                                    idPro: snapshot.data.idPro,
+                                                    idTime: snapshot.data.id,
+                                                    localFront: line.TopRight,
+                                                    localBack: line.TopLeft,
+                                                    catTime: snapshot.data,
+                                                  )));
                                     },
                                     title: "ถ่ายภาพกระดูกสันหลังโค"),
                               ])
