@@ -81,7 +81,7 @@ class CatImageHelper {
     var dbClient = await db;
 
     final queryResult = await dbClient.query(
-      'cattime',
+      '$TABLE',
       columns: ImageFields.values,
       where: 'imagePath = ?',
       whereArgs: [path],

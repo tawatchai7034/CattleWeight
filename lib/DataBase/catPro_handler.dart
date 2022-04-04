@@ -67,7 +67,7 @@ class CatProHelper {
     var dbClient = await db;
 
     final queryResult = await dbClient!.query(
-      'cattime',
+      'catpro',
       columns: CatProFields.values,
       where: 'id = ?',
       whereArgs: [id],

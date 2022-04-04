@@ -163,14 +163,14 @@ class TakePictureTopState extends State<TakePictureTop>
                     String imageName = DateTime.now().toString() + ".jpg";
 
                     // If the picture was taken, display it on a new screen.
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => PictureTW2(
-                                // camera: widget.camera,
-                                imgPath: image.path,
-                                fileName: imageName,
-                              )),
-                    );
+                    // await Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //       builder: (context) => PictureTWTop(
+                    //             // camera: widget.camera,
+                    //             imgPath: image.path,
+                    //             fileName: imageName,
+                    //           )),
+                    // );
                   } catch (e) {
                     // If an error occurs, log the error to the console.
                     print(e);

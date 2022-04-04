@@ -62,7 +62,7 @@ class _CatProScreenState extends State<CatProScreen> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => CatTimeScreen(
-                                      catPro: snapshot.data![index])));
+                                      catProID: snapshot.data![index].id!)));
                             },
                             child: Dismissible(
                               direction: DismissDirection.endToStart,

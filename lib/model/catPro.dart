@@ -4,7 +4,7 @@ class CatProFields {
     id, name, gender, species
   ];
 
-  static final String id = '_id';
+  static final String id = 'id';
   static final String name = 'name';
   static final String gender = 'gender';
   static final String species = 'species';

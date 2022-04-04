@@ -3,9 +3,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/Camera/cameraTop_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
 import 'package:cattle_weight/model/calculation.dart';
 import 'package:cattle_weight/model/catTime.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:cattle_weight/model/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,7 @@ import 'package:cattle_weight/convetHex.dart';
 
 ConvertHex hex = new ConvertHex();
 CattleCalculation calculate = new CattleCalculation();
+ImageNavidation line = new ImageNavidation();
 
 class SaveNextCamera extends StatefulWidget {
   final int catTimeID;
@@ -180,14 +183,16 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                                 ),
                                 MainButton(
                                     onSelected: () {
-                                      // Navigator.of(context).push(MaterialPageRoute(
-                                      //     builder: (context) => TakePictureTop(
-
-                                      //           localFront: widget.localFront,
-                                      //           localBack: widget.localBack,
-                                      //         )));
-
-                                      // change new camera
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CameraTopScreen(
+                                                  idPro: snapshot.data.idPro,
+                                                  idTime: snapshot.data.id,
+                                                  localFront: line.TopRight,
+                                                  localBack: line.TopLeft,
+                                                  catTime: snapshot.data,
+                                                )));
                                     },
                                     title: "ถ่ายภาพกระดูกสันหลังโค"),
                               ])

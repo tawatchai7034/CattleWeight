@@ -100,7 +100,7 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
 
                           await ImageHelper.save(photo);
 
-                          print("imgString : $imgString");
+                          // print("imgString : $imgString");
                           await catTimeHelper!.updateCatTime(CatTimeModel(
                               id: snapshot.data!.id,
                               idPro: snapshot.data!.idPro,

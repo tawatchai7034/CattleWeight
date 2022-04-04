@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:cattle_weight/Camera/capturesTop_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureTWTop.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +16,13 @@ import 'package:cattle_weight/model/utility.dart';
 
 import '../Camera/capturesSide_screen.dart';
 
-class PreviewSideScreen extends StatefulWidget {
+class PreviewTopScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final File imageFile;
   final List<File> fileList;
   final CatTimeModel catTime;
-  const PreviewSideScreen({
+  const PreviewTopScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
@@ -30,10 +32,10 @@ class PreviewSideScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PreviewSideScreen> createState() => _PreviewSideScreenState();
+  State<PreviewTopScreen> createState() => _PreviewTopScreenState();
 }
 
-class _PreviewSideScreenState extends State<PreviewSideScreen> {
+class _PreviewTopScreenState extends State<PreviewTopScreen> {
   CatImageHelper ImageHelper = CatImageHelper();
   CatTimeHelper? catTimeHelper;
   late List<ImageModel> images;
@@ -66,7 +68,7 @@ class _PreviewSideScreenState extends State<PreviewSideScreen> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => CapturesSideScreen(
+                      builder: (context) => CapturesTopScreen(
                         idPro: widget.idPro,
                         idTime: widget.idTime,
                         imageFileList: widget.fileList,
@@ -111,7 +113,7 @@ class _PreviewSideScreenState extends State<PreviewSideScreen> {
                   });
 
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PictureRef(
+                      builder: (context) => PictureTWTop(
                             imageFile: file,
                             fileName: file.path,
                             catTime: widget.catTime,
