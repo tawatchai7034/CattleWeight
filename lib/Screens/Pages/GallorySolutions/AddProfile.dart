@@ -262,11 +262,11 @@ class MyCustomFormState extends State<MyCustomForm> {
       setState(() {
         _image = File(pickedImage.path);
       });
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PictureRef(
-              camera: widget.camera,
-              imgPath: _image.path,
-              fileName: imageName)));
+      // Navigator.of(context).push(MaterialPageRoute(
+      //     builder: (context) => GalloryRefSide(
+      //         camera: widget.camera,
+      //         imgPath: _image.path,
+      //         fileName: imageName)));
     }
   }
 }

@@ -141,9 +141,7 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                                                                     .data![
                                                                         index]
                                                                     .id!,
-                                                                catTime: snapshot
-                                                                        .data![
-                                                                    index])));
+                                                                )));
                                               },
                                               icon: Icon(Icons.edit)),
                                         ),

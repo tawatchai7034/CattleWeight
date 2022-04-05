@@ -1,7 +1,8 @@
 // @dart=2.9
+
 import 'dart:io';
 
-import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureBL.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureSaveNext.dart';
 import 'package:cattle_weight/model/calculation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +20,11 @@ ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 CattleCalculation calculate = new CattleCalculation();
 
-class GalloryHGSide extends StatefulWidget {
+class GalloryHG_Rear extends StatefulWidget {
   final File imageFile;
   final String fileName;
   final CatTimeModel catTime;
-  const GalloryHGSide({
+  const GalloryHG_Rear({
     Key key,
     this.imageFile,
     this.fileName,
@@ -31,10 +32,10 @@ class GalloryHGSide extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GalloryHGSideState createState() => _GalloryHGSideState();
+  _GalloryHG_RearState createState() => _GalloryHG_RearState();
 }
 
-class _GalloryHGSideState extends State<GalloryHGSide> {
+class _GalloryHG_RearState extends State<GalloryHG_Rear> {
   bool showState = false;
   CatTimeHelper catTimeHelper;
   Future<CatTimeModel> catTimeData;
@@ -55,7 +56,7 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("[2/3] กรุณาระบุความยาวรอบอกโค",
+            title: Text("[2/2] กรุณาระบุความกว้างกระดูกก้นกบของโค",
                 style: TextStyle(
                     fontSize: 24,
                     color: Color(hex.hexColor("ffffff")),
@@ -63,7 +64,7 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
             backgroundColor: Color(hex.hexColor("#007BA4"))),
         body: new Stack(
           children: [
-            LaPGalloryHGSide(
+            LineAndPositionPictureHG_Rear(
               imgPath: widget.imageFile.path,
               fileName: widget.fileName,
             ),
@@ -81,12 +82,12 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
                                 onSelected: () async {
                                   // print(
                                   //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
-                                  double hls = calculate.distance(
+                                  double hlr = calculate.distance(
                                       snapshot.data.pixelReference,
                                       snapshot.data.distanceReference,
                                       pos.getPixelDistance());
 
-                                  print("Hear Lenght Side: $hls CM.");
+                                  print("Hear Lenght Rear: $hlr CM.");
 
                                   await catTimeHelper.updateCatTime(
                                       CatTimeModel(
@@ -95,9 +96,9 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
                                           weight: snapshot.data.weight,
                                           bodyLenght: snapshot.data.bodyLenght,
                                           heartGirth: snapshot.data.heartGirth,
-                                          hearLenghtSide: hls,
-                                          hearLenghtRear: snapshot
-                                              .data.hearLenghtRear,
+                                          hearLenghtSide: snapshot
+                                              .data.hearLenghtSide,
+                                          hearLenghtRear: hlr,
                                           hearLenghtTop: snapshot
                                               .data.hearLenghtTop,
                                           pixelReference: snapshot
@@ -110,12 +111,11 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
                                           date:
                                               DateTime.now().toIso8601String(),
                                           note: snapshot.data.note));
+
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => GalloryBL(
-                                        imgPath: widget.imageFile.path,
-                                        fileName: widget.fileName,
-                                        catTimeID: snapshot.data.id),
-                                  ));
+                                      builder: (context) => SaveNextGallory(
+                                            catTimeID: widget.catTime.id,
+                                          )));
                                 },
                                 title: "บันทึก")
                           ]),
@@ -130,11 +130,10 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
                 ? Container()
                 : AlertDialog(
                     // backgroundColor: Colors.black,
-                    title: Text("กรุณาระบุความยาวรอบอกโค",
+                    title: Text("กรุณาระบุความกว้างกระดูกก้นกบของโค",
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
-                    content:
-                        Image.asset("assets/images/SideLeftNavigation3.png"),
+                    content: Image.asset("assets/images/RearNavigation3.png"),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -151,19 +150,20 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
   }
 }
 
-class LaPGalloryHGSide extends StatefulWidget {
+class LineAndPositionPictureHG_Rear extends StatefulWidget {
   final String imgPath;
   final String fileName;
   final VoidCallback onSelected;
-  const LaPGalloryHGSide(
+  const LineAndPositionPictureHG_Rear(
       {this.imgPath, this.fileName, this.onSelected});
 
   @override
-  LaPGalloryHGSideState createState() =>
-      new LaPGalloryHGSideState();
+  LineAndPositionPictureHG_RearState createState() =>
+      new LineAndPositionPictureHG_RearState();
 }
 
-class LaPGalloryHGSideState extends State<LaPGalloryHGSide> {
+class LineAndPositionPictureHG_RearState
+    extends State<LineAndPositionPictureHG_Rear> {
   List<double> positionsX = [];
   List<double> positionsY = [];
   double pixelDistance = 0;

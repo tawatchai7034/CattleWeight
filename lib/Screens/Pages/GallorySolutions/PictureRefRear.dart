@@ -1,9 +1,9 @@
 // @dart=2.9
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureHG.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureHG_Rear.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureHgRear.dart';
 import 'package:cattle_weight/model/calculation.dart';
 import 'package:flutter/material.dart';
 
@@ -20,29 +20,29 @@ ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 CattleCalculation calculate = new CattleCalculation();
 
-class GalloryRefSide extends StatefulWidget {
+class GalloryRefRear extends StatefulWidget {
   final File imageFile;
   final String fileName;
-  final CatTimeModel catTime;
-  const GalloryRefSide({
+  final int catTimeID;
+  const GalloryRefRear({
     Key key,
     this.imageFile,
     this.fileName,
-    this.catTime,
+    this.catTimeID,
   }) : super(key: key);
 
   @override
-  _GalloryRefSideState createState() => _GalloryRefSideState();
+  _GalloryRefRearState createState() => _GalloryRefRearState();
 }
 
-class _GalloryRefSideState extends State<GalloryRefSide> {
+class _GalloryRefRearState extends State<GalloryRefRear> {
   bool showState = false;
   TextEditingController _textFieldController = TextEditingController();
   CatTimeHelper catTimeHelper;
   Future<CatTimeModel> catTimeData;
 
   loadData() async {
-    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTime.id);
+    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTimeID);
   }
 
   @override
@@ -71,7 +71,7 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
               },
               controller: _textFieldController,
               decoration:
-                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง "),
+                  InputDecoration(hintText: "กรุณาระบุความยาวของจุดอ้างอิง"),
             ),
             actions: <Widget>[
               FutureBuilder(
@@ -107,7 +107,6 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold)),
                               onPressed: () async {
-                                // print("${_textFieldController.text}");
                                 await catTimeHelper.updateCatTime(CatTimeModel(
                                     id: snapshot.data.id,
                                     idPro: snapshot.data.idPro,
@@ -130,10 +129,10 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
 
                                 loadData();
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => GalloryHGSide(
+                                    builder: (context) => GalloryHG_Rear(
                                           imageFile: widget.imageFile,
                                           fileName: widget.fileName,
-                                          catTime: widget.catTime,
+                                          catTime: snapshot.data,
                                         )));
                               },
                               child: const Text('บันทึก'),
@@ -142,7 +141,7 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
                         ],
                       );
                     } else {
-                      return Center(child: Container(child: Text("กรุณาเปลี่ยนรูปด้านข้างโค",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold)),));
+                      return Center(child: Container(child: Text("กรุณาเปลี่ยนรูปด้านหลังโค",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold)),));
                     }
                   })
             ],
@@ -165,7 +164,7 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
             backgroundColor: Color(hex.hexColor("#007BA4"))),
         body: Stack(
           children: [
-            LaPGalloryRefSide(
+            LaPGalloryRefRear(
                 imgPath: widget.imageFile.path, fileName: widget.fileName),
             Center(
               child: Padding(
@@ -174,6 +173,7 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   MainButton(
                       onSelected: () async {
+                     
 
                         _displayTextInputDialog(
                           context,
@@ -191,7 +191,7 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
                     content:
-                        Image.asset("assets/images/SideLeftNavigation5.png"),
+                        Image.asset("assets/images/RearNavigation4.png"),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -208,19 +208,19 @@ class _GalloryRefSideState extends State<GalloryRefSide> {
   }
 }
 
-class LaPGalloryRefSide extends StatefulWidget {
+class LaPGalloryRefRear extends StatefulWidget {
   final String imgPath;
   final String fileName;
   final VoidCallback onSelected;
-  const LaPGalloryRefSide(
+  const LaPGalloryRefRear(
       {this.imgPath, this.fileName, this.onSelected});
 
   @override
-  LaPGalloryRefSideState createState() =>
-      new LaPGalloryRefSideState();
+  LaPGalloryRefRearState createState() =>
+      new LaPGalloryRefRearState();
 }
 
-class LaPGalloryRefSideState extends State<LaPGalloryRefSide> {
+class LaPGalloryRefRearState extends State<LaPGalloryRefRear> {
   List<double> positionsX = [];
   List<double> positionsY = [];
   double pixelDistance = 0;
@@ -237,11 +237,7 @@ class LaPGalloryRefSideState extends State<LaPGalloryRefSide> {
       positionsY.add(localOffset.dy);
       // Distance calculation
       positionsX.length % 2 == 0
-          ?  pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
-          // pixelDistance = sqrt(((positionsX[index] - positionsX[index - 1]) *
-          //         (positionsX[index] - positionsX[index - 1])) +
-          //     ((positionsY[index] - positionsY[index - 1]) *
-          //         (positionsY[index] - positionsY[index - 1])))
+          ? pixelDistance = calculate.pixelDistance(positionsX[index - 1], positionsY[index - 1], positionsX[index], positionsY[index])
           : pixelDistance = pixelDistance;
 
       // print("Pixel Distance = ${pixelDistance}");

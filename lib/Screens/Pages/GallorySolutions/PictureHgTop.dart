@@ -1,46 +1,47 @@
 // @dart=2.9
-import 'dart:io';
-
-import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureBL.dart';
-import 'package:cattle_weight/model/calculation.dart';
-import 'package:flutter/material.dart';
-
+import 'package:camera/camera.dart';
+import 'package:cattle_weight/Camera/cameraRear_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
-
+import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
+import 'package:cattle_weight/Screens/Widgets/LineAndPosition.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PaintLine.dart';
 import 'package:cattle_weight/Screens/Widgets/PaintPoint.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraRear.dart';
 import 'package:cattle_weight/Screens/Widgets/position.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/calculation.dart';
 import 'package:cattle_weight/model/catTime.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
+import 'package:flutter/material.dart';
+
+import 'dart:ffi';
+import 'dart:math';
 
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 CattleCalculation calculate = new CattleCalculation();
 
-class GalloryHGSide extends StatefulWidget {
-  final File imageFile;
+class GalloryHGTop extends StatefulWidget {
+  final catTimeID;
+  final String imgPath;
   final String fileName;
-  final CatTimeModel catTime;
-  const GalloryHGSide({
-    Key key,
-    this.imageFile,
-    this.fileName,
-    this.catTime,
-  }) : super(key: key);
+  const GalloryHGTop({Key key, this.imgPath, this.fileName, this.catTimeID})
+      : super(key: key);
 
   @override
-  _GalloryHGSideState createState() => _GalloryHGSideState();
+  _GalloryHGTopState createState() => _GalloryHGTopState();
 }
 
-class _GalloryHGSideState extends State<GalloryHGSide> {
+class _GalloryHGTopState extends State<GalloryHGTop> {
   bool showState = false;
   CatTimeHelper catTimeHelper;
   Future<CatTimeModel> catTimeData;
+  ImageNavidation line = new ImageNavidation();
 
   Future loadData() async {
-    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTime.id);
+    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTimeID);
   }
 
   @override
@@ -55,7 +56,7 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("[2/3] กรุณาระบุความยาวรอบอกโค",
+            title: Text("[2/2] ระบุความยาวรอบอกโค",
                 style: TextStyle(
                     fontSize: 24,
                     color: Color(hex.hexColor("ffffff")),
@@ -63,68 +64,75 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
             backgroundColor: Color(hex.hexColor("#007BA4"))),
         body: new Stack(
           children: [
-            LaPGalloryHGSide(
-              imgPath: widget.imageFile.path,
+            LaPGalloryHGTop(
+              imgPath: widget.imgPath,
               fileName: widget.fileName,
             ),
             Padding(
               padding: EdgeInsets.all(20),
               child: FutureBuilder(
-                future: catTimeData,
-                builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
-                  if (snapshot.hasData) {
-                    return Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            MainButton(
-                                onSelected: () async {
-                                  // print(
-                                  //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
-                                  double hls = calculate.distance(
-                                      snapshot.data.pixelReference,
-                                      snapshot.data.distanceReference,
-                                      pos.getPixelDistance());
+                  future: catTimeData,
+                  builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+                    if (snapshot.hasData) {
+                      return Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              MainButton(
+                                  onSelected: () async {
+                                    double hlt = calculate.distance(
+                                        snapshot.data.pixelReference,
+                                        snapshot.data.distanceReference,
+                                        pos.getPixelDistance());
 
-                                  print("Hear Lenght Side: $hls CM.");
+                                    double newHG = calculate.calHeartGirth(
+                                        hlt, snapshot.data.hearLenghtRear);
 
-                                  await catTimeHelper.updateCatTime(
-                                      CatTimeModel(
-                                          id: snapshot.data.id,
-                                          idPro: snapshot.data.idPro,
-                                          weight: snapshot.data.weight,
-                                          bodyLenght: snapshot.data.bodyLenght,
-                                          heartGirth: snapshot.data.heartGirth,
-                                          hearLenghtSide: hls,
-                                          hearLenghtRear: snapshot
-                                              .data.hearLenghtRear,
-                                          hearLenghtTop: snapshot
-                                              .data.hearLenghtTop,
-                                          pixelReference: snapshot
-                                              .data.pixelReference,
-                                          distanceReference:
-                                              snapshot.data.distanceReference,
-                                          imageSide: snapshot.data.imageSide,
-                                          imageRear: snapshot.data.imageRear,
-                                          imageTop: snapshot.data.imageTop,
-                                          date:
-                                              DateTime.now().toIso8601String(),
-                                          note: snapshot.data.note));
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => GalloryBL(
-                                        imgPath: widget.imageFile.path,
-                                        fileName: widget.fileName,
-                                        catTimeID: snapshot.data.id),
-                                  ));
-                                },
-                                title: "บันทึก")
-                          ]),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
+                                    double weight = calculate.calWeight(
+                                        snapshot.data.bodyLenght, newHG);
+
+                                    // print("Hear Lenght Top: $hlt CM.\tCattle Weight: $weight Kg.");
+
+                                    await catTimeHelper.updateCatTime(
+                                        CatTimeModel(
+                                            id: snapshot.data.id,
+                                            idPro: snapshot.data.idPro,
+                                            weight: weight,
+                                            bodyLenght:
+                                                snapshot.data.bodyLenght,
+                                            heartGirth:
+                                                newHG,
+                                            hearLenghtSide:
+                                                snapshot.data.hearLenghtSide,
+                                            hearLenghtRear:
+                                                snapshot.data.hearLenghtRear,
+                                            hearLenghtTop: hlt,
+                                            pixelReference:
+                                                snapshot.data.pixelReference,
+                                            distanceReference:
+                                                snapshot.data.distanceReference,
+                                            imageSide: snapshot.data.imageSide,
+                                            imageRear: snapshot.data.imageRear,
+                                            imageTop: snapshot.data.imageTop,
+                                            date: snapshot.data.date,
+                                            note: snapshot.data.note));
+
+                                    // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => CatTimeScreen(
+                                                  catProID: snapshot.data.idPro,
+                                                )),
+                                        (route) => false);
+                                  },
+                                  title: "บันทึก"),
+                            ]),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
             ),
             showState
                 ? Container()
@@ -134,7 +142,7 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
                     content:
-                        Image.asset("assets/images/SideLeftNavigation3.png"),
+                        Image.asset("assets/images/TopLeftNavigation4.png"),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -151,19 +159,20 @@ class _GalloryHGSideState extends State<GalloryHGSide> {
   }
 }
 
-class LaPGalloryHGSide extends StatefulWidget {
+class LaPGalloryHGTop extends StatefulWidget {
   final String imgPath;
   final String fileName;
   final VoidCallback onSelected;
-  const LaPGalloryHGSide(
+  const LaPGalloryHGTop(
       {this.imgPath, this.fileName, this.onSelected});
 
   @override
-  LaPGalloryHGSideState createState() =>
-      new LaPGalloryHGSideState();
+  LaPGalloryHGTopState createState() =>
+      new LaPGalloryHGTopState();
 }
 
-class LaPGalloryHGSideState extends State<LaPGalloryHGSide> {
+class LaPGalloryHGTopState
+    extends State<LaPGalloryHGTop> {
   List<double> positionsX = [];
   List<double> positionsY = [];
   double pixelDistance = 0;

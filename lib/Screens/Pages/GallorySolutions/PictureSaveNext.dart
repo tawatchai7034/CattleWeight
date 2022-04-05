@@ -1,34 +1,66 @@
+// @dart=2.9
 import 'dart:io';
+import 'dart:math';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureTW2.dart';
+import 'package:cattle_weight/Camera/cameraTop_screen.dart';
+import 'package:cattle_weight/DataBase/catImage_handler.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureTWTop.dart';
+import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
+import 'package:cattle_weight/model/calculation.dart';
+import 'package:cattle_weight/model/catTime.dart';
+import 'package:cattle_weight/model/image.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
+import 'package:cattle_weight/model/utility.dart';
+import 'package:flutter/material.dart';
+
 import 'package:cattle_weight/Screens/Pages/ViewPage.dart';
 import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
 import 'package:cattle_weight/Screens/Widgets/PictureCameraTop.dart';
-import 'package:flutter/material.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:image_picker/image_picker.dart';
 
 ConvertHex hex = new ConvertHex();
+CattleCalculation calculate = new CattleCalculation();
+ImageNavidation line = new ImageNavidation();
 
-class PictureSaveNext extends StatefulWidget {
-  final CameraDescription camera;
-  final String localFront;
-  final String localBack;
-  const PictureSaveNext(
-      {Key? key,
-      required this.camera,
-      required this.localFront,
-      required this.localBack})
-      : super(key: key);
+class SaveNextGallory extends StatefulWidget {
+  final int catTimeID;
+  const SaveNextGallory({
+    Key key,
+    this.catTimeID,
+  }) : super(key: key);
 
   @override
-  _PictureSaveNextState createState() => _PictureSaveNextState();
+  _SaveNextGalloryState createState() => _SaveNextGalloryState();
 }
 
-class _PictureSaveNextState extends State<PictureSaveNext> {
-  late File _image;
-  String imageName = DateTime.now().toString() + ".jpg";
+class _SaveNextGalloryState extends State<SaveNextGallory> {
+  CatTimeHelper catTimeHelper;
+  CatImageHelper ImageHelper;
+  Future<CatTimeModel> catTimeData;
+  List<ImageModel> images;
+  ImageNavidation line = new ImageNavidation();
+
+  @override
+  void initState() {
+    super.initState();
+    catTimeHelper = new CatTimeHelper();
+    ImageHelper = new CatImageHelper();
+    refreshImages();
+  }
+
+  refreshImages() {
+    catTimeData = catTimeHelper.getCatTimeWithCatTimeID(widget.catTimeID);
+    ImageHelper.getCatTimePhotos(widget.catTimeID).then((imgs) {
+      setState(() {
+        images.clear();
+        images.addAll(imgs);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,112 +74,194 @@ class _PictureSaveNextState extends State<PictureSaveNext> {
         ),
         body: Padding(
           padding: EdgeInsets.all(10),
-          child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 120,
-                  width: double.infinity,
-                  child: Center(
-                      child: Text(
-                    "Heart Girth : 2XX CM.",
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  )),
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 120,
-                  width: double.infinity,
-                  child: Center(
-                      child: Text(
-                    "Boar Lenght : 2XX CM.",
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  )),
-                  color: Colors.green,
-                ),
-                SizedBox(
-                  height: 180,
-                ),
-                MainButton(
-                    onSelected: () {
-                      // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
-                      // Navigator.pushAndRemoveUntil(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => CattleData(
-                      //             "01",
-                      //             "cattle01",
-                      //             "male",
-                      //             "Brahman",
-                      //             "assets/images/cattle01.jpg",
-                      //             "assets/images/cattle01.jpg",
-                      //             "assets/images/cattle01.jpg",
-                      //             255,
-                      //             255,
-                      //             255,
-                      //             widget.camera)),
-                      //     (route) => false);
-                    },
-                    title: "คำนวณน้ำหนัก"),
-                SizedBox(
-                  height: 10,
-                ),
-                MainButton(
-                    onSelected: () {
-                      showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              // backgroundColor: Colors.black,
-                              title: Text("กรุณาเลือกรูปด้านกระดูกสันหลังโค",
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold)),
-                              content: Image.asset(
-                                  "assets/images/TopLeftNavigation2.png"),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'ยกเลิก'),
-                                  child: const Text('ยกเลิก',
-                                      style: TextStyle(fontSize: 24)),
-                                ),
-                                TextButton(
-                                  onPressed: () => _openImagePicker(),
-                                  child: const Text('ตกลง',
-                                      style: TextStyle(fontSize: 24)),
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                    title: "ภาพกระดูกสันหลังโค"),
-              ]),
-        ));
-  }
+          child: FutureBuilder(
+              future: catTimeData,
+              builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+                final picker = ImagePicker();
 
-  final picker = ImagePicker();
-  // Implementing the image picker
-  Future<void> _openImagePicker() async {
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PictureTW2(
-              camera: widget.camera,
-              imgPath: _image.path,
-              fileName: imageName)));
-    }
+                Future<void> pickImageFromGallery() async {
+                  final pickedImage = await picker
+                      .getImage(
+                          source: ImageSource.gallery,
+                          maxHeight: 1080,
+                          maxWidth: 2160,
+                          imageQuality: 100)
+                      .then((imgFile) {
+                    if (imgFile == null) {
+                      Navigator.pop(context);
+                    } else {
+                      final file = File(imgFile.path);
+                      String imgString =
+                          Utility.base64String(file.readAsBytesSync());
+                      ImageModel photo = ImageModel(
+                          idPro: snapshot.data.idPro,
+                          idTime: snapshot.data.id,
+                          imagePath: imgString);
+                      ImageHelper.save(photo);
+
+                      catTimeHelper.updateCatTime(CatTimeModel(
+                          id: snapshot.data.id,
+                          idPro: snapshot.data.idPro,
+                          weight: snapshot.data.weight,
+                          bodyLenght: snapshot.data.bodyLenght,
+                          heartGirth: snapshot.data.heartGirth,
+                          hearLenghtSide: snapshot.data.hearLenghtSide,
+                          hearLenghtRear: snapshot.data.hearLenghtRear,
+                          hearLenghtTop: snapshot.data.hearLenghtTop,
+                          pixelReference: snapshot.data.pixelReference,
+                          distanceReference: snapshot.data.distanceReference,
+                          imageSide: snapshot.data.imageSide,
+                          imageRear: snapshot.data.imageRear,
+                          imageTop: imgString,
+                          date: DateTime.now().toIso8601String(),
+                          note: snapshot.data.note));
+
+                      setState(() {
+                        refreshImages();
+                      });
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => GalloryTWTop(
+                              imageFile: file,
+                              fileName: file.path,
+                              catTime: snapshot.data)));
+                    }
+                  });
+                }
+
+                if (snapshot.hasData) {
+                  double hg = calculate.calHeartGirth(
+                      snapshot.data.hearLenghtRear,
+                      snapshot.data.hearLenghtSide);
+
+                  return Center(
+                    child: ListView(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          PhysicalModel(
+                              color: Colors.teal,
+                              elevation: 8,
+                              shadowColor: Colors.grey,
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                  height: 240,
+                                  width: 360,
+                                  child: Center(
+                                      child: ListTile(
+                                    title: RotatedBox(
+                                      quarterTurns: -1,
+                                      child: Image.asset(
+                                        "assets/images/SideLeftNavigation3.png",
+                                        height: 120,
+                                        width: 180,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "รอบอก: ${hg.toStringAsFixed(3)} ซม.",
+                                      style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )),
+                                  color: Colors.white)),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          PhysicalModel(
+                            color: Colors.teal,
+                            elevation: 8,
+                            shadowColor: Colors.grey,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                                height: 240,
+                                width: 360,
+                                child: Center(
+                                    child: ListTile(
+                                  title: RotatedBox(
+                                    quarterTurns: -1,
+                                    child: Image.asset(
+                                      "assets/images/SideLeftNavigation4.png",
+                                      height: 120,
+                                      width: 180,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "ความยาวลำตัว: ${snapshot.data.bodyLenght.toStringAsFixed(3)} ซม.",
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )),
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                MainButton(
+                                    onSelected: () async {
+                                      double weight = calculate.calWeight(
+                                          snapshot.data.bodyLenght, hg);
+
+                                      print("Cattle Weight: $weight Kg.");
+
+                                      await catTimeHelper.updateCatTime(
+                                          CatTimeModel(
+                                              id: snapshot.data.id,
+                                              idPro: snapshot.data.idPro,
+                                              weight: weight,
+                                              bodyLenght:
+                                                  snapshot.data.bodyLenght,
+                                              heartGirth: hg,
+                                              hearLenghtSide:
+                                                  snapshot.data.hearLenghtSide,
+                                              hearLenghtRear:
+                                                  snapshot.data.hearLenghtRear,
+                                              hearLenghtTop:
+                                                  snapshot.data.hearLenghtTop,
+                                              pixelReference:
+                                                  snapshot.data.pixelReference,
+                                              distanceReference: snapshot
+                                                  .data.distanceReference,
+                                              imageSide:
+                                                  snapshot.data.imageSide,
+                                              imageRear:
+                                                  snapshot.data.imageRear,
+                                              imageTop: snapshot.data.imageTop,
+                                              date: DateTime.now()
+                                                  .toIso8601String(),
+                                              note: snapshot.data.note));
+                                      // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CatTimeScreen(
+                                                    catProID:
+                                                        snapshot.data.idPro,
+                                                  )),
+                                          (route) => false);
+                                    },
+                                    title: "คำนวณน้ำหนัก"),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                MainButton(
+                                    onSelected: () {
+                                      pickImageFromGallery();
+                                    },
+                                    title: "ถ่ายภาพกระดูกสันหลังโค"),
+                              ])
+                        ]),
+                  );
+                } else {
+                  return Container();
+                }
+              }),
+        ));
   }
 }

@@ -2,6 +2,8 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/GallorySolutions/PictureRef.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -22,13 +24,11 @@ ConvertHex hex = new ConvertHex();
 class AddPhotoCattles extends StatefulWidget {
   final int idPro;
   final int idTime;
-  final CatTimeModel catTime;
 
   const AddPhotoCattles({
     Key? key,
     required this.idPro,
     required this.idTime,
-    required this.catTime,
   }) : super(key: key);
 
   @override
@@ -41,19 +41,23 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
   late Image image;
 
   CatImageHelper? ImageHelper;
+  CatTimeHelper? catTimeHelper;
 
   late List<ImageModel> images;
   ImageNavidation line = new ImageNavidation();
+  late Future<CatTimeModel> catTimeData;
 
   @override
   void initState() {
     super.initState();
     images = [];
     ImageHelper = CatImageHelper();
+    catTimeHelper = CatTimeHelper();
     refreshImages();
   }
 
   refreshImages() {
+    catTimeData = catTimeHelper!.getCatTimeWithCatTimeID(widget.idTime);
     ImageHelper!.getCatTimePhotos(widget.idTime).then((imgs) {
       setState(() {
         images.clear();
@@ -62,67 +66,109 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
     });
   }
 
-  final picker = ImagePicker();
-
-  Future<void> pickImageFromGallery() async {
-    final pickedImage =
-        await picker.getImage(source: ImageSource.gallery).then((imgFile) {
-      if (imgFile == null) {
-        Navigator.pop(context);
-      } else {
-        final file = File(imgFile.path);
-        String imgString = Utility.base64String(file.readAsBytesSync());
-        ImageModel photo = ImageModel(
-            idPro: widget.idPro, idTime: widget.idTime, imagePath: imgString);
-        ImageHelper!.save(photo);
-        refreshImages();
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                CatImageScreen(idPro: widget.idPro, idTime: widget.idTime)));
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Center(
-              child: Image.asset("assets/images/camera01.png",
-                  height: 240, width: 240, fit: BoxFit.cover)),
-          SizedBox(
-            height: 5,
-          ),
-          // ปุ่มถ่ายภาพ
-          MainButton(
-              onSelected: () {
+    return FutureBuilder(
+        future: catTimeData,
+        builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
+          final picker = ImagePicker();
+
+          Future<void> pickImageFromGallery() async {
+            final pickedImage = await picker
+                .getImage(
+                    source: ImageSource.gallery,
+                    maxHeight: 1080,
+                    maxWidth: 2160,
+                    imageQuality: 100)
+                .then((imgFile) {
+              if (imgFile == null) {
+                Navigator.pop(context);
+              } else {
+                final file = File(imgFile.path);
+                String imgString = Utility.base64String(file.readAsBytesSync());
+                ImageModel photo = ImageModel(
+                    idPro: widget.idPro,
+                    idTime: snapshot.data!.id!,
+                    imagePath: imgString);
+                ImageHelper!.save(photo);
+
+                catTimeHelper!.updateCatTime(CatTimeModel(
+                    id: snapshot.data!.id!,
+                    idPro: snapshot.data!.idPro,
+                    weight: snapshot.data!.weight,
+                    bodyLenght: snapshot.data!.bodyLenght,
+                    heartGirth: snapshot.data!.heartGirth,
+                    hearLenghtSide: snapshot.data!.hearLenghtSide,
+                    hearLenghtRear: snapshot.data!.hearLenghtRear,
+                    hearLenghtTop: snapshot.data!.hearLenghtTop,
+                    pixelReference: snapshot.data!.pixelReference,
+                    distanceReference: snapshot.data!.distanceReference,
+                    imageSide: imgString,
+                    imageRear: snapshot.data!.imageRear,
+                    imageTop: snapshot.data!.imageTop,
+                    date: snapshot.data!.date,
+                    note: snapshot.data!.note));
+
+                setState(() {
+                  refreshImages();
+                });
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CameraSideScreen(
-                          idPro: widget.idPro,
-                          idTime: widget.idTime,
-                          localFront: line.sideLeft,
-                          localBack: line.sideRight,
-                          catTime: widget.catTime,
-                        )));
-              },
-              title: "ถ่ายภาพ"),
-          Center(
-              child: Image.asset("assets/images/photo01.png",
-                  height: 240, width: 240, fit: BoxFit.cover)),
-          SizedBox(
-            height: 5,
-          ),
-          MainButton(
-              onSelected: () {
-                // pickImageFromGallery();
-              },
-              title: "นำเข้าภาพ"),
-        ],
-      ),
-      backgroundColor: Color(hex.Blue()),
-    );
+                    builder: (context) => GalloryRefSide(
+                        imageFile: file,
+                        fileName: file.path,
+                        catTime: snapshot.data!)));
+              }
+            });
+          }
+
+          if (snapshot.hasData) {
+            return Scaffold(
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                      child: Image.asset("assets/images/camera01.png",
+                          height: 240, width: 240, fit: BoxFit.cover)),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  // ปุ่มถ่ายภาพ
+                  MainButton(
+                      onSelected: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CameraSideScreen(
+                                  idPro: widget.idPro,
+                                  idTime: widget.idTime,
+                                  localFront: line.sideLeft,
+                                  localBack: line.sideRight,
+                                  catTime: snapshot.data!,
+                                )));
+                      },
+                      title: "ถ่ายภาพ"),
+                  Center(
+                      child: Image.asset("assets/images/photo01.png",
+                          height: 240, width: 240, fit: BoxFit.cover)),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  MainButton(
+                      onSelected: () {
+                        pickImageFromGallery();
+                      },
+                      title: "นำเข้าภาพ"),
+                ],
+              ),
+              backgroundColor: Color(hex.Blue()),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+              ],
+            );
+          }
+        });
   }
 }
