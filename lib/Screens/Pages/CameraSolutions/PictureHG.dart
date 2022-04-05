@@ -112,7 +112,7 @@ class _PictureHGState extends State<PictureHG> {
                                           imageTop: snapshot.data.imageTop,
                                           date:
                                               DateTime.now().toIso8601String(),
-                                          note: "Update pixel reference"));
+                                          note: snapshot.data.note));
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => PictureBL(
                                         imgPath: widget.imageFile.path,

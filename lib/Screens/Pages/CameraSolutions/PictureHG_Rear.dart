@@ -113,7 +113,7 @@ class _PictureHG_RearState extends State<PictureHG_Rear> {
                                           imageTop: snapshot.data.imageTop,
                                           date:
                                               DateTime.now().toIso8601String(),
-                                          note: ""));
+                                          note:  snapshot.data.note));
 
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => SaveNextCamera(

@@ -59,8 +59,7 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                           });
                         },
                         icon: Icon(Icons.refresh)),
-
-                        IconButton(
+                    IconButton(
                         onPressed: () {
                           Phoenix.rebirth(context);
                         },
@@ -79,6 +78,10 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                                 shrinkWrap: true,
                                 itemCount: snapshot.data?.length,
                                 itemBuilder: (context, index) {
+                                  DateTime catTimeDate = DateTime.parse(
+                                      snapshot.data![index].date);
+                                  String convertedDateTime =
+                                      "${catTimeDate.day.toString().padLeft(2, '0')}/${catTimeDate.month.toString().padLeft(2, '0')}/${catTimeDate.year.toString()} เวลา: ${catTimeDate.hour.toString().padLeft(2, '0')}.${catTimeDate.minute.toString().padLeft(2, '0')}";
                                   return InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(
@@ -120,37 +123,14 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                                       child: Card(
                                         child: ListTile(
                                           contentPadding: EdgeInsets.all(0),
-                                          title: Text(formatDay.format(
-                                              DateTime.parse(
-                                                  snapshot.data![index].date))),
-                                          subtitle: Text(snapshot
-                                              .data![index].note
-                                              .toString()),
+                                          title: Text(
+                                              "น้ำหนัก: ${snapshot.data![index].weight.toStringAsFixed(4)} Kg",
+                                              style: TextStyle(fontSize: 24)),
+                                          subtitle: Text(
+                                              "ข้อความ: ${snapshot.data![index].note.toString()}\nวันที่: ${convertedDateTime}",
+                                              style: TextStyle(fontSize: 18)),
                                           trailing: IconButton(
                                               onPressed: () {
-                                                // dbHelper!.updateCatTime(CatTimeModel(
-                                                //     id: snapshot.data![index].id!,
-                                                //     idPro: widget.catPro.id!,
-                                                //     bodyLenght: 10,
-                                                //     heartGirth: 10,
-                                                //     hearLenghtSide: 10,
-                                                //     hearLenghtRear: 10,
-                                                //     hearLenghtTop: 10,
-                                                //     pixelReference: 10,
-                                                //     distanceReference: 10,
-                                                //     imageSide: 10,
-                                                //     imageRear: 10,
-                                                //     imageTop: 10,
-                                                //     date: DateTime.now()
-                                                //         .toIso8601String(),
-                                                //     note: "New update"));
-
-                                                // setState(() {
-                                                //   notesList = dbHelper!
-                                                //       .getCatTimeListWithCatProID(
-                                                //           widget.catPro.id!);
-                                                // });
-
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>

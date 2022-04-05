@@ -104,7 +104,7 @@ class _PreviewSideScreenState extends State<PreviewSideScreen> {
                       imageRear: widget.catTime.imageRear,
                       imageTop: widget.catTime.imageTop,
                       date: DateTime.now().toIso8601String(),
-                      note: "Update pixel reference"));
+                      note: widget.catTime.note));
 
                   setState(() {
                     refreshImages();

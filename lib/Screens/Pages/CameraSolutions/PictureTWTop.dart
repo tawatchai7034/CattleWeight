@@ -110,7 +110,7 @@ class _PictureTWTopState extends State<PictureTWTop> {
                                             imageTop: snapshot.data.imageTop,
                                             date: DateTime.now()
                                                 .toIso8601String(),
-                                            note: "Update pixel reference"));
+                                            note: snapshot.data.note));
 
                                     loadData();
                                     Navigator.of(context).push(

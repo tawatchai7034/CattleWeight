@@ -73,54 +73,63 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                     child: ListView(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            height: 240,
-                            width: double.infinity,
-                            child: Center(
-                                child: ListTile(
-                              title: RotatedBox(
-                                quarterTurns: -1,
-                                child: Image.asset(
-                                  "assets/images/SideLeftNavigation3.png",
-                                  height: 120,
-                                  width: 180,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "รอบอก: ${hg.toStringAsFixed(3)} ซม.",
-                                style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            )),
-                            color: Colors.blue,
-                          ),
+                          PhysicalModel(
+                              color: Colors.teal,
+                              elevation: 8,
+                              shadowColor: Colors.grey,
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                  height: 240,
+                                  width: 360,
+                                  child: Center(
+                                      child: ListTile(
+                                    title: RotatedBox(
+                                      quarterTurns: -1,
+                                      child: Image.asset(
+                                        "assets/images/SideLeftNavigation3.png",
+                                        height: 120,
+                                        width: 180,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "รอบอก: ${hg.toStringAsFixed(3)} ซม.",
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  )),
+                                  color: Colors.white)),
                           SizedBox(
                             height: 16,
                           ),
-                          Container(
-                            height: 240,
-                            width: double.infinity,
-                            child: Center(
-                                child: ListTile(
-                              title: RotatedBox(
-                                quarterTurns: -1,
-                                child: Image.asset(
-                                  "assets/images/SideLeftNavigation4.png",
-                                  height: 120,
-                                  width: 180,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "ความยาวลำตัว: ${snapshot.data.bodyLenght.toStringAsFixed(3)} ซม.",
-                                style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            )),
-                            color: Colors.green,
+                          PhysicalModel(
+                            color: Colors.teal,
+                            elevation: 8,
+                            shadowColor: Colors.grey,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                                height: 240,
+                                width: 360,
+                                child: Center(
+                                    child: ListTile(
+                                  title: RotatedBox(
+                                    quarterTurns: -1,
+                                    child: Image.asset(
+                                      "assets/images/SideLeftNavigation4.png",
+                                      height: 120,
+                                      width: 180,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "ความยาวลำตัว: ${snapshot.data.bodyLenght.toStringAsFixed(3)} ซม.",
+                                    style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                )),
+                                color: Colors.white),
                           ),
                           SizedBox(
                             height: 24,
@@ -160,7 +169,7 @@ class _SaveNextCameraState extends State<SaveNextCamera> {
                                               imageTop: snapshot.data.imageTop,
                                               date: DateTime.now()
                                                   .toIso8601String(),
-                                              note: ""));
+                                              note: snapshot.data.note));
                                       // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                                       Navigator.pushAndRemoveUntil(
                                           context,

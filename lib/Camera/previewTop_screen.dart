@@ -106,7 +106,7 @@ class _PreviewTopScreenState extends State<PreviewTopScreen> {
                       imageRear: widget.catTime.imageRear,
                       imageTop: imgString,
                       date: DateTime.now().toIso8601String(),
-                      note: "Update pixel reference"));
+                      note: widget.catTime.note));
 
                   setState(() {
                     refreshImages();

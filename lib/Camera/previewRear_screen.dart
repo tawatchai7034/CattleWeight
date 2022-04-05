@@ -117,7 +117,7 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
                               imageRear: imgString,
                               imageTop: snapshot.data!.imageTop,
                               date: DateTime.now().toIso8601String(),
-                              note: "Update pixel reference"));
+                              note: snapshot.data!.note));
 
                           setState(() {
                             refreshImages();

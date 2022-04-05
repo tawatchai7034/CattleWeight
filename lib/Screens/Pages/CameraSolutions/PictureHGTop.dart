@@ -115,7 +115,7 @@ class _PictureHGTopState extends State<PictureHGTop> {
                                             imageRear: snapshot.data.imageRear,
                                             imageTop: snapshot.data.imageTop,
                                             date: snapshot.data.date,
-                                            note: ""));
+                                            note: snapshot.data.note));
 
                                     // Navigator.pushAndRemoveUntil จะไม่สามารถย้อนกลับมายัง Screen เดิมได้
                                     Navigator.pushAndRemoveUntil(
