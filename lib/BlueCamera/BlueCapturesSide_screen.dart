@@ -13,6 +13,8 @@ class BlueCapturesSideScreen extends StatefulWidget {
   final List<File> imageFileList;
   final CatTimeModel catTime;
   final BluetoothDevice server;
+  final bool blueConnection;
+  final double heightValue;
   const BlueCapturesSideScreen({
     Key? key,
     required this.idPro,
@@ -20,6 +22,8 @@ class BlueCapturesSideScreen extends StatefulWidget {
     required this.imageFileList,
     required this.catTime,
     required this.server,
+    required this.blueConnection,
+    required this.heightValue,
   }) : super(key: key);
 
   @override

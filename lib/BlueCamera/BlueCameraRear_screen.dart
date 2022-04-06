@@ -2,14 +2,16 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/BlueCamera/BluePreviewRear_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
 
+import 'package:cattle_weight/BlueCamera/BluePreviewRear_screen.dart';
+import 'package:cattle_weight/BlueCamera/BluePreviewSide_screen.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -20,27 +22,34 @@ import '../Camera/previewSide_screen.dart';
 import '../main.dart';
 
 ConvertHex hex = new ConvertHex();
-class CameraRearScreen extends StatefulWidget {
+
+class BlueCameraRearScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
+  final BluetoothDevice server;
+  final bool blueConnection;
   final String localFront;
   final String localBack;
   final CatTimeModel catTime;
+  final double heightValue;
   // final VoidCallback navigator;
 
-  const CameraRearScreen({
+  const BlueCameraRearScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
+    required this.server,
+    required this.blueConnection,
     required this.localFront,
     required this.localBack,
     required this.catTime,
+    required this.heightValue,
   }) : super(key: key);
   @override
-  _CameraRearScreenState createState() => _CameraRearScreenState();
+  _BlueCameraRearScreenState createState() => _BlueCameraRearScreenState();
 }
 
-class _CameraRearScreenState extends State<CameraRearScreen>
+class _BlueCameraRearScreenState extends State<BlueCameraRearScreen>
     with SingleTickerProviderStateMixin {
   CameraController? controller;
   VideoPlayerController? videoController;
@@ -74,6 +83,12 @@ class _CameraRearScreenState extends State<CameraRearScreen>
   bool showFront = true;
   bool showState = false;
   late AnimationController controllerAnimated;
+
+  // Bluetooth
+  var connection; //BluetoothConnection
+
+  bool isConnecting = true;
+  bool isDisconnecting = false;
 
   getPermissionStatus() async {
     await Permission.camera.request();
@@ -315,9 +330,23 @@ class _CameraRearScreenState extends State<CameraRearScreen>
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     controller?.dispose();
     videoController?.dispose();
+    // Bluetooth
+    // Avoid memory leak (`setState` after dispose) and disconnect
+    if (widget.blueConnection) {
+      isDisconnecting = true;
+      connection.dispose();
+      connection = null;
+      await connection.close();
+      // show('Device disconnected');
+      setState(() {
+        isDisconnecting = true;
+        isConnecting = false;
+      });
+    }
+    // Bluetooth
     super.dispose();
   }
 
@@ -325,20 +354,20 @@ class _CameraRearScreenState extends State<CameraRearScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'ถ่ายภาพด้่านหลังโค',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Phoenix.rebirth(context);
-                },
-                icon: Icon(Icons.home))
-          ],
-          backgroundColor: Color(hex.hexColor("#007BA4")),
-        ),
+        // appBar: AppBar(
+        //   title: const Text(
+        //     'ถ่ายภาพด้่านข้างโค',
+        //     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        //   ),
+        //   actions: [
+        //     IconButton(
+        //         onPressed: () {
+        //           Phoenix.rebirth(context);
+        //         },
+        //         icon: Icon(Icons.home))
+        //   ],
+        //   backgroundColor: Color(hex.hexColor("#007BA4")),
+        // ),
         backgroundColor: Colors.black,
         body: _isCameraPermissionGranted
             ? _isCameraInitialized
@@ -566,30 +595,33 @@ class _CameraRearScreenState extends State<CameraRearScreen>
                                               ),
                                             ),
                                             InkWell(
-                                              onTap:
-                                                  _imageFile != null ||
-                                                          _videoFile != null
-                                                      ? () {
-                                                          Navigator.of(context)
-                                                              .push(
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  PreviewRearScreen(
-                                                                idPro: widget
-                                                                    .idPro,
-                                                                idTime: widget
-                                                                    .idTime,
-                                                                imageFile:
-                                                                    _imageFile!,
-                                                                fileList:
-                                                                    allFileList,
-                                                                catTime: widget.catTime,
-                                                                
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                      : null,
+                                              onTap: _imageFile != null ||
+                                                      _videoFile != null
+                                                  ? () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              BluePreviewRearScreen(
+                                                            idPro: widget.idPro,
+                                                            idTime:
+                                                                widget.idTime,
+                                                            imageFile:
+                                                                _imageFile!,
+                                                            fileList:
+                                                                allFileList,
+                                                            catTime:
+                                                                widget.catTime,
+                                                            server:
+                                                                widget.server,
+                                                            blueConnection: widget
+                                                                .blueConnection,
+                                                            heightValue: widget.heightValue,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  : null,
                                               child: Container(
                                                 width: 60,
                                                 height: 60,

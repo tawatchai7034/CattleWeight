@@ -3,10 +3,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureBL.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureSaveNext.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureSaveNext.dart';
 import 'package:cattle_weight/model/calculation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureBL.dart';
@@ -18,33 +19,32 @@ import 'package:cattle_weight/Screens/Widgets/position.dart';
 import 'package:cattle_weight/Screens/Widgets/preview.dart';
 import 'package:cattle_weight/convetHex.dart';
 import 'package:cattle_weight/model/catTime.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 CattleCalculation calculate = new CattleCalculation();
 
-class BluePictureHG extends StatefulWidget {
-  // final bool blueConnection;
-  // final CameraDescription camera;
+class BluePictureHG_Rear extends StatefulWidget {
   final File imageFile;
   final String fileName;
   final CatTimeModel catTime;
   final BluetoothDevice server;
   final bool blueConnection;
-  const BluePictureHG({
-    Key key,
-    this.imageFile,
-    this.fileName,
-    this.catTime,
-    this.server,
-    this.blueConnection
-  }) : super(key: key);
+  const BluePictureHG_Rear(
+      {Key key,
+      this.imageFile,
+      this.fileName,
+      this.catTime,
+      this.server,
+      this.blueConnection})
+      : super(key: key);
 
   @override
-  _BluePictureHGState createState() => _BluePictureHGState();
+  _BluePictureHG_RearState createState() => _BluePictureHG_RearState();
 }
 
-class _BluePictureHGState extends State<BluePictureHG> {
+class _BluePictureHG_RearState extends State<BluePictureHG_Rear> {
   bool showState = false;
   CatTimeHelper catTimeHelper;
   Future<CatTimeModel> catTimeData;
@@ -65,7 +65,7 @@ class _BluePictureHGState extends State<BluePictureHG> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("[2/3] กรุณาระบุความยาวรอบอกโค",
+            title: Text("[2/2] กรุณาระบุความกว้างกระดูกก้นกบของโค",
                 style: TextStyle(
                     fontSize: 24,
                     color: Color(hex.hexColor("ffffff")),
@@ -73,7 +73,7 @@ class _BluePictureHGState extends State<BluePictureHG> {
             backgroundColor: Color(hex.hexColor("#007BA4"))),
         body: new Stack(
           children: [
-            LineAndPositionPictureHG(
+            LineAndPositionPictureHG_Rear(
               imgPath: widget.imageFile.path,
               fileName: widget.fileName,
             ),
@@ -91,12 +91,13 @@ class _BluePictureHGState extends State<BluePictureHG> {
                                 onSelected: () async {
                                   // print(
                                   //     "Pixel Reference: ${snapshot.data.pixelReference}\tDistance Reference: ${snapshot.data.distanceReference}\nimageSide: ${snapshot.data.imageSide}");
-                                  double hls = calculate.distance(
+                                  double hlr = calculate.distance(
                                       snapshot.data.pixelReference,
                                       snapshot.data.distanceReference,
                                       pos.getPixelDistance());
 
-                                  print("Hear Lenght Side: $hls CM.");
+                                  // print("Hear Lenght Rear: $hlr CM.");
+                                  // print("Distance Reference: ${snapshot.data.distanceReference} CM.");
 
                                   await catTimeHelper.updateCatTime(
                                       CatTimeModel(
@@ -105,9 +106,9 @@ class _BluePictureHGState extends State<BluePictureHG> {
                                           weight: snapshot.data.weight,
                                           bodyLenght: snapshot.data.bodyLenght,
                                           heartGirth: snapshot.data.heartGirth,
-                                          hearLenghtSide: hls,
-                                          hearLenghtRear: snapshot
-                                              .data.hearLenghtRear,
+                                          hearLenghtSide: snapshot
+                                              .data.hearLenghtSide,
+                                          hearLenghtRear: hlr,
                                           hearLenghtTop: snapshot
                                               .data.hearLenghtTop,
                                           pixelReference: snapshot
@@ -121,17 +122,12 @@ class _BluePictureHGState extends State<BluePictureHG> {
                                               DateTime.now().toIso8601String(),
                                           note: snapshot.data.note));
 
-                                          loadData();
-
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => BluePictureBL(
-                                        imgPath: widget.imageFile.path,
-                                        fileName: widget.fileName,
-                                        catTimeID: snapshot.data.id,
-                                        server: widget.server,
-                                        blueConnection: widget.blueConnection,
-                                        ),
-                                  ));
+                                      builder: (context) => BlueSaveNextCamera(
+                                            catTimeID: snapshot.data.id,
+                                            server: widget.server,
+                                            blueConnection: widget.blueConnection,
+                                          )));
                                 },
                                 title: "บันทึก")
                           ]),
@@ -146,11 +142,10 @@ class _BluePictureHGState extends State<BluePictureHG> {
                 ? Container()
                 : AlertDialog(
                     // backgroundColor: Colors.black,
-                    title: Text("กรุณาระบุความยาวรอบอกโค",
+                    title: Text("กรุณาระบุความกว้างกระดูกก้นกบของโค",
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
-                    content:
-                        Image.asset("assets/images/SideLeftNavigation3.png"),
+                    content: Image.asset("assets/images/RearNavigation3.png"),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -167,19 +162,20 @@ class _BluePictureHGState extends State<BluePictureHG> {
   }
 }
 
-class LineAndPositionPictureHG extends StatefulWidget {
+class LineAndPositionPictureHG_Rear extends StatefulWidget {
   final String imgPath;
   final String fileName;
   final VoidCallback onSelected;
-  const LineAndPositionPictureHG(
+  const LineAndPositionPictureHG_Rear(
       {this.imgPath, this.fileName, this.onSelected});
 
   @override
-  LineAndPositionPictureHGState createState() =>
-      new LineAndPositionPictureHGState();
+  LineAndPositionPictureHG_RearState createState() =>
+      new LineAndPositionPictureHG_RearState();
 }
 
-class LineAndPositionPictureHGState extends State<LineAndPositionPictureHG> {
+class LineAndPositionPictureHG_RearState
+    extends State<LineAndPositionPictureHG_Rear> {
   List<double> positionsX = [];
   List<double> positionsY = [];
   double pixelDistance = 0;

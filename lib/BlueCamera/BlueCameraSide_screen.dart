@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/BlueCamera/BluePreviewSide_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -11,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
 
+import 'package:cattle_weight/BlueCamera/BluePreviewSide_screen.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
 import 'package:cattle_weight/convetHex.dart';
@@ -30,6 +30,7 @@ class BlueCameraSideScreen extends StatefulWidget {
   final String localFront;
   final String localBack;
   final CatTimeModel catTime;
+  final double heightValue;
   // final VoidCallback navigator;
 
   const BlueCameraSideScreen({
@@ -41,6 +42,7 @@ class BlueCameraSideScreen extends StatefulWidget {
     required this.localFront,
     required this.localBack,
     required this.catTime,
+    required this.heightValue,
   }) : super(key: key);
   @override
   _BlueCameraSideScreenState createState() => _BlueCameraSideScreenState();
@@ -611,6 +613,10 @@ class _BlueCameraSideScreenState extends State<BlueCameraSideScreen>
                                                                 widget.catTime,
                                                             server:
                                                                 widget.server,
+                                                            blueConnection: widget
+                                                                .blueConnection,
+                                                            heightValue: widget
+                                                                .heightValue,
                                                           ),
                                                         ),
                                                       );

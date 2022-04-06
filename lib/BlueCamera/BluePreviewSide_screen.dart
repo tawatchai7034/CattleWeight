@@ -1,18 +1,18 @@
 import 'dart:io';
 
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefSide.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import 'package:cattle_weight/BlueCamera/BlueCapturesSide_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefSide.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
 import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/utility.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import '../Camera/capturesSide_screen.dart';
 
@@ -23,6 +23,8 @@ class BluePreviewSideScreen extends StatefulWidget {
   final List<File> fileList;
   final CatTimeModel catTime;
   final BluetoothDevice server;
+  final bool blueConnection;
+  final double heightValue;
   const BluePreviewSideScreen({
     Key? key,
     required this.idPro,
@@ -31,6 +33,8 @@ class BluePreviewSideScreen extends StatefulWidget {
     required this.fileList,
     required this.catTime,
     required this.server,
+    required this.blueConnection,
+    required this.heightValue,
   }) : super(key: key);
 
   @override
@@ -76,6 +80,8 @@ class _BluePreviewSideScreenState extends State<BluePreviewSideScreen> {
                         imageFileList: widget.fileList,
                         catTime: widget.catTime,
                         server: widget.server,
+                        blueConnection: widget.blueConnection,
+                        heightValue: widget.heightValue,
                       ),
                     ),
                   );
@@ -104,7 +110,7 @@ class _BluePreviewSideScreenState extends State<BluePreviewSideScreen> {
                       hearLenghtRear: widget.catTime.hearLenghtRear,
                       hearLenghtTop: widget.catTime.hearLenghtTop,
                       pixelReference: widget.catTime.pixelReference,
-                      distanceReference: widget.catTime.distanceReference,
+                      distanceReference: widget.heightValue,
                       imageSide: imgString,
                       imageRear: widget.catTime.imageRear,
                       imageTop: widget.catTime.imageTop,
@@ -121,6 +127,8 @@ class _BluePreviewSideScreenState extends State<BluePreviewSideScreen> {
                             fileName: file.path,
                             catTime: widget.catTime,
                             server: widget.server,
+                            blueConnection: widget.blueConnection,
+                            
                           )));
 
                   // Navigator.of(context).pushAndRemoveUntil(

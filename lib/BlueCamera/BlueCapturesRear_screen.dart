@@ -1,29 +1,36 @@
 import 'dart:io';
 
-import 'package:cattle_weight/Camera/previewRear_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:cattle_weight/BlueCamera/BluePreviewRear_screen.dart';
+import 'package:cattle_weight/Camera/previewRear_screen.dart';
 import 'package:cattle_weight/model/catTime.dart';
 
-
-class CapturesRearScreen extends StatefulWidget {
+class BlueCapturesRearScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final List<File> imageFileList;
   final CatTimeModel catTime;
-  const CapturesRearScreen({
+    final BluetoothDevice server;
+  final bool blueConnection;
+  final double heightValue;
+  const BlueCapturesRearScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
     required this.imageFileList,
     required this.catTime,
+    required this.server,
+    required this.blueConnection,
+    required this.heightValue,
   }) : super(key: key);
 
   @override
-  State<CapturesRearScreen> createState() => _CapturesRearScreenState();
+  State<BlueCapturesRearScreen> createState() => _BlueCapturesRearScreenState();
 }
 
-class _CapturesRearScreenState extends State<CapturesRearScreen> {
+class _BlueCapturesRearScreenState extends State<BlueCapturesRearScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,12 +67,15 @@ class _CapturesRearScreenState extends State<CapturesRearScreen> {
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => PreviewRearScreen(
+                            builder: (context) => BluePreviewRearScreen(
                               idPro: widget.idPro,
                               idTime: widget.idTime,
                               fileList: widget.imageFileList,
                               imageFile: imageFile,
                               catTime: widget.catTime,
+                              server: widget.server,
+                              blueConnection: widget.blueConnection,
+                              heightValue: widget.heightValue,
                             ),
                           ),
                         );

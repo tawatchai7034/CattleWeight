@@ -1,41 +1,50 @@
 import 'dart:io';
 
-import 'package:cattle_weight/Camera/capturesRear_screen.dart';
-import 'package:cattle_weight/DataBase/catTime_handler.dart';
-import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRefRear.dart';
-import 'package:cattle_weight/model/catTime.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:cattle_weight/BlueCamera/BlueCapturesRear_screen.dart';
+import 'package:cattle_weight/Camera/capturesRear_screen.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefRear.dart';
 import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/CameraSolutions/PictureRefRear.dart';
 import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
+import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/image.dart';
 import 'package:cattle_weight/model/utility.dart';
 
 import '../Camera/capturesSide_screen.dart';
 
-class PreviewRearScreen extends StatefulWidget {
+class BluePreviewRearScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final File imageFile;
   final List<File> fileList;
   final CatTimeModel catTime;
-  const PreviewRearScreen({
+  final BluetoothDevice server;
+  final bool blueConnection;
+  final double heightValue;
+  const BluePreviewRearScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
     required this.imageFile,
     required this.fileList,
     required this.catTime,
+    required this.server,
+    required this.blueConnection,
+    required this.heightValue,
   }) : super(key: key);
 
   @override
-  State<PreviewRearScreen> createState() => _PreviewRearScreenState();
+  State<BluePreviewRearScreen> createState() => _BluePreviewRearScreenState();
 }
 
-class _PreviewRearScreenState extends State<PreviewRearScreen> {
+class _BluePreviewRearScreenState extends State<BluePreviewRearScreen> {
   CatImageHelper ImageHelper = CatImageHelper();
   CatTimeHelper? catTimeHelper;
   late List<ImageModel> images;
@@ -78,11 +87,14 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => CapturesRearScreen(
+                              builder: (context) => BlueCapturesRearScreen(
                                 idPro: widget.idPro,
                                 idTime: widget.idTime,
                                 imageFileList: widget.fileList,
                                 catTime: snapshot.data!,
+                                server: widget.server,
+                                blueConnection: widget.blueConnection,
+                                heightValue: widget.heightValue,
                               ),
                             ),
                           );
@@ -112,7 +124,7 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
                               hearLenghtTop: snapshot.data!.hearLenghtTop,
                               pixelReference: snapshot.data!.pixelReference,
                               distanceReference:
-                                  snapshot.data!.distanceReference,
+                                  widget.heightValue,
                               imageSide: snapshot.data!.imageSide,
                               imageRear: imgString,
                               imageTop: snapshot.data!.imageTop,
@@ -124,10 +136,12 @@ class _PreviewRearScreenState extends State<PreviewRearScreen> {
                           });
 
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PictureRefRear(
+                              builder: (context) => BluePictureRefRear(
                                     imageFile: file,
                                     fileName: file.path,
                                     catTime: snapshot.data!,
+                                    server: widget.server,
+                                    blueConnection: widget.blueConnection,
                                   )));
 
                           // Navigator.of(context).pushAndRemoveUntil(

@@ -1,5 +1,5 @@
 // @dart=2.9
-import 'dart:ffi';
+
 import 'dart:io';
 import 'dart:math';
 
@@ -25,19 +25,21 @@ import 'package:cattle_weight/model/catTime.dart';
 ConvertHex hex = new ConvertHex();
 Positions pos = new Positions();
 CattleCalculation calculate = new CattleCalculation();
-BleMessage BM = new BleMessage();
 
 class BluePictureRefSide extends StatefulWidget {
   final File imageFile;
   final String fileName;
   final CatTimeModel catTime;
   final BluetoothDevice server;
+  final bool blueConnection;
+
   const BluePictureRefSide({
     Key key,
     this.imageFile,
     this.fileName,
     this.catTime,
     this.server,
+    this.blueConnection,
   }) : super(key: key);
 
   @override
@@ -62,85 +64,99 @@ class _BluePictureRefSideState extends State<BluePictureRefSide> {
     loadData();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: catTimeData,
         builder: (context, AsyncSnapshot<CatTimeModel> snapshot) {
           if (snapshot.hasData) {
-            return     Scaffold(
-        appBar: AppBar(
-            title: Text("[1/3] กรุณาระบุจุดอ้างอิง",
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Color(hex.hexColor("ffffff")),
-                    fontWeight: FontWeight.bold)),
-            backgroundColor: Color(hex.hexColor("#007BA4"))),
-        body: Stack(
-          children: [
-            LineAndPositionPictureRef(
-                imgPath: widget.imageFile.path, fileName: widget.fileName),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child:
-                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  MainButton(
-                      onSelected: () async {
-                        await catTimeHelper.updateCatTime(CatTimeModel(
-                            id: snapshot.data.id,
-                            idPro: snapshot.data.idPro,
-                            weight: snapshot.data.weight,
-                            bodyLenght: snapshot.data.bodyLenght,
-                            heartGirth: snapshot.data.heartGirth,
-                            hearLenghtSide: snapshot.data.hearLenghtSide,
-                            hearLenghtRear: snapshot.data.hearLenghtRear,
-                            hearLenghtTop: snapshot.data.hearLenghtTop,
-                            pixelReference: pos.getPixelDistance(),
-                            distanceReference:
-                                BM.getHeight(),
-                            imageSide: snapshot.data.imageSide,
-                            imageRear: snapshot.data.imageRear,
-                            imageTop: snapshot.data.imageTop,
-                            date: DateTime.now().toIso8601String(),
-                            note: snapshot.data.note));
-
-                        loadData();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BluePictureHG(
-                                  imageFile: widget.imageFile,
-                                  fileName: widget.fileName,
-                                  catTime: widget.catTime,
-                                  server: widget.server,
-                                )));
-                      },
-                      title: "บันทึก"),
-                ]),
-              ),
-            ),
-            showState
-                ? Container()
-                : AlertDialog(
-                    // backgroundColor: Colors.black,
-                    title: Text("กรุณาระบุจุดอ้างอิง",
+            return Scaffold(
+                appBar: AppBar(
+                    title: Text("[1/3] กรุณาระบุจุดอ้างอิง",
                         style: TextStyle(
-                            fontSize: 28, fontWeight: FontWeight.bold)),
-                    content:
-                        Image.asset("assets/images/SideLeftNavigation5.png"),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          setState(() => showState = !showState);
-                        },
-                        // => Navigator.pop(context, 'ตกลง'),
-                        child:
-                            const Text('ตกลง', style: TextStyle(fontSize: 24)),
+                            fontSize: 24,
+                            color: Color(hex.hexColor("ffffff")),
+                            fontWeight: FontWeight.bold)),
+                    backgroundColor: Color(hex.hexColor("#007BA4"))),
+                body: Stack(
+                  children: [
+                    LineAndPositionPictureRef(
+                        imgPath: widget.imageFile.path,
+                        fileName: widget.fileName),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              MainButton(
+                                  onSelected: () async {
+                                    // print("height: ${snapshot.data.distanceReference}");
+
+                                    await catTimeHelper.updateCatTime(
+                                        CatTimeModel(
+                                            id: snapshot.data.id,
+                                            idPro: snapshot.data.idPro,
+                                            weight: snapshot.data.weight,
+                                            bodyLenght:
+                                                snapshot.data.bodyLenght,
+                                            heartGirth:
+                                                snapshot.data.heartGirth,
+                                            hearLenghtSide:
+                                                snapshot.data.hearLenghtSide,
+                                            hearLenghtRear:
+                                                snapshot.data.hearLenghtRear,
+                                            hearLenghtTop:
+                                                snapshot.data.hearLenghtTop,
+                                            pixelReference:
+                                                pos.getPixelDistance(),
+                                            distanceReference:
+                                                snapshot.data.distanceReference,
+                                            imageSide: snapshot.data.imageSide,
+                                            imageRear: snapshot.data.imageRear,
+                                            imageTop: snapshot.data.imageTop,
+                                            date: DateTime.now()
+                                                .toIso8601String(),
+                                            note: snapshot.data.note));
+
+                                    loadData();
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => BluePictureHG(
+                                                  imageFile: widget.imageFile,
+                                                  fileName: widget.fileName,
+                                                  catTime: widget.catTime,
+                                                  server: widget.server,
+                                                  blueConnection:
+                                                      widget.blueConnection,
+                                                )));
+                                  },
+                                  title: "บันทึก"),
+                            ]),
                       ),
-                    ],
-                  ),
-          ],
-        ));
+                    ),
+                    showState
+                        ? Container()
+                        : AlertDialog(
+                            // backgroundColor: Colors.black,
+                            title: Text("กรุณาระบุจุดอ้างอิง",
+                                style: TextStyle(
+                                    fontSize: 28, fontWeight: FontWeight.bold)),
+                            content: Image.asset(
+                                "assets/images/SideLeftNavigation5.png"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  setState(() => showState = !showState);
+                                },
+                                // => Navigator.pop(context, 'ตกลง'),
+                                child: const Text('ตกลง',
+                                    style: TextStyle(fontSize: 24)),
+                              ),
+                            ],
+                          ),
+                  ],
+                ));
           } else {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -148,7 +164,6 @@ class _BluePictureRefSideState extends State<BluePictureRefSide> {
             );
           }
         });
-
   }
 }
 
