@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
-import 'package:cattle_weight/Screens/Widgets/blueAndCameraSide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-
-import 'package:cattle_weight/Bluetooth/ChatPage.dart';
 import 'package:sqflite/utils/utils.dart';
 
 import 'package:cattle_weight/Bluetooth/BluetoothDeviceListEntry.dart';
+import 'package:cattle_weight/Bluetooth/ChatPage.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
+import 'package:cattle_weight/Screens/Widgets/blueAndCameraSide.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catTime.dart';
 
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
@@ -18,12 +18,17 @@ ConvertHex hex = new ConvertHex();
 class DiscoveryPage extends StatefulWidget {
   /// If true, discovery starts on page start, otherwise user must press action button.
   final bool start;
-  final CameraDescription camera;
+  final int idPro;
+  final int idTime;
+  final CatTimeModel catTime;
+  // final CameraDescription camera;
 
   const DiscoveryPage({
     Key? key,
     required this.start,
-    required this.camera,
+    required this.idPro,
+    required this.idTime,
+    required this.catTime,
   }) : super(key: key);
 
   @override
@@ -112,11 +117,14 @@ class _DiscoveryPage extends State<DiscoveryPage> {
               device: result.device,
               rssi: result.rssi,
               onTap: () {
-                // Navigator.of(context).pop(result.device);
+                Navigator.of(context).pop(result.device);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => BlueAndCameraSide(
                           server: result.device,
-                          camera: widget.camera,
+                          idPro: widget.idPro,
+                          idTime: widget.idTime,
+                          catTime: widget.catTime
+                          // camera: widget.camera,
                         )));
               },
             );

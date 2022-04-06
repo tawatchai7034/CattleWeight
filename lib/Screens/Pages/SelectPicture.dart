@@ -28,12 +28,13 @@ class SelectInput extends StatelessWidget {
           // ปุ่มถ่ายภาพ
           MainButton(
               onSelected: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => BlueMainPage(
-                          camera: camera,
-                        )
-                    // AddProfile(widget.camera)
-                    ));
+
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => BlueMainPage(
+                //           camera: camera,
+                //         )
+                //     // AddProfile(widget.camera)
+                //     ));
               },
               title: "ถ่ายภาพ"),
           Center(

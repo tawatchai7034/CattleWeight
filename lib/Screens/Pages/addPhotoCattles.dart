@@ -137,13 +137,18 @@ class _AddPhotoCattlesState extends State<AddPhotoCattles> {
                   MainButton(
                       onSelected: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CameraSideScreen(
-                                  idPro: widget.idPro,
-                                  idTime: widget.idTime,
-                                  localFront: line.sideLeft,
-                                  localBack: line.sideRight,
-                                  catTime: snapshot.data!,
-                                )));
+                            builder: (context) => BlueMainPage(
+                                idPro: snapshot.data!.idPro,
+                                idTime: snapshot.data!.id!,
+                                catTime: snapshot.data!)
+                            // CameraSideScreen(
+                            //       idPro: widget.idPro,
+                            //       idTime: widget.idTime,
+                            //       localFront: line.sideLeft,
+                            //       localBack: line.sideRight,
+                            //       catTime: snapshot.data!,
+                            //     )
+                            ));
                       },
                       title: "ถ่ายภาพ"),
                   Center(

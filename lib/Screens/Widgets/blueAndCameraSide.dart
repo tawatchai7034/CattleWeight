@@ -4,15 +4,18 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRef.dart';
-// import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
-import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
-import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:cattle_weight/BlueCamera/BlueCameraSide_screen.dart';
 import 'package:cattle_weight/Bluetooth/BlueMassgae.dart';
-// import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefSide.dart';
+import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
+import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
+import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catTime.dart';
+ import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 // refferent
@@ -31,12 +34,17 @@ bool isDisconnecting = false;
 
 class BlueAndCameraSide extends StatefulWidget {
   final BluetoothDevice server;
-  final CameraDescription camera;
+  final int idPro;
+  final int idTime;
+  final CatTimeModel catTime;
+  // final CameraDescription camera;
 
   const BlueAndCameraSide({
     Key? key,
     required this.server,
-    required this.camera,
+    required this.idPro,
+    required this.idTime,
+    required this.catTime,
   }) : super(key: key);
 
   @override
@@ -185,7 +193,10 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
       body: Stack(children: [
         BlueParamitor(
           server: widget.server,
-          camera: widget.camera,
+          idPro: widget.idPro,
+          idTime: widget.idTime,
+          catTime: widget.catTime,
+          // camera: widget.camera,
           blueConnection: isConnected(),
         )
       ]),
@@ -322,33 +333,49 @@ class _BlueAndCameraSide extends State<BlueAndCameraSide> {
 }
 
 class BlueParamitor extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
   final BluetoothDevice server;
   final bool blueConnection;
-  const BlueParamitor(
-      {Key? key,
-      required this.camera,
-      required this.server,
-      required this.blueConnection})
-      : super(key: key);
+    final int idPro;
+  final int idTime;
+  final CatTimeModel catTime;
+  const BlueParamitor({
+    Key? key,
+    required this.server,
+    required this.blueConnection,
+    required this.idPro,
+    required this.idTime,
+    required this.catTime,
+  }) : super(key: key);
 
   @override
   _BlueParamitorState createState() => _BlueParamitorState();
 }
 
 class _BlueParamitorState extends State<BlueParamitor> {
+  ImageNavidation line = new ImageNavidation();
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
         children: <Widget>[
-          BlueTakePictureSide(
-            server: widget.server,
-            blueConnection: widget.blueConnection,
-            camera: widget.camera,
-            localFront: "assets/images/SideLeftNavigation.png",
-            localBack: "assets/images/SideRightNavigation.png",
-          ),
+          // add new camera
+          // BlueTakePictureSide(
+          //   server: widget.server,
+          //   blueConnection: widget.blueConnection,
+          //   camera: widget.camera,
+          //   localFront: "assets/images/SideLeftNavigation.png",
+          //   localBack: "assets/images/SideRightNavigation.png",
+          // ),
+          BlueCameraSideScreen(
+              idPro: widget.idPro,
+              idTime: widget.idTime,
+              server: widget.server,
+              blueConnection: widget.blueConnection,
+              localFront: line.sideLeft,
+              localBack: line.sideRight,
+              catTime: widget.catTime),
           ShowBlueParamitor(
             blueConnection: widget.blueConnection,
           )
@@ -598,15 +625,15 @@ class BlueTakePictureSideState extends State<BlueTakePictureSide>
                     _disconnect();
 
                     // If the picture was taken, display it on a new screen.
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => BluePictureRef(
-                                server: widget.server,
-                                camera: widget.camera,
-                                imgPath: image.path,
-                                fileName: imageName,
-                              )),
-                    );
+                    // await Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //       builder: (context) => BluePictureRef(
+                    //             server: widget.server,
+                    //             camera: widget.camera,
+                    //             imgPath: image.path,
+                    //             fileName: imageName,
+                    //           )),
+                    // );
                   } catch (e) {
                     // If an error occurs, log the error to the console.
                     print(e);

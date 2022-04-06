@@ -1,23 +1,33 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
-import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
+import 'package:cattle_weight/Camera/cameraSide_screen.dart';
+import 'package:cattle_weight/model/imageNavidation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-import 'DiscoveryDevice.dart';
+import 'package:cattle_weight/Screens/Widgets/MainButton.dart';
+import 'package:cattle_weight/Screens/Widgets/PictureCameraSide.dart';
 import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catTime.dart';
+
+import 'DiscoveryDevice.dart';
 
 // ConvertHex convert color code from web
 ConvertHex hex = new ConvertHex();
+ImageNavidation line = new ImageNavidation();
 
 class BlueMainPage extends StatefulWidget {
-  final CameraDescription camera;
+  // final CameraDescription camera;
+  final int idPro;
+  final int idTime;
+  final CatTimeModel catTime;
 
   const BlueMainPage({
     Key? key,
-    required this.camera,
+    required this.idPro,
+    required this.idTime,
+    required this.catTime,
   }) : super(key: key);
 
   @override
@@ -88,11 +98,14 @@ class _BlueMainPage extends State<BlueMainPage> {
         body: _bluetoothState.isEnabled
             ? DiscoveryPage(
                 start: true,
-                camera: widget.camera,
+                idPro: widget.idPro,
+                idTime: widget.idTime,
+                catTime: widget.catTime
+                // camera: widget.camera,
               )
             : Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: 100),
                     Container(
@@ -108,13 +121,13 @@ class _BlueMainPage extends State<BlueMainPage> {
                         MainButton(
                             onSelected: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => TakePictureSide(
-                                      blueConnection: false,
-                                      camera: widget.camera,
-                                      localFront:
-                                          "assets/images/SideLeftNavigation.png",
-                                      localBack:
-                                          "assets/images/SideRightNavigation.png")));
+                                  builder: (context) => CameraSideScreen(
+                                        idPro: widget.idPro,
+                                        idTime: widget.idTime,
+                                        localFront: line.sideLeft,
+                                        localBack: line.sideRight,
+                                        catTime: widget.catTime,
+                                      )));
                             },
                             title: "ไม่เชื่อมต่ออุปกรณ์"),
                       ],

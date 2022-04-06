@@ -211,13 +211,13 @@ class MyCustomFormState extends State<MyCustomForm> {
                               //     SnackBar(content: Text('Processing Data')));
                               print(
                                   "ชื่อโค : ${cattleNameController.text} \tเพศ : $dropdownGender \tสายพันธุ์ : $dropdownSpecise");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => TakePictureSide(
-                                    blueConnection: false,
-                                        camera: widget.camera,
-                                        localFront: "assets/images/SideLeftNavigation.png",
-                                        localBack: "assets/images/SideRightNavigation.png",
-                                      )));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => TakePictureSide(
+                              //       blueConnection: false,
+                              //           camera: widget.camera,
+                              //           localFront: "assets/images/SideLeftNavigation.png",
+                              //           localBack: "assets/images/SideRightNavigation.png",
+                              //         )));
                             }
                           },
                           child: Text("บันทึก",

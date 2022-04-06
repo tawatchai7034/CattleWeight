@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRef.dart';
+import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefSide.dart';
 import 'package:cattle_weight/Screens/Pages/BlueAndCameraSolution/BluePictureRefRear.dart';
 // import 'package:cattle_weight/Screens/Pages/SelectPicture.dart';
 import 'package:cattle_weight/Screens/Widgets/CattleNavigationLine.dart';
