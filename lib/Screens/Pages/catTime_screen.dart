@@ -5,6 +5,7 @@ import 'package:cattle_weight/Screens/Pages/addPhotoCattles.dart';
 import 'package:cattle_weight/model/catPro.dart';
 import 'package:cattle_weight/model/catTime.dart';
 import 'package:cattle_weight/Screens/Pages/catImage_screen.dart';
+import 'package:cattle_weight/model/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:intl/intl.dart';
@@ -120,37 +121,77 @@ class _CatTimeScreenState extends State<CatTimeScreen> {
                                       },
                                       key: ValueKey<int>(
                                           snapshot.data![index].id!),
-                                      child: Card(
-                                        child: ListTile(
-                                          contentPadding: EdgeInsets.all(0),
-                                          title: Text(
-                                              "น้ำหนัก: ${snapshot.data![index].weight.toStringAsFixed(4)} Kg",
-                                              style: TextStyle(fontSize: 24)),
-                                          subtitle: Text(
-                                              "ข้อความ: ${snapshot.data![index].note.toString()}\nวันที่: ${convertedDateTime}",
-                                              style: TextStyle(fontSize: 18)),
-                                          trailing: IconButton(
-                                              onPressed: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AddPhotoCattles(
-                                                                idPro: widget
-                                                                    .catProID,
-                                                                idTime: snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .id!,
-                                                                )));
-                                              },
-                                              icon: Icon(Icons.edit)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: PhysicalModel(
+                                          color: Colors.white,
+                                          elevation: 8,
+                                          shadowColor: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: ListTile(
+                                              title: ((snapshot.data![index]
+                                                              .imageSide ==
+                                                          null) ||
+                                                      (snapshot.data![index]
+                                                              .imageSide ==
+                                                          ''))
+                                                  ? RotatedBox(
+                                                      quarterTurns: 0,
+                                                      child: Image.asset(
+                                                        "assets/images/SideLeftNavigation2.png",
+                                                        height: 240,
+                                                        width: 320,
+                                                      ),
+                                                    )
+                                                  : RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: Utility
+                                                          .imageFromBase64String(
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .imageSide),
+                                                    ),
+                                              subtitle: ListTile(
+                                                contentPadding:
+                                                    EdgeInsets.all(0),
+                                                title: Text(
+                                                    "น้ำหนัก: ${snapshot.data![index].weight.toStringAsFixed(4)} Kg",
+                                                    style: TextStyle(
+                                                        fontSize: 24)),
+                                                subtitle: Text(
+                                                    "ข้อความ: ${snapshot.data![index].note.toString()}\nวันที่: ${convertedDateTime}",
+                                                    style: TextStyle(
+                                                        fontSize: 18)),
+                                                trailing: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  AddPhotoCattles(
+                                                                    idPro: widget
+                                                                        .catProID,
+                                                                    idTime: snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .id!,
+                                                                  )));
+                                                    },
+                                                    icon: Icon(Icons.edit)),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   );
                                 });
                           } else {
-                            return CircularProgressIndicator();
+                            return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [CircularProgressIndicator()]);
                           }
                         }),
                   ),

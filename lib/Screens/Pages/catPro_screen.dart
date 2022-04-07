@@ -5,6 +5,8 @@ import 'package:cattle_weight/model/catPro.dart';
 import 'package:cattle_weight/Screens/Pages/catPro_Create.dart';
 import 'package:cattle_weight/Screens/Pages/catPro_Edit.dart';
 import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';
+import 'package:cattle_weight/model/catTime.dart';
+import 'package:cattle_weight/model/utility.dart';
 import 'package:flutter/material.dart';
 
 class CatProScreen extends StatefulWidget {
@@ -18,7 +20,8 @@ class _CatProScreenState extends State<CatProScreen> {
   CatProHelper? dbHelper;
   CatTimeHelper? dbCatTime;
   CatImageHelper? dbImage;
-  late Future<List<CatProModel>> notesList;
+  late Future<List<CatProModel>> catProList;
+  late Future<CatTimeModel> catTimeTop;
 
   @override
   void initState() {
@@ -31,13 +34,13 @@ class _CatProScreenState extends State<CatProScreen> {
   }
 
   loadData() async {
-    notesList = dbHelper!.getCatProList();
+    catProList = dbHelper!.getCatProList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cattle SQL"), centerTitle: true, actions: [
+      appBar: AppBar(title: Text("Cattle Weight"), centerTitle: true, actions: [
         IconButton(
             onPressed: () {
               setState(() {
@@ -50,7 +53,7 @@ class _CatProScreenState extends State<CatProScreen> {
         children: [
           Expanded(
             child: FutureBuilder(
-                future: notesList,
+                future: catProList,
                 builder: (context, AsyncSnapshot<List<CatProModel>> snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -58,71 +61,238 @@ class _CatProScreenState extends State<CatProScreen> {
                         shrinkWrap: true,
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CatTimeScreen(
-                                      catProID: snapshot.data![index].id!)));
-                            },
-                            child: Dismissible(
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                  color: Colors.red,
-                                  alignment: Alignment.centerRight,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child: Icon(Icons.delete_forever)),
-                              onDismissed: (DismissDirection direction) {
-                                setState(() {
-                                  // delete row in catpro table with snapshot.data![index].id!
-                                  dbHelper!
-                                      .deleteCatPro(snapshot.data![index].id!);
+                          catTimeTop = dbCatTime!
+                              .getCatTimeWithCatPro(snapshot.data![index].id!);
 
-                                  // delete row in cattime table with snapshot.data![index].id!
-                                  dbCatTime!.deleteCatTimeWithIdPro(
-                                      snapshot.data![index].id!);
+                          return FutureBuilder(
+                              future: catTimeTop,
+                              builder: (context,
+                                  AsyncSnapshot<CatTimeModel> cattime) {
+                                DateTime catTimeDate =
+                                    DateTime.parse(cattime.data!.date);
+                                String convertedDateTime =
+                                    "${catTimeDate.day.toString().padLeft(2, '0')}/${catTimeDate.month.toString().padLeft(2, '0')}/${catTimeDate.year.toString()} เวลา: ${catTimeDate.hour.toString().padLeft(2, '0')}.${catTimeDate.minute.toString().padLeft(2, '0')}";
+                                if (cattime.hasData) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CatTimeScreen(
+                                                      catProID: snapshot
+                                                          .data![index].id!)));
+                                    },
+                                    child: Dismissible(
+                                      direction: DismissDirection.endToStart,
+                                      background: Container(
+                                          color: Colors.red,
+                                          alignment: Alignment.centerRight,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Icon(Icons.delete_forever)),
+                                      onDismissed:
+                                          (DismissDirection direction) {
+                                        setState(() {
+                                          // delete row in catpro table with snapshot.data![index].id!
+                                          dbHelper!.deleteCatPro(
+                                              snapshot.data![index].id!);
 
-                                  // delete cattle Image in images table
-                                  dbImage!.deleteWithIDPro(
-                                      snapshot.data![index].id!);
+                                          // delete row in cattime table with snapshot.data![index].id!
+                                          dbCatTime!.deleteCatTimeWithIdPro(
+                                              snapshot.data![index].id!);
 
-                                  notesList = dbHelper!.getCatProList();
-                                  snapshot.data!.remove(snapshot.data![index]);
-                                });
-                              },
-                              key: ValueKey<int>(snapshot.data![index].id!),
-                              child: Card(
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.all(0),
-                                  title: Text(
-                                      snapshot.data![index].name.toString()),
-                                  subtitle: Text(
-                                      "Gender: ${snapshot.data![index].gender.toString()}\nSpecies: ${snapshot.data![index].species.toString()}"),
-                                  trailing: IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CatProFormEdit(
-                                                        catPro: snapshot
-                                                            .data![index])));
+                                          // delete cattle Image in images table
+                                          dbImage!.deleteWithIDPro(
+                                              snapshot.data![index].id!);
 
-                                        // dbHelper!.updateCatPro(CatProModel(
-                                        //   id: snapshot.data![index].id!,
-                                        //   name: "cattle01",
-                                        //   gender: "female",
-                                        //   species: "barhman",
-                                        // ));
-
-                                        // setState(() {
-                                        //   notesList = dbHelper!.getCatProList();
-                                        // });
+                                          catProList =
+                                              dbHelper!.getCatProList();
+                                          snapshot.data!
+                                              .remove(snapshot.data![index]);
+                                        });
                                       },
-                                      icon: Icon(Icons.edit)),
-                                ),
-                              ),
-                            ),
-                          );
+                                      key: ValueKey<int>(
+                                          snapshot.data![index].id!),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: PhysicalModel(
+                                          color: Colors.white,
+                                          elevation: 8,
+                                          shadowColor: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: ListTile(
+                                              contentPadding: EdgeInsets.all(0),
+                                              title:
+                                                  //  Text(
+                                                  //     "${cattime.data!.imageSide}"),
+                                                  //     RotatedBox(
+                                                  //   quarterTurns: 0,
+                                                  //   child: Image.asset(
+                                                  //     "assets/images/SideLeftNavigation2.png",
+                                                  //     height: 240,
+                                                  //     width: 360,
+                                                  //   ),
+                                                  // ),
+                                                  ((cattime.data!.imageSide ==
+                                                              null) ||
+                                                          (cattime.data!
+                                                                  .imageSide ==
+                                                              ''))
+                                                      ? RotatedBox(
+                                                          quarterTurns: 0,
+                                                          child: Image.asset(
+                                                            "assets/images/SideLeftNavigation2.png",
+                                                            height: 240,
+                                                            width: 360,
+                                                          ),
+                                                        )
+                                                      : RotatedBox(
+                                                          quarterTurns: -1,
+                                                          child: Utility
+                                                              .imageFromBase64String(
+                                                                  cattime.data!
+                                                                      .imageSide),
+                                                        ),
+                                              subtitle: ListTile(
+                                                title: Text(
+                                                    snapshot.data![index].name
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                subtitle: Text(
+                                                    "Species: ${snapshot.data![index].species.toString()}\nGender: ${snapshot.data![index].gender.toString()}\nWeight: ${cattime.data!.weight.toStringAsFixed(4)}\tKg\nวันที่: ${convertedDateTime}",
+                                                    style: TextStyle(
+                                                        fontSize: 18)),
+                                                trailing: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  CatProFormEdit(
+                                                                      catPro: snapshot
+                                                                              .data![
+                                                                          index])));
+
+                                                      // dbHelper!.updateCatPro(CatProModel(
+                                                      //   id: snapshot.data![index].id!,
+                                                      //   name: "cattle01",
+                                                      //   gender: "female",
+                                                      //   species: "barhman",
+                                                      // ));
+
+                                                      // setState(() {
+                                                      //   notesList = dbHelper!.getCatProList();
+                                                      // });
+                                                    },
+                                                    icon: Icon(Icons.edit)),
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CatTimeScreen(
+                                                      catProID: snapshot
+                                                          .data![index].id!)));
+                                    },
+                                    child: Dismissible(
+                                      direction: DismissDirection.endToStart,
+                                      background: Container(
+                                          color: Colors.red,
+                                          alignment: Alignment.centerRight,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Icon(Icons.delete_forever)),
+                                      onDismissed:
+                                          (DismissDirection direction) {
+                                        setState(() {
+                                          // delete row in catpro table with snapshot.data![index].id!
+                                          dbHelper!.deleteCatPro(
+                                              snapshot.data![index].id!);
+
+                                          // delete row in cattime table with snapshot.data![index].id!
+                                          dbCatTime!.deleteCatTimeWithIdPro(
+                                              snapshot.data![index].id!);
+
+                                          // delete cattle Image in images table
+                                          dbImage!.deleteWithIDPro(
+                                              snapshot.data![index].id!);
+
+                                          catProList =
+                                              dbHelper!.getCatProList();
+                                          snapshot.data!
+                                              .remove(snapshot.data![index]);
+                                        });
+                                      },
+                                      key: ValueKey<int>(
+                                          snapshot.data![index].id!),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: PhysicalModel(
+                                          color: Colors.white,
+                                          elevation: 8,
+                                          shadowColor: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: ListTile(
+                                              contentPadding: EdgeInsets.all(0),
+                                              title: RotatedBox(
+                                                quarterTurns: 0,
+                                                child: Image.asset(
+                                                  "assets/images/SideLeftNavigation2.png",
+                                                  height: 240,
+                                                  width: 360,
+                                                ),
+                                              ),
+                                              subtitle: ListTile(
+                                                title: Text(
+                                                    snapshot.data![index].name
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                subtitle: Text(
+                                                    "Gender: ${snapshot.data![index].gender.toString()}\nSpecies: ${snapshot.data![index].species.toString()}",
+                                                    style: TextStyle(
+                                                        fontSize: 18)),
+                                                trailing: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  CatProFormEdit(
+                                                                      catPro: snapshot
+                                                                              .data![
+                                                                          index])));
+
+                                                      // dbHelper!.updateCatPro(CatProModel(
+                                                      //   id: snapshot.data![index].id!,
+                                                      //   name: "cattle01",
+                                                      //   gender: "female",
+                                                      //   species: "barhman",
+                                                      // ));
+
+                                                      // setState(() {
+                                                      //   notesList = dbHelper!.getCatProList();
+                                                      // });
+                                                    },
+                                                    icon: Icon(Icons.edit)),
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              });
                         });
                   } else {
                     return Center(child: CircularProgressIndicator());

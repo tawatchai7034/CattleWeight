@@ -357,6 +357,7 @@ class BlueParamitor extends StatefulWidget {
 class _BlueParamitorState extends State<BlueParamitor> {
   ImageNavidation line = new ImageNavidation();
 
+
   @override
   Widget build(BuildContext context) {
     return Center(

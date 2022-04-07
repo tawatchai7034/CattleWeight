@@ -1,31 +1,35 @@
 import 'dart:io';
 
-import 'package:cattle_weight/Camera/previewTop_screen.dart';
+import 'package:cattle_weight/BlueCamera/BluePreviewTop_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:cattle_weight/BlueCamera/BluePreviewRear_screen.dart';
+import 'package:cattle_weight/Camera/previewRear_screen.dart';
 import 'package:cattle_weight/model/catTime.dart';
 
-import '../Camera/previewSide_screen.dart';
-
-class CapturesTopScreen extends StatefulWidget {
+class BlueCapturesTopScreen extends StatefulWidget {
   final int idPro;
   final int idTime;
   final List<File> imageFileList;
   final CatTimeModel catTime;
-  const CapturesTopScreen({
+    final BluetoothDevice server;
+  final bool blueConnection;
+  const BlueCapturesTopScreen({
     Key? key,
     required this.idPro,
     required this.idTime,
     required this.imageFileList,
     required this.catTime,
+    required this.server,
+    required this.blueConnection,
   }) : super(key: key);
 
   @override
-  State<CapturesTopScreen> createState() => _CapturesTopScreenState();
+  State<BlueCapturesTopScreen> createState() => _BlueCapturesTopScreenState();
 }
 
-class _CapturesTopScreenState extends State<CapturesTopScreen> {
-  
+class _BlueCapturesTopScreenState extends State<BlueCapturesTopScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,12 +66,14 @@ class _CapturesTopScreenState extends State<CapturesTopScreen> {
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => PreviewTopScreen(
+                            builder: (context) => BluePreviewTopScreen(
                               idPro: widget.idPro,
                               idTime: widget.idTime,
                               fileList: widget.imageFileList,
                               imageFile: imageFile,
                               catTime: widget.catTime,
+                              server: widget.server,
+                              blueConnection: widget.blueConnection,
                             ),
                           ),
                         );

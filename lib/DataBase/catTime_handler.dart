@@ -80,6 +80,24 @@ class CatTimeHelper {
     }
   }
 
+      Future<CatTimeModel> getCatTimeWithCatPro(int idPro) async {
+    var dbClient = await db;
+
+    final queryResult = await dbClient!.query(
+      'cattime',
+      columns: CatTimeFields.values,
+      where: 'idPro = ?',
+      whereArgs: [idPro],
+      orderBy: "date DESC"
+    );
+    
+    if (queryResult.isNotEmpty) {
+      return CatTimeModel.fromJson(queryResult.first);
+    } else {
+      throw Exception('ID $idPro not found');
+    }
+  }
+
 //  ************************** Query **************************
 
 //  ************************** Update **************************

@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:cattle_weight/Screens/Pages/FirstPage.dart';
+import 'package:cattle_weight/Screens/Pages/catPro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'convetHex.dart';
@@ -49,8 +50,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: 
-        // CameraScreen(cameras: cameras)
-        FisrtPage(camera)
+        CatProScreen()
+        // FisrtPage(camera)
         );
   }
 }
