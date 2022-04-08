@@ -1,129 +1,151 @@
 import 'package:flutter/material.dart';
-import 'package:cattle_weight/convetHex.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'package:cattle_weight/DataBase/catPro_handler.dart';
+import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/convetHex.dart';
+import 'package:cattle_weight/model/catPro.dart';
+import 'package:cattle_weight/model/catTime.dart';
 
 // class ที่ใช้ในการแปลงค่าสีจากภายนอกมาใช้ใน flutter
 ConvertHex hex = new ConvertHex();
 
-class ChartCattle extends StatelessWidget {
-  const ChartCattle({Key? key, required this.title}) : super(key: key);
+// model for show data in chart
+class ChartData {
+  ChartData(this.x, this.y);
+  final String x;
+  final double? y;
+}
+
+class ChartCattle extends StatefulWidget {
+  const ChartCattle({
+    Key? key,
+    required this.title,
+    required this.catProID,
+  }) : super(key: key);
   final String title;
+  final int catProID;
+
+  @override
+  State<ChartCattle> createState() => _ChartCattleState();
+}
+
+class _ChartCattleState extends State<ChartCattle> {
+  late TooltipBehavior _tooltipBehavior;
+  CatTimeHelper? dbHelper;
+  CatProHelper? catProHelper;
+  final List<ChartData> chartData = [];
+
+  late Future<List<CatTimeModel>> catTime;
+  late Future<CatProModel> catProData;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dbHelper = new CatTimeHelper();
+    catProHelper = new CatProHelper();
+
+    loadData();
+    // NotesModel(title: "User00",age: 22,description: "Default user",email: "User@exemple.com");
+  }
+
+  loadData() async {
+    catTime = dbHelper!.getCatTimeListWithCatProID(widget.catProID);
+    catProData = catProHelper!.getCatProWithID(widget.catProID);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        backgroundColor: Color(hex.hexColor("#007BA4")),
-        actions: [MenuBar()],
-      ),
-      body: ChartData(title),
-    );
+    return FutureBuilder(
+        future: catTime,
+        builder: (context, AsyncSnapshot<List<CatTimeModel>> snapshot) {
+          if (snapshot.hasData) {
+            for (int i = snapshot.data!.length - 1; i >= 0; i--) {
+              DateTime catTimeDate = DateTime.parse(snapshot.data![i].date);
+              String convertedDateTime =
+                  "${catTimeDate.day.toString().padLeft(2, '0')}/${catTimeDate.month.toString().padLeft(2, '0')}/${catTimeDate.year.toString()} ";
+              chartData
+                  .add(ChartData(convertedDateTime, snapshot.data![i].weight));
+            }
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text(widget.title),
+                  backgroundColor: Color(hex.hexColor("#007BA4")),
+                  actions: [MenuBar()],
+                ),
+                body: RotatedBox(
+                  quarterTurns: 1,
+                  child: ExepleChart(
+                    title: widget.title,
+                    chartData: chartData,
+                  ),
+                ));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
+
+    // ChartData(widget.title),
   }
 }
 
-// ต้นแบบ https://youtu.be/zhcxdh4-Jt8
-// https://help.syncfusion.com/flutter/cartesian-charts/getting-started
-// https://help.syncfusion.com/flutter/cartesian-charts/axis-customization
-class ChartData extends StatefulWidget {
-  late String title;
-  ChartData(this.title);
+class ExepleChart extends StatefulWidget {
+  final String title;
+  final List<ChartData> chartData;
+  const ExepleChart({
+    Key? key,
+    required this.title,
+    required this.chartData,
+  }) : super(key: key);
 
   @override
-  _ChartDataState createState() => _ChartDataState();
+  State<ExepleChart> createState() => _ExepleChartState();
 }
 
-class _ChartDataState extends State<ChartData> {
-  // ประกาศตัวแปรไว้เก็บข้อมูล
-  late List<CattleData> _chartData;
-  // widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
+class _ExepleChartState extends State<ExepleChart> {
   late TooltipBehavior _tooltipBehavior;
 
   @override
-  // เมื่อรัน widget ให้ไปดึงข้อมูลมา
   void initState() {
-    _chartData = getChartData();
-    //เปิด widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            body: SfCartesianChart(
-              // ชื่อกราฟ
-      title: ChartTitle(text: 'อัตราการเจริญเติบโตของ ${widget.title}'),
-      legend: Legend(isVisible: true),
-      // widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
-      tooltipBehavior: _tooltipBehavior,
-      series: <ChartSeries>[
-        LineSeries<CattleData, double>(
-          // ตั้งชื่เส้นบนกราฟ
-            name: 'อัตราการเจริญเติบโต',
-            // ข้อมูลให้ไปเอามาจาก _chartData
-            dataSource: _chartData,
-            // กำหนดขอบเขตของแกน x และแกน y
-            xValueMapper: (CattleData cattle, _) => cattle.month,
-            yValueMapper: (CattleData cattle, _) => cattle.weight,
-            // แสดงค่าประจำจุดบนกราฟ
-            dataLabelSettings: DataLabelSettings(isVisible: true),
-            enableTooltip: true,
-            // กำหนดสีเส้น
-            color: Color(hex.hexColor("#FAA41B")))
-      ],
-      // กำหนดรูปแบบของตัวเลขในกราฟ
-      primaryXAxis: NumericAxis(
-        edgeLabelPlacement: EdgeLabelPlacement.shift,
-      ),
-      primaryYAxis: NumericAxis(
-          labelFormat: '{value}',
-          numberFormat: NumberFormat.compact(),
-          // Determines the value axis range, based on the visible data points or based on the overall data points available in chart. 
-          anchorRangeToVisiblePoints: false),
-    )));
-  }
-
-// สร้าง list ข้อมูลที่จะเอาไปสร้างกราฟ
-  List<CattleData> getChartData() {
-    final List<CattleData> chartData = [
-      CattleData(1, 2525),
-      CattleData(2, 1212),
-      CattleData(3, 2424),
-      CattleData(4, 1818),
-      CattleData(5, 3030),
-      CattleData(6, 2525),
-      CattleData(7, 1212),
-      CattleData(8, 2424),
-      CattleData(9, 1818),
-      CattleData(10, 3030)
-    ];
-    return chartData;
-  }
-}
-
-// กำหนดข้อมูลที่ต้องมี
-class CattleData {
-  CattleData(this.month, this.weight);
-  final double month;
-  final double weight;
-}
-
-class SectionPage extends StatelessWidget {
-  const SectionPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ChartData("cattle256"),
-        Container(
-          child: Card(),
-        ),
-      ],
-    );
+    return Scaffold(
+        // appBar: AppBar(
+        //   title: Text('afadff'),
+        // ),
+        body: Center(
+            child: Container(
+                child: SfCartesianChart(
+                    primaryYAxis: NumericAxis(
+                        title: AxisTitle(text: 'น้ำหนัก (Kg)'),
+                        rangePadding: ChartRangePadding.additional,
+                        // Assigned a name for the y-axis for customization purposes
+                        name: 'primaryYAxis'),
+                    title: ChartTitle(
+                        text: 'อัตราการเจริญเติบโตของ${widget.title}'),
+                    // legend: Legend(isVisible: true),
+                    // widget ที่ใช้แสดงค่าประจำจุดบนกราฟ
+                    // Enables the tooltip for all the series in chart
+                    tooltipBehavior: _tooltipBehavior,
+                    // Initialize category axis
+                    primaryXAxis: CategoryAxis(),
+                    series: <ChartSeries>[
+          // Initialize line series
+          LineSeries<ChartData, String>(
+              name: 'อัตราการเจริญเติบโต',
+              // Enables the tooltip for individual series
+              enableTooltip: true,
+              dataSource: widget.chartData,
+              xValueMapper: (ChartData data, _) => data.x,
+              yValueMapper: (ChartData data, _) => data.y,
+              dataLabelSettings: DataLabelSettings(isVisible: true))
+        ]))));
   }
 }
 
@@ -183,22 +205,5 @@ void onSelected(BuildContext context, int item) {
     //   Navigator.of(context)
     //       .push(MaterialPageRoute(builder: (context) => EditOption()));
     //   break;
-  }
-}
-
-class ExportFile extends StatelessWidget {
-  const ExportFile({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Export File"),
-        backgroundColor: Color(hex.hexColor("#007BA4")),
-      ),
-      body: Center(
-        child: Text("Export File page"),
-      ),
-    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:cattle_weight/DataBase/catImage_handler.dart';
 import 'package:cattle_weight/DataBase/catPro_handler.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
+import 'package:cattle_weight/Screens/Pages/ProfilePage.dart';
 import 'package:cattle_weight/model/catPro.dart';
 import 'package:cattle_weight/Screens/Pages/catPro_Create.dart';
 import 'package:cattle_weight/Screens/Pages/catPro_Edit.dart';
@@ -68,17 +69,17 @@ class _CatProScreenState extends State<CatProScreen> {
                               future: catTimeTop,
                               builder: (context,
                                   AsyncSnapshot<CatTimeModel> cattime) {
-                                DateTime catTimeDate =
-                                    DateTime.parse(cattime.data!.date);
-                                String convertedDateTime =
-                                    "${catTimeDate.day.toString().padLeft(2, '0')}/${catTimeDate.month.toString().padLeft(2, '0')}/${catTimeDate.year.toString()} เวลา: ${catTimeDate.hour.toString().padLeft(2, '0')}.${catTimeDate.minute.toString().padLeft(2, '0')}";
                                 if (cattime.hasData) {
+                                  DateTime catTimeDate =
+                                      DateTime.parse(cattime.data!.date);
+                                  String convertedDateTime =
+                                      "${catTimeDate.day.toString().padLeft(2, '0')}/${catTimeDate.month.toString().padLeft(2, '0')}/${catTimeDate.year.toString()} เวลา: ${catTimeDate.hour.toString().padLeft(2, '0')}.${catTimeDate.minute.toString().padLeft(2, '0')}";
                                   return InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  CatTimeScreen(
+                                                  CattleProfilPage(
                                                       catProID: snapshot
                                                           .data![index].id!)));
                                     },
@@ -163,7 +164,7 @@ class _CatProScreenState extends State<CatProScreen> {
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 subtitle: Text(
-                                                    "Species: ${snapshot.data![index].species.toString()}\nGender: ${snapshot.data![index].gender.toString()}\nWeight: ${cattime.data!.weight.toStringAsFixed(4)}\tKg\nวันที่: ${convertedDateTime}",
+                                                    "Species: ${snapshot.data![index].species.toString()}\nGender: ${snapshot.data![index].gender.toString()}\nWeight: ${cattime.data!.weight.toStringAsFixed(4)}\tKg",
                                                     style: TextStyle(
                                                         fontSize: 18)),
                                                 trailing: IconButton(
@@ -199,7 +200,7 @@ class _CatProScreenState extends State<CatProScreen> {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  CatTimeScreen(
+                                                  CattleProfilPage(
                                                       catProID: snapshot
                                                           .data![index].id!)));
                                     },

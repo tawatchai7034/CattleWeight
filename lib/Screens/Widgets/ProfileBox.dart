@@ -103,11 +103,12 @@ class ProfileBox extends StatelessWidget {
       ),
       trailing: MenuOption(cattleName),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CattleProfilPage(
-                  title: cattleName,
-                  camera: camera,
-                )));
+
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => CattleProfilPage(
+        //           title: cattleName,
+        //           camera: camera,
+        //         )));
       },
     ));
   }
