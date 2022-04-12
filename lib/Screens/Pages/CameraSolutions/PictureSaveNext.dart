@@ -2,7 +2,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:camera/camera.dart';
+
 import 'package:cattle_weight/Camera/cameraTop_screen.dart';
 import 'package:cattle_weight/DataBase/catTime_handler.dart';
 import 'package:cattle_weight/Screens/Pages/catTime_screen.dart';

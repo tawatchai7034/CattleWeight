@@ -73,11 +73,11 @@ class _ChartCattleState extends State<ChartCattle> {
                 appBar: AppBar(
                   title: Text(widget.title),
                   backgroundColor: Color(hex.hexColor("#007BA4")),
-                  actions: [MenuBar()],
+                  actions: [MenuBar(catProID: widget.catProID)],
                 ),
                 body: RotatedBox(
                   quarterTurns: 1,
-                  child: ExepleChart(
+                  child: ExampleChart(
                     title: widget.title,
                     chartData: chartData,
                   ),
@@ -91,20 +91,20 @@ class _ChartCattleState extends State<ChartCattle> {
   }
 }
 
-class ExepleChart extends StatefulWidget {
+class ExampleChart extends StatefulWidget {
   final String title;
   final List<ChartData> chartData;
-  const ExepleChart({
+  const ExampleChart({
     Key? key,
     required this.title,
     required this.chartData,
   }) : super(key: key);
 
   @override
-  State<ExepleChart> createState() => _ExepleChartState();
+  State<ExampleChart> createState() => _ExampleChartState();
 }
 
-class _ExepleChartState extends State<ExepleChart> {
+class _ExampleChartState extends State<ExampleChart> {
   late TooltipBehavior _tooltipBehavior;
 
   @override
@@ -149,15 +149,47 @@ class _ExepleChartState extends State<ExepleChart> {
   }
 }
 
-class MenuBar extends StatelessWidget {
-  const MenuBar({Key? key}) : super(key: key);
+class MenuBar extends StatefulWidget {
+  final int catProID;
+  const MenuBar({Key? key, required this.catProID}) : super(key: key);
+
+  @override
+  State<MenuBar> createState() => _MenuBarState();
+}
+
+class _MenuBarState extends State<MenuBar> {
+  CatTimeHelper? dbHelper;
+  CatProHelper? catProHelper;
+  final List<ChartData> chartData = [];
+
+  late Future<List<CatTimeModel>> catTime;
+  late Future<CatProModel> catProData;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dbHelper = new CatTimeHelper();
+    catProHelper = new CatProHelper();
+
+    loadData();
+    // NotesModel(title: "User00",age: 22,description: "Default user",email: "User@exemple.com");
+  }
+
+  loadData() async {
+    catTime = dbHelper!.getCatTimeListWithCatProID(widget.catProID);
+    catProData = catProHelper!.getCatProWithID(widget.catProID);
+  }
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
         icon: Icon(Icons.menu),
         // เมื่อเลือกเมนูแล้วจะส่งไปทำงานที่หังก์ชัน onSelected
-        onSelected: (item) => onSelected(context, item),
+        onSelected: (item) {
+          dbHelper!.exportSQLtoCSV();
+          onSelected(context, item);
+        },
         itemBuilder: (context) => [
               PopupMenuItem<int>(
                   value: 0,
