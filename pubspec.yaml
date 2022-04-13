@@ -46,6 +46,7 @@ dependencies:
   permission_handler: 
   video_player: any
   csv: 
+  search_page: ^2.0.0+1
 
   
   
